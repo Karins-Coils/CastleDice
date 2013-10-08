@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    <p>
+    {% for d_name, pair in dice.items %}
+        {{ d_name}} rolled {{ pair.1 }} {{ pair.0 }}<br>
+    {% endfor %}
+    </p>
+{%  endblock %}
