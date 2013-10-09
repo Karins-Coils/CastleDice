@@ -35,12 +35,11 @@ class ChooseDiceForm(forms.Form):
         #if len(kwargs) > 0:
         #    dice_list = kwargs.pop('chooseabledice')
         #else:
-        dice_list = [Wood, Stone, Gold, Land]
-        dice_list2 = [Wood, Iron, Iron]
+        choice_list = [Wood, Stone, Gold, Land, Iron]
+        given_list = [Wood, Wood, Gold, Iron, Iron]
         super(ChooseDiceForm, self).__init__(*args, **kwargs)
-        #self.form.fields['field_name'].widget = forms.HiddenInput()
-        self.fields['choice_dice'].choices = self.make_choices(dice_list)
-        self.fields['given_dice'].choices = self.make_choices(dice_list2)
+        self.fields['choice_dice'].choices = self.make_choices(choice_list)
+        self.fields['given_dice'].choices = self.make_choices(given_list)
 
 
     # preps the form choices for user

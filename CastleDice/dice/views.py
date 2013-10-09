@@ -35,10 +35,8 @@ class ChooseDiceView(FormView):
     dice_to_roll = ""
 
     def form_valid(self, form):
-        full_dice_list = form.cleaned_data['choice_dice'] +form.cleaned_data['given_dice']
+        full_dice_list = form.cleaned_data['given_dice'] + form.cleaned_data['choice_dice']
         self.dice_to_roll = prepUrlFromDice(full_dice_list)
-        #self.chosen_dice = prepUrlFromDice(form.cleaned_data['Dice'])
-        #self.given_dice = form.cleaned_data['given_dice']
         return super(ChooseDiceView, self).form_valid(form)
 
     def get_success_url(self):
@@ -52,10 +50,10 @@ class RollDiceView(TemplateView):
         context = super(RollDiceView, self).get_context_data(**kwargs)
         dice_url = self.kwargs['dice_to_roll']
         dice_to_roll = parseDiceUrl(dice_url)
-        rolled_dice = {}
+        rolled_dice = []
         for d in dice_to_roll:
             roll_me = Die(d)
-            rolled_dice[d] = roll_me.roll_die()
+            rolled_dice.append((d, roll_me.roll_die()))
         totals = diceClass.total_dice(rolled_dice)
         context['rolled_dice'] = rolled_dice
         context['totals'] = totals

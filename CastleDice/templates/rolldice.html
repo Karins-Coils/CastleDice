@@ -2,19 +2,15 @@
 
 {% block body %}
 
-
-    {% for d_name, pair in rolled_dice.items %}
-        <p style="margin-bottom: 10px">
-            {{ d_name|capfirst }} Die rolled
-            <img class ="{{  d_name }}_die {{ pair.0 }}x{{ pair.1 }} mid">
-        </p>
+    <p>Player rolled: &nbsp;
+    {% for d_name, pair in rolled_dice%}
+        &nbsp;<img class ="{{  d_name }}_die {{ pair.0 }}x{{ pair.1 }} mid">&nbsp;
     {% endfor %}
+    </p>
     <br><br>
-    <p>Total Resources Rolled:</p>
+    <p>Total Resources Rolled:&nbsp;
     {% for d_name, count in totals.items %}
-        <p style="margin-bottom: 10px;">
-{#            {{ d_name|capfirst }}#}
-            <img class="{{ d_name }} mid"> {{ count }}
-        </p>
+            &nbsp;<img class="{{ d_name }} mid">x{{ count }}&nbsp;
     {% endfor %}
+    </p>
 {%  endblock %}

@@ -74,10 +74,10 @@ def roll_and_total_dice(dieSet):
 
 def total_dice(rolled_die):
     # takes in list formatted like so:
-    #   [ dice_type: (resource, count), ... ]
+    # ( (dice_type, (resource, count)), ...)
     r_rolled = {}
-    for d in rolled_die:
-        resource, count = rolled_die[d]
+    for d, roll in rolled_die:
+        resource, count = roll
         if r_rolled.has_key(resource):
             r_rolled[resource] += count
         else:
