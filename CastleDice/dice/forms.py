@@ -41,9 +41,9 @@ class ChooseDiceForm(forms.Form):
     def __init__(self, *args, **kwargs):
         #if len(kwargs) > 0:
         #    dice_list = kwargs.pop('chooseabledice')
-        ##else:
-        #dice_list = [Wood, Stone, Gold, Land]
-        #self.make_choices2(dice_list)
+        #else:
+        #    dice_list = [Wood, Stone, Gold, Land]
+        #kwargs.setdefault('choices', {})['Dice'] = self.make_choices(dice_list)
         super(ChooseDiceForm, self).__init__(*args, **kwargs)
 
     #def process_choices(self):
@@ -60,20 +60,13 @@ class ChooseDiceForm(forms.Form):
     #        dice.append('iron')
     #    return dice
 
-    # preps the form choices for user
-    def make_choices(self, die, index):
-        if die == Wood:
-            self.die_list.append(forms.BooleanField(label="Wood Die"))
-        elif die == Stone:
-            self.die_list.append(forms.BooleanField(label="Stone Die"))
-        elif die == Gold:
-            self.die_list.append(forms.BooleanField(label="Gold Die"))
-        elif die == Land:
-            self.die_list.append(forms.BooleanField(label="Land Die"))
-        elif die == Iron:
-            self.die_list.append(forms.BooleanField(label="Iron Die"))
+    def form_valid(self):
+        pass
 
-    def make_choices2(self, d_list):
+
+
+    # preps the form choices for user
+    def make_choices(self, d_list):
         d_choices = []
         for die in d_list:
             if die == Wood:
@@ -86,4 +79,4 @@ class ChooseDiceForm(forms.Form):
                 d_choices.append(('L', Land))
             elif die == Iron:
                 d_choices.append(('I', Iron))
-        self.Dice = forms.MultipleChoiceField(label="Dice Choices", choices = d_choices)
+        return d_choices
