@@ -14,9 +14,13 @@
     background-color: #d8232a;
 }
 
-.wood, .stone, .gold, .land, .iron,
-.woodx2, .woodx3, .stonex2, .goldx2, .landx2, .ironx2,
-.chicken, .cow, .pig, .horse, .barbarian {
+.wood, .woodx1, .woodx2, .woodx3,
+.stone, .stonex1, .stonex2,
+.gold, .goldx1, .goldx2,
+.land, .landx1, .landx2,
+.iron, .ironx1, .ironx2,
+.chicken, .cow, .pig, .horse, .barbarian,
+.chickenx1, .cowx1, .pigx1, .horsex1, .barbarianx1{
     width: 50px;
     height: 50px;
     border: 1px;

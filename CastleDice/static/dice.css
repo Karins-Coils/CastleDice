@@ -17,8 +17,8 @@
 .wood, .woodx1, .woodx2, .woodx3,
 .stone, .stonex1, .stonex2,
 .gold, .goldx1, .goldx2,
-.land, .landx2,
-.iron, .ironx2,
+.land, .landx1, .landx2,
+.iron, .ironx1, .ironx2,
 .chicken, .cow, .pig, .horse, .barbarian,
 .chickenx1, .cowx1, .pigx1, .horsex1, .barbarianx1{
     width: 50px;
