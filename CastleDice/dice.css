@@ -1,0 +1,81 @@
+.wood_die, .wood {
+    background-color: #9e744f;
+}
+.stone_die, .stone {
+    background-color: #9e9f9e;
+}
+.gold_die, .gold {
+    background-color: #fff101;
+}
+.land_die, .land {
+    background-color: #009949;
+}
+.iron_die, .iron {
+    background-color: #d8232a;
+}
+
+.wood, .stone, .gold, .land, .iron,
+.woodx2, .woodx3, .stonex2, .goldx2, .landx2, .ironx2,
+.chicken, .cow, .pig, .horse, .barbarian {
+    width: 50px;
+    height: 50px;
+    border: 1px;
+    background-size: 50px;
+}
+
+.mid { vertical-align: middle;}
+
+.wood {
+    background-image: url("/static/die%20faces/Wood.png");
+}
+.woodx2 {
+    background-image: url("/static/die%20faces/Woodx2.png");
+}
+.woodx3 {
+    background-image: url("/static/die%20faces/Woodx3.png");
+}
+
+.stone{
+    background-image: url("/static/die%20faces/Stone.png");
+}
+.stonex2{
+    background-image: url("/static/die%20faces/Stonex2.png");
+}
+
+.gold{
+    background-image: url("/static/die%20faces/Gold.png");
+}
+.goldx2{
+    background-image: url("/static/die%20faces/Goldx2.png");
+}
+
+.land{
+    background-image: url("/static/die%20faces/Land.png");
+}
+.landx2{
+    background-image: url("/static/die%20faces/Landx2.png");
+}
+
+.iron{
+    background-image: url("/static/die%20faces/Iron.png");
+}
+.ironx2{
+    background-image: url("/static/die%20faces/Ironx2.png");
+}
+
+.barbarian{
+    background-image: url("/static/die%20faces/Barbarian.png");
+}
+
+.cow{
+    background-image: url("/static/die%20faces/Cow.png");
+}
+.chicken{
+    background-image: url("/static/die%20faces/Chicken.png");
+}
+.horse{
+    background-image: url("/static/die%20faces/Horse.png");
+}
+.pig{
+    background-image: url("/static/die%20faces/Pig.png");
+}
