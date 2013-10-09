@@ -2,9 +2,19 @@
 
 {% block body %}
 
-    <p>
-    {% for d_name, pair in dice.items %}
-        {{ d_name}} rolled {{ pair.1 }} {{ pair.0 }}<br>
+
+    {% for d_name, pair in rolled_dice.items %}
+        <p style="margin-bottom: 10px">
+            {{ d_name|capfirst }} Die rolled
+            <img class ="{{  d_name }}_die {{ pair.0 }}x{{ pair.1 }} mid">
+        </p>
     {% endfor %}
-    </p>
+    <br><br>
+    <p>Total Resources Rolled:</p>
+    {% for d_name, count in totals.items %}
+        <p style="margin-bottom: 10px;">
+{#            {{ d_name|capfirst }}#}
+            <img class="{{ d_name }} mid"> {{ count }}
+        </p>
+    {% endfor %}
 {%  endblock %}

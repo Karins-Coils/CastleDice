@@ -72,6 +72,17 @@ def roll_and_total_dice(dieSet):
             r_rolled[r] = count
     print r_rolled
 
+def total_dice(rolled_die):
+    # takes in list formatted like so:
+    #   [ dice_type: (resource, count), ... ]
+    r_rolled = {}
+    for d in rolled_die:
+        resource, count = rolled_die[d]
+        if r_rolled.has_key(resource):
+            r_rolled[resource] += count
+        else:
+            r_rolled[resource] = count
+    return r_rolled
 
 dieSet = [
     Die(Wood),

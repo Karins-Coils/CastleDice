@@ -20,21 +20,15 @@ def img(c):
     return "<img class='"+c+" mid'>"
 
 die_choices = [
-    ('W', Wood),# + ' ' + img(Wood)),
-    ('S', Stone),# + ' ' + img(Stone)),
-    ('G', Gold),
-    ('L', Land),
-    ('I', Iron)
+    (Wood, Wood),
+    (Stone, Stone),
+    (Gold, Gold),
+    (Land, Land),
+    (Iron, Iron)
 ]
 
 
 class ChooseDiceForm(forms.Form):
-    #die_list = []
-    #woodDie = forms.ChoiceField(label="Wood Die", choices = ( ('W', "Wood")))
-    #stoneDie = forms.ChoiceField(label="Stone Die")
-    #goldDie = forms.ChoiceField(label="Gold Die")
-    #landDie = forms.ChoiceField(label="Land Die")
-    #ironDie = forms.ChoiceField(label="Iron Die")
     Dice = forms.MultipleChoiceField(label = "Dice Choices", widget = forms.CheckboxSelectMultiple, choices = die_choices)
 
 
@@ -46,37 +40,18 @@ class ChooseDiceForm(forms.Form):
         #kwargs.setdefault('choices', {})['Dice'] = self.make_choices(dice_list)
         super(ChooseDiceForm, self).__init__(*args, **kwargs)
 
-    #def process_choices(self):
-    #    dice = []
-    #    if self.get('woodDie'):
-    #        dice.append('wood')
-    #    if self.get('stoneDie'):
-    #        dice.append('stone')
-    #    if self.get('goldDie'):
-    #        dice.append('gold')
-    #    if self.get('landDie'):
-    #        dice.append('land')
-    #    if self.get('ironDie'):
-    #        dice.append('iron')
-    #    return dice
-
-    def form_valid(self):
-        pass
-
-
-
     # preps the form choices for user
     def make_choices(self, d_list):
         d_choices = []
         for die in d_list:
             if die == Wood:
-                d_choices.append(('W', Wood))
+                d_choices.append((Wood, Wood))
             elif die == Stone:
-                d_choices.append(('S', Stone))
+                d_choices.append((Stone, Stone))
             elif die == Gold:
-                d_choices.append(('G', Gold))
+                d_choices.append((Gold, Gold))
             elif die == Land:
-                d_choices.append(('L', Land))
+                d_choices.append((Land, Land))
             elif die == Iron:
-                d_choices.append(('I', Iron))
+                d_choices.append((Iron, Iron))
         return d_choices

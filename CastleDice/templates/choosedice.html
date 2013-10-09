@@ -3,16 +3,16 @@
 {% block body %}
 
 
-<form action="{% url 'rolldice' %}" method="post">
+<form action="{% url 'choosedice' %}" method="post">
 {% csrf_token %}
 {{ form.Dice.label_tag }}<br>
 {#{{ form.Dice }}<br><br>#}
 
 {%  for choice_id, choice in form.Dice.field.choices %}
-    <p style="margin-bottom: 10px">
+    <label for="id_Dice_{{ forloop.counter }}">
         <input id="id_Dice_{{ forloop.counter }}" name="Dice" type="checkbox" value="{{ choice_id }}">
         <img class="{{ choice }} mid"> {{ choice|capfirst }}
-    </p>
+    </label><br>
 {% endfor %}
 
 {{ form.Dice.errors }}

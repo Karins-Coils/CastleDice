@@ -25,7 +25,7 @@
 
 .mid { vertical-align: middle;}
 
-.wood {
+.wood, .woodx1 {
     background-image: url("/static/die%20faces/Wood.png");
 }
 .woodx2 {
@@ -35,47 +35,47 @@
     background-image: url("/static/die%20faces/Woodx3.png");
 }
 
-.stone{
+.stone, .stonex1{
     background-image: url("/static/die%20faces/Stone.png");
 }
 .stonex2{
     background-image: url("/static/die%20faces/Stonex2.png");
 }
 
-.gold{
+.gold, .goldx1{
     background-image: url("/static/die%20faces/Gold.png");
 }
 .goldx2{
     background-image: url("/static/die%20faces/Goldx2.png");
 }
 
-.land{
+.land, .landx1{
     background-image: url("/static/die%20faces/Land.png");
 }
 .landx2{
     background-image: url("/static/die%20faces/Landx2.png");
 }
 
-.iron{
+.iron, .ironx1{
     background-image: url("/static/die%20faces/Iron.png");
 }
 .ironx2{
     background-image: url("/static/die%20faces/Ironx2.png");
 }
 
-.barbarian{
+.barbarian, .barbarianx1{
     background-image: url("/static/die%20faces/Barbarian.png");
 }
 
-.cow{
+.cow, .cowx1{
     background-image: url("/static/die%20faces/Cow.png");
 }
-.chicken{
+.chicken, .chickenx1{
     background-image: url("/static/die%20faces/Chicken.png");
 }
-.horse{
+.horse, .horsex1{
     background-image: url("/static/die%20faces/Horse.png");
 }
-.pig{
+.pig, .pigx1{
     background-image: url("/static/die%20faces/Pig.png");
 }
