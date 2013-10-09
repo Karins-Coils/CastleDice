@@ -1,28 +1,31 @@
 from django import forms
+import diceClass
 
 # Resources
 ## Building Materials
-Wood = 'wood'
-Stone = 'stone'
-Gold = 'gold'
-Land = 'land'
-Iron = 'iron'
+Wood = diceClass.Wood
+Stone = diceClass.Stone
+Gold = diceClass.Gold
+Land = diceClass.Land
+Iron = diceClass.Iron
 ## Animals
-Horse = 'horse'
-Pig = 'pig'
-Cow = 'cow'
-Chicken = 'chicken'
+Horse = diceClass.Horse
+Pig = diceClass.Pig
+Cow = diceClass.Cow
+Chicken = diceClass.Chicken
 ## Lone Barbarian
-Barbarian = 'barbarian'
+Barbarian = diceClass.Barbarian
+
+def img(c):
+    return "<img class='"+c+" mid'>"
 
 die_choices = [
-    ('W', Wood),
-    ('S', Stone),
+    ('W', Wood),# + ' ' + img(Wood)),
+    ('S', Stone),# + ' ' + img(Stone)),
     ('G', Gold),
     ('L', Land),
     ('I', Iron)
 ]
-
 
 
 class ChooseDiceForm(forms.Form):
