@@ -31,7 +31,7 @@ class HomeView(TemplateView):
 
 class ChooseDiceView(FormView):
     template_name = 'choosedice.html'
-    form_class = ChooseDiceForm #(chooseabledice=[Wood, Land, Iron])
+    form_class = ChooseDiceForm#()# [Wood, Land, Iron] )
     chosen_dice = {}
 
     def form_valid(self, form):
@@ -45,7 +45,6 @@ class ChooseDiceView(FormView):
 
 class RollDiceView(TemplateView):
     template_name = "rolldice.html"
-    #rolled_dice = {}
 
     def get_context_data(self, **kwargs):
         context = super(RollDiceView, self).get_context_data(**kwargs)

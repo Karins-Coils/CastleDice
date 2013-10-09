@@ -16,29 +16,32 @@ Chicken = diceClass.Chicken
 ## Lone Barbarian
 Barbarian = diceClass.Barbarian
 
-def img(c):
-    return "<img class='"+c+" mid'>"
 
-die_choices = [
-    (Wood, Wood),
-    (Stone, Stone),
-    (Gold, Gold),
-    (Land, Land),
-    (Iron, Iron)
-]
+#die_choices = [
+#    (Wood, Wood),
+#    (Stone, Stone),
+#    (Gold, Gold),
+#    (Land, Land),
+#    (Iron, Iron)
+#]
 
 
 class ChooseDiceForm(forms.Form):
-    Dice = forms.MultipleChoiceField(label = "Dice Choices", widget = forms.CheckboxSelectMultiple, choices = die_choices)
+    choice_dice = forms.MultipleChoiceField(label="Dice Choices", widget=forms.CheckboxSelectMultiple)
+    given_dice = forms.MultipleChoiceField(label="Given Dice", widget=forms.CheckboxSelectMultiple)
 
 
     def __init__(self, *args, **kwargs):
         #if len(kwargs) > 0:
         #    dice_list = kwargs.pop('chooseabledice')
         #else:
-        #    dice_list = [Wood, Stone, Gold, Land]
-        #kwargs.setdefault('choices', {})['Dice'] = self.make_choices(dice_list)
+        dice_list = [Wood, Stone, Gold, Land]
+        dice_list2 = [Wood, Iron, Iron]
         super(ChooseDiceForm, self).__init__(*args, **kwargs)
+        #self.form.fields['field_name'].widget = forms.HiddenInput()
+        self.fields['choice_dice'].choices = self.make_choices(dice_list)
+        self.fields['given_dice'].choices = self.make_choices(dice_list2)
+
 
     # preps the form choices for user
     def make_choices(self, d_list):
