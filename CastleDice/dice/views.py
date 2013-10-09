@@ -32,15 +32,17 @@ class HomeView(TemplateView):
 class ChooseDiceView(FormView):
     template_name = 'choosedice.html'
     form_class = ChooseDiceForm#()# [Wood, Land, Iron] )
-    chosen_dice = {}
+    dice_to_roll = ""
 
     def form_valid(self, form):
-        self.chosen_dice = prepUrlFromDice(form.cleaned_data['Dice'])
-
+        full_dice_list = form.cleaned_data['choice_dice'] +form.cleaned_data['given_dice']
+        self.dice_to_roll = prepUrlFromDice(full_dice_list)
+        #self.chosen_dice = prepUrlFromDice(form.cleaned_data['Dice'])
+        #self.given_dice = form.cleaned_data['given_dice']
         return super(ChooseDiceView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('rolldice', kwargs={'chosen_dice': self.chosen_dice})
+        return reverse('rolldice', kwargs={'dice_to_roll': self.dice_to_roll})
 
 
 class RollDiceView(TemplateView):
@@ -48,7 +50,7 @@ class RollDiceView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(RollDiceView, self).get_context_data(**kwargs)
-        dice_url = self.kwargs['chosen_dice']
+        dice_url = self.kwargs['dice_to_roll']
         dice_to_roll = parseDiceUrl(dice_url)
         rolled_dice = {}
         for d in dice_to_roll:

@@ -8,19 +8,17 @@
 {{ form.given_dice.label_tag }}:
 {%  for given_id, given in form.given_dice.field.choices %}
     <label for="id_given_dice_{{ forloop.counter }}">
-        <input id="id_given_dice_{{ forloop.counter }}" name="Dice" type="hidden" value="{{ given_id }}">
+        <input {# style="display:none"#} id="id_given_dice_{{ forloop.counter }}" name="given_dice" type="checkbox" value="{{ given_id }}" checked="checked">
         <img class="{{ given }} mid"> {{ given|capfirst }}
-    </label>{% if not forloop.last %}, {% endif %}&nbsp;
+    </label>
+    {% if not forloop.last %}, {% endif %}&nbsp;
 {% endfor %}<br>
-{#{%  for field in form.given_dice %}#}
-{#    <p>{{ field }}</p>#}
-{#{% endfor %}#}
+{{ form.given_dice.errors }}<br>
 {{ form.choice_dice.label_tag }}<br>
-{#{{ form.Dice }}<br><br>#}
 
 {%  for choice_id, choice in form.choice_dice.field.choices %}
-    <label for="id_Dice_{{ forloop.counter }}">
-        <input id="id_Dice_{{ forloop.counter }}" name="Dice" type="checkbox" value="{{ choice_id }}">
+    <label for="id_choice_dice_{{ forloop.counter }}">
+        <input id="id_choice_dice_{{ forloop.counter }}" name="choice_dice" type="checkbox" value="{{ choice_id }}">
         <img class="{{ choice }} mid"> {{ choice|capfirst }}
     </label><br>
 {% endfor %}
@@ -28,13 +26,6 @@
 {{ form.choice_dice.errors }}
 {{ form.non_field_errors }}
 <input type="submit" value="Roll" >
-
-{% for field in form %}
-        <div class="fieldWrapper">
-            {{ field.errors }}
-            {{ field.label_tag }}: {{ field }}
-        </div>
-    {% endfor %}
 
 </form>
 
