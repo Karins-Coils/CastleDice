@@ -32,10 +32,13 @@ class HomeView(TemplateView):
 class ChooseDiceView(FormView):
     template_name = 'choosedice.html'
     form_class = ChooseDiceForm#()# [Wood, Land, Iron] )
-    dice_to_roll = ""
 
     def form_valid(self, form):
-        full_dice_list = form.cleaned_data['given_dice'] + form.cleaned_data['choice_dice']
+        number_choice_die = 3
+        full_dice_list = form.cleaned_data['given_dice']
+        for x in range(1, number_choice_die+1):
+            full_dice_list.append(form.cleaned_data['choice_die'+str(x)])
+        #full_dice_list =  + form.cleaned_data['choice_dice']
         self.dice_to_roll = prepUrlFromDice(full_dice_list)
         return super(ChooseDiceView, self).form_valid(form)
 

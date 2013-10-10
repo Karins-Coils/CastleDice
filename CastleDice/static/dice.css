@@ -27,7 +27,7 @@
     background-size: 50px;
 }
 
-.mid { vertical-align: middle;}
+.mid { vertical-align: middle; margin:2px;}
 
 .wood, .woodx1 {
     background-image: url("/static/die%20faces/Wood.png");
