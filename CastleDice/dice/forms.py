@@ -99,9 +99,9 @@ class ChooseDiceForm(forms.Form):
         #    dice_list = kwargs.pop('chooseabledice')
         #else:
         choice_list = [Wood, Stone, Gold, Land, Iron]
-        given_list = [Wood, Wood, Gold, Iron, Iron]
+        given_list = [Wood, Wood, Stone, Stone, Gold]
         super(ChooseDiceForm, self).__init__(*args, **kwargs)
-        number_choice_die = 5
+        number_choice_die = 3
         for x in range(1, number_choice_die+1):
             self.fields['choice_die'+str(x)] = forms.ChoiceField(
                 label="Choice Die #"+str(x),
@@ -126,13 +126,3 @@ class ChooseDiceForm(forms.Form):
             elif die == Iron:
                 d_choices.append((Iron, Iron))
         return d_choices
-
-    def as_custom_table(self):
-        output = ""
-        output = format_html(self.fields['given_dice'].widget.render())
-        return self._html_output(
-            normal_row = '<th>%(label)s</th><td>%(errors)s%(field)s%(help_text)s</td>',
-            error_row = '<td colspan="2">%s</td>',
-            row_ender = '</td>',
-            help_text_html = '<br /><span class="helptext">%s</span>',
-            errors_on_separate_row = False)
