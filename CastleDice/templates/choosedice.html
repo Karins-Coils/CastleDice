@@ -3,9 +3,9 @@
 {% block body %}
 
 
-<form action="{% url 'choosedice' %}" method="post">
+<form action="{% url 'choosedice' turn_no=cur_turn%}" method="post">
 {% csrf_token %}
-
+<p><b>For Turn #{{ cur_turn }}</b></p>
 <table><tr>
     {%  for field in form %}
     <td style="width:{% if forloop.counter == 1 %}112px{% else %}140px{% endif %}">

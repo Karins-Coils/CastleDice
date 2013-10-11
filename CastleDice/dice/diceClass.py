@@ -1,19 +1,20 @@
 import random
+import CD_globals as CD
 
 # Resources
 ## Building Materials
-Wood = 'wood'
-Stone = 'stone'
-Gold = 'gold'
-Land = 'land'
-Iron = 'iron'
+Wood = CD.Wood
+Stone = CD.Stone
+Gold = CD.Gold
+Land = CD.Land
+Iron = CD.Iron
 ## Animals
-Horse = 'horse'
-Pig = 'pig'
-Cow = 'cow'
-Chicken = 'chicken'
+Horse = CD.Horse
+Pig = CD.Pig
+Cow = CD.Cow
+Chicken = CD.Chicken
 ## Lone Barbarian
-Barbarian = 'barbarian'
+Barbarian = CD.Barbarian
 
 
 class Die:
@@ -83,19 +84,3 @@ def total_dice(rolled_die):
         else:
             r_rolled[resource] = count
     return r_rolled
-
-dieSet = [
-    Die(Wood),
-    Die(Stone),
-    Die(Gold),
-    Die(Land),
-    Die(Iron),
-    Die(Wood),
-    Die(Stone),
-    Die(Wood)
-
-]
-roll_multiple_die(dieSet)
-print
-print
-roll_and_total_dice(dieSet)

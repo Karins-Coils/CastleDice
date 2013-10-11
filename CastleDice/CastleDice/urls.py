@@ -10,8 +10,8 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', HomeView.as_view(), name='home'),
     # url(r'^CastleDice/', include('CastleDice.foo.urls')),
-    url(r'^choosedice/$', ChooseDiceView.as_view(), name='choosedice'),
-    url(r'^rolldice/(?P<dice_to_roll>[\w-]+)/$', RollDiceView.as_view(), name='rolldice'),
+    url(r'^choosedice/(?P<turn_no>[\d])/$', ChooseDiceView.as_view(), name='choosedice'),
+    url(r'^rolldice/(?P<turn_no>[\d])/(?P<dice_to_roll>[\w-]+)/$', RollDiceView.as_view(), name='rolldice'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

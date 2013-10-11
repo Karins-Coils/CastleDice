@@ -13,4 +13,11 @@
             &nbsp;<img class="{{ d_name }} mid">x{{ count }}&nbsp;
     {% endfor %}
     </p>
+    {% if nxt_turn < 8 %}
+        <p>
+            <a href="{% url 'choosedice' turn_no=nxt_turn %}">
+                Choose Dice for Turn {{ nxt_turn }}
+            </a>
+        </p>
+    {% endif %}
 {%  endblock %}

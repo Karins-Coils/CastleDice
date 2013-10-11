@@ -1,36 +1,27 @@
 from django import forms
 from django.forms import widgets
-from django.forms.util import ValidationError
-import diceClass
+import CD_globals as CD
 
 from itertools import chain
 from django.utils.encoding import force_text
-from django.utils.html import conditional_escape, format_html, format_html_join
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
 
 # Resources
 ## Building Materials
-Wood = diceClass.Wood
-Stone = diceClass.Stone
-Gold = diceClass.Gold
-Land = diceClass.Land
-Iron = diceClass.Iron
+Wood = CD.Wood
+Stone = CD.Stone
+Gold = CD.Gold
+Land = CD.Land
+Iron = CD.Iron
 ## Animals
-Horse = diceClass.Horse
-Pig = diceClass.Pig
-Cow = diceClass.Cow
-Chicken = diceClass.Chicken
+Horse = CD.Horse
+Pig = CD.Pig
+Cow = CD.Cow
+Chicken = CD.Chicken
 ## Lone Barbarian
-Barbarian = diceClass.Barbarian
-
-#die_choices = [
-#    (Wood, Wood),
-#    (Stone, Stone),
-#    (Gold, Gold),
-#    (Land, Land),
-#    (Iron, Iron)
-#]
+Barbarian = CD.Barbarian
 
 class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
 
@@ -89,27 +80,26 @@ class RadioImgWidget(widgets.RadioSelect):
         return mark_safe('\n'.join(output))
 
 class ChooseDiceForm(forms.Form):
-    #choice_dice = forms.MultipleChoiceField(label="Dice Choices", widget=forms.CheckboxSelectMultiple)
-    given_dice = forms.MultipleChoiceField(label="Given Dice", widget=CheckboxMultipleImgWidget({'style':"display:none", "checked":"checked"}))
-    #choice_die1 = forms.ChoiceField(label="First Choice Die", widget=forms.RadioSelect)
-
+    given_dice = forms.MultipleChoiceField(label="Given Dice", widget=CheckboxMultipleImgWidget({
+        'style': "display:none", "checked": "checked"}))
 
     def __init__(self, *args, **kwargs):
-        #if len(kwargs) > 0:
-        #    dice_list = kwargs.pop('chooseabledice')
-        #else:
-        choice_list = [Wood, Stone, Gold, Land, Iron]
-        given_list = [Wood, Wood, Stone, Stone, Gold]
         super(ChooseDiceForm, self).__init__(*args, **kwargs)
-        number_choice_die = 3
-        for x in range(1, number_choice_die+1):
+        initial = kwargs.pop('initial')
+        if 'turn_no' in initial:
+            turn_no = initial['turn_no']
+        else:
+            turn_no = 00
+        choice_list = [Wood, Stone, Gold, Land, Iron]
+        given_list = CD.turn[turn_no]['given_dice']
+        no_choices = CD.turn[turn_no]['no_choices']
+        for x in range(1, no_choices+1):
             self.fields['choice_die'+str(x)] = forms.ChoiceField(
                 label="Choice Die #"+str(x),
                 widget=RadioImgWidget(),
                 choices=self.make_choices(choice_list)
             )
         self.fields['given_dice'].choices = self.make_choices(given_list)
-
 
     # preps the form choices for user
     def make_choices(self, d_list):
