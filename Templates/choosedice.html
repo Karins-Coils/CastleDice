@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+
+<form action="{% url 'choosedice' turn_no=cur_turn%}" method="post">
+{% csrf_token %}
+<p><b>For Turn #{{ cur_turn }}</b></p>
+<table><tr>
+    {%  for field in form %}
+    <td style="width:{% if forloop.counter == 1 %}112px{% else %}140px{% endif %}">
+        {{ field.label_tag }}<br><br>
+        {{ field }}<br>
+        {{ field.errors }}
+    </td>
+    {% endfor %}
+</tr>
+<tr><td style="text-align: center"><input type="submit" value="Roll" ></td>
+</tr></table>
+</form>
+
+
+{%  endblock %}

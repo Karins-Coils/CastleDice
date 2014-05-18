@@ -1,0 +1,85 @@
+.wood_die, .wood {
+    background-color: #9e744f;
+}
+.stone_die, .stone {
+    background-color: #9e9f9e;
+}
+.gold_die, .gold {
+    background-color: #fff101;
+}
+.land_die, .land {
+    background-color: #009949;
+}
+.iron_die, .iron {
+    background-color: #d8232a;
+}
+
+.wood, .woodx1, .woodx2, .woodx3,
+.stone, .stonex1, .stonex2,
+.gold, .goldx1, .goldx2,
+.land, .landx1, .landx2,
+.iron, .ironx1, .ironx2,
+.chicken, .cow, .pig, .horse, .barbarian,
+.chickenx1, .cowx1, .pigx1, .horsex1, .barbarianx1{
+    width: 50px;
+    height: 50px;
+    border: 1px;
+    background-size: 50px;
+}
+
+.mid { vertical-align: middle; margin:2px;}
+
+.wood, .woodx1 {
+    background-image: url("/static/images/die%20faces/Wood.png");
+}
+.woodx2 {
+    background-image: url("/static/images/die%20faces/Woodx2.png");
+}
+.woodx3 {
+    background-image: url("/static/images/die%20faces/Woodx3.png");
+}
+
+.stone, .stonex1{
+    background-image: url("/static/images/die%20faces/Stone.png");
+}
+.stonex2{
+    background-image: url("/static/images/die%20faces/Stonex2.png");
+}
+
+.gold, .goldx1{
+    background-image: url("/static/images/die%20faces/Gold.png");
+}
+.goldx2{
+    background-image: url("/static/images/die%20faces/Goldx2.png");
+}
+
+.land, .landx1{
+    background-image: url("/static/images/die%20faces/Land.png");
+}
+.landx2{
+    background-image: url("/static/images/die%20faces/Landx2.png");
+}
+
+.iron, .ironx1{
+    background-image: url("/static/images/die%20faces/Iron.png");
+}
+.ironx2{
+    background-image: url("/static/images/die%20faces/Ironx2.png");
+}
+
+.barbarian, .barbarianx1{
+    background-image: url("/static/images/die%20faces/Barbarian.png");
+}
+
+.cow, .cowx1{
+    background-image: url("/static/images/die%20faces/Cow.png");
+}
+.chicken, .chickenx1{
+    background-image: url("/static/images/die%20faces/Chicken.png");
+}
+.horse, .horsex1{
+    background-image: url("/static/images/die%20faces/Horse.png");
+}
+.pig, .pigx1{
+    background-image: url("/static/images/die%20faces/Pig.png");
+}
