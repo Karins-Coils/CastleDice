@@ -1,4 +1,3 @@
 *.pyc
 .Python
-lib/
-bin/
+venv

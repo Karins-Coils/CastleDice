@@ -50,3 +50,27 @@ turn = {
         'no_choices': 3
     }
 }
+
+#easier/cleaner to have the dict be turn['given_dice'][#] ?
+# logically no.  more confusing, to me at least.  because I need all
+# info for that turn, and may not know what exactly i need until I
+# have the info.  better to have it grouped by turn #
+
+castle_deck_components = {
+    # name: {
+    #   'count' : x,
+    #   'type' : #gather phase, build phase...
+    #   #if build
+    #   'resources' : [(Wood, 2), (Stone, 1)]
+    #   'victory_points' : #value the built item is worth
+    #   'text' : # card text/description to make it easier for player to read
+    # }
+
+}
+# build cards need to track possible usage during turn (Moat, Royal Chamber) or modify the player's stats
+
+# 'effect' cards (squire, advisor, etc) can only be used during the matching phase, [match phase type, then allow usage]
+
+# separate dict for effects?
+
+# similar makeup for villager_deck_components
