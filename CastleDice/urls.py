@@ -7,7 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'castledice2.views.home', name='home'),
+    # url(r'^$', 'CastleDice.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', HomeView.as_view(), name='home'),

@@ -1,5 +1,5 @@
 """
-Django settings for castledice2 project.
+Django settings for CastleDice project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -49,9 +49,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'castledice2.urls'
+ROOT_URLCONF = 'CastleDice.urls'
 
-WSGI_APPLICATION = 'castledice2.wsgi.application'
+WSGI_APPLICATION = 'CastleDice.wsgi.application'
 
 
 # Database
