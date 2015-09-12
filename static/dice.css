@@ -30,56 +30,56 @@
 .mid { vertical-align: middle; margin:2px;}
 
 .wood, .woodx1 {
-    background-image: url("/static/images/die%20faces/Wood.png");
+    background-image: url("/static/images/die_faces/Wood.png");
 }
 .woodx2 {
-    background-image: url("/static/images/die%20faces/Woodx2.png");
+    background-image: url("/static/images/die_faces/Woodx2.png");
 }
 .woodx3 {
-    background-image: url("/static/images/die%20faces/Woodx3.png");
+    background-image: url("/static/images/die_faces/Woodx3.png");
 }
 
 .stone, .stonex1{
-    background-image: url("/static/images/die%20faces/Stone.png");
+    background-image: url("/static/images/die_faces/Stone.png");
 }
 .stonex2{
-    background-image: url("/static/images/die%20faces/Stonex2.png");
+    background-image: url("/static/images/die_faces/Stonex2.png");
 }
 
 .gold, .goldx1{
-    background-image: url("/static/images/die%20faces/Gold.png");
+    background-image: url("/static/images/die_faces/Gold.png");
 }
 .goldx2{
-    background-image: url("/static/images/die%20faces/Goldx2.png");
+    background-image: url("/static/images/die_faces/Goldx2.png");
 }
 
 .land, .landx1{
-    background-image: url("/static/images/die%20faces/Land.png");
+    background-image: url("/static/images/die_faces/Land.png");
 }
 .landx2{
-    background-image: url("/static/images/die%20faces/Landx2.png");
+    background-image: url("/static/images/die_faces/Landx2.png");
 }
 
 .iron, .ironx1{
-    background-image: url("/static/images/die%20faces/Iron.png");
+    background-image: url("/static/images/die_faces/Iron.png");
 }
 .ironx2{
-    background-image: url("/static/images/die%20faces/Ironx2.png");
+    background-image: url("/static/images/die_faces/Ironx2.png");
 }
 
 .barbarian, .barbarianx1{
-    background-image: url("/static/images/die%20faces/Barbarian.png");
+    background-image: url("/static/images/die_faces/Barbarian.png");
 }
 
 .cow, .cowx1{
-    background-image: url("/static/images/die%20faces/Cow.png");
+    background-image: url("/static/images/die_faces/Cow.png");
 }
 .chicken, .chickenx1{
-    background-image: url("/static/images/die%20faces/Chicken.png");
+    background-image: url("/static/images/die_faces/Chicken.png");
 }
 .horse, .horsex1{
-    background-image: url("/static/images/die%20faces/Horse.png");
+    background-image: url("/static/images/die_faces/Horse.png");
 }
 .pig, .pigx1{
-    background-image: url("/static/images/die%20faces/Pig.png");
+    background-image: url("/static/images/die_faces/Pig.png");
 }
