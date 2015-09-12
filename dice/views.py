@@ -72,9 +72,11 @@ class RollDiceView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(RollDiceView, self).get_context_data(**kwargs)
-        turn_no = int(self.kwargs['turn_no'])
-        context["cur_turn"] = turn_no
-        context["nxt_turn"] = turn_no+1
+        if(self.kwargs['turn_no']):
+            turn_no = int(self.kwargs['turn_no'])
+            context["cur_turn"] = turn_no
+            context["nxt_turn"] = turn_no+1
+
         dice_url = self.kwargs['dice_to_roll']
         dice_to_roll = parseDiceUrl(dice_url)
         rolled_dice = []
