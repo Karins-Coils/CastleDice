@@ -7,13 +7,77 @@ Stone = 'stone'
 Gold = 'gold'
 Land = 'land'
 Iron = 'iron'
+Joan = 'joan'  # solo play only
 ## Animals
+Barn = "barn"  # on Joan's Die
 Horse = 'horse'
 Pig = 'pig'
 Cow = 'cow'
 Chicken = 'chicken'
 ## Lone Barbarian
 Barbarian = 'barbarian'
+
+# Dice Faces based on resource
+DiceFaces = {
+    Wood: [
+        (Wood, 1),
+        (Wood, 1),
+        (Wood, 2),
+        (Wood, 3),
+        (Cow, 1),
+        (Barbarian, 1)
+    ],
+    Stone: [
+        (Stone, 1),
+        (Stone, 1),
+        (Stone, 2),
+        (Stone, 2),
+        (Chicken, 1),
+        (Barbarian, 1)
+    ],
+    Gold: [
+        (Gold, 1),
+        (Gold, 1),
+        (Gold, 1),
+        (Gold, 2),
+        (Horse, 1),
+        (Barbarian, 1)
+    ],
+    Land: [
+        (Land, 1),
+        (Land, 1),
+        (Land, 2),
+        (Pig, 1),
+        (Pig, 1),
+        (Barbarian, 1)
+    ],
+    Iron: [
+        (Iron, 1),
+        (Iron, 2),
+        (Pig, 1),
+        (Horse, 1),
+        (Chicken, 1),
+        (Barbarian, 1)
+    ],
+    Joan: [
+        (Wood, 1),
+        (Stone, 1),
+        (Gold, 1),
+        (Land, 1),
+        (Iron, 1),
+        (Barn, 1)
+    ]
+}
+
+# Count of each type in the WorldPool
+DiceCount = {
+    Wood:  14,
+    Stone: 14,
+    Gold:  13,
+    Land:  11,
+    Iron:  11
+}
+
 
 #- Turn Settings
 turn = {

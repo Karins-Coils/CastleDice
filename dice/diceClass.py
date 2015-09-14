@@ -37,20 +37,12 @@ class Die:
         return self.resource + ": [ " + sides + " ]"
 
     def create_die(self):
-        if self.resource == Wood:
-            self.sides = [(Wood, 1), (Wood, 1), (Wood, 2), (Wood, 3), (Cow, 1), (Barbarian, 1)]
-        elif self.resource == Stone:
-            self.sides = [(Stone, 1), (Stone, 1), (Stone, 2), (Stone, 2), (Chicken, 1), (Barbarian, 1)]
-        elif self.resource == Gold:
-            self.sides = [(Gold, 1), (Gold, 1), (Gold, 1), (Gold, 2), (Horse, 1), (Barbarian, 1)]
-        elif self.resource == Land:
-            self.sides = [(Land, 1), (Land, 1), (Land, 2), (Pig, 1), (Pig, 1), (Barbarian, 1)]
-        elif self.resource == Iron:
-            self.sides = [(Iron, 1), (Iron, 2), (Pig, 1), (Horse, 1), (Chicken, 1), (Barbarian, 1)]
+        if self.resource:
+            self.sides = CD.DiceFaces[self.resource]
+            self.resource = self.resource.capitalize()
         else:
             self.sides = [1, 2, 3, 4, 5, 6]
-
-        self.resource = self.resource.capitalize()
+            self.resource = "6-sided"
 
     def roll_die(self):
         roll = random.randint(0, 5)
