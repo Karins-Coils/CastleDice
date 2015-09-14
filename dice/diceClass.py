@@ -1,20 +1,5 @@
 import random
-import CD_globals as CD
-
-# Resources
-## Building Materials
-Wood = CD.Wood
-Stone = CD.Stone
-Gold = CD.Gold
-Land = CD.Land
-Iron = CD.Iron
-## Animals
-Horse = CD.Horse
-Pig = CD.Pig
-Cow = CD.Cow
-Chicken = CD.Chicken
-## Lone Barbarian
-Barbarian = CD.Barbarian
+from CD_globals import DiceFaces
 
 
 class Die:
@@ -38,7 +23,7 @@ class Die:
 
     def create_die(self):
         if self.resource:
-            self.sides = CD.DiceFaces[self.resource]
+            self.sides = DiceFaces[self.resource]
             self.resource = self.resource.capitalize()
         else:
             self.sides = [1, 2, 3, 4, 5, 6]
