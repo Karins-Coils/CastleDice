@@ -31,7 +31,10 @@ class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
             else:
                 label_for = ''
 
-            cb = widgets.CheckboxInput(final_attrs, check_test=lambda value: value in str_values)
+            cb = widgets.CheckboxInput(
+                final_attrs,
+                check_test=lambda value: value in str_values
+            )
             option_value = force_text(option_value)
             rendered_cb = cb.render(name, option_value)
             option_label = force_text(option_label)
@@ -42,9 +45,11 @@ class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
         output.append("<br>")
         return mark_safe('\n'.join(output))
 
+
 class RadioImgWidget(widgets.RadioSelect):
     def render(self, name, value, attrs=None, choices=()):
-        if value is None: value = []
+        if value is None:
+            value = []
         has_id = attrs and 'id' in attrs
         final_attrs = self.build_attrs(attrs, name=name, type="radio")
 
@@ -58,17 +63,20 @@ class RadioImgWidget(widgets.RadioSelect):
             else:
                 label_for = ''
             if not (option_value is True or
-                            option_value is False or
-                            option_value is None or
-                            value == ''):
+                    option_value is False or
+                    option_value is None or
+                    value == ''):
                 # Only add the 'value' attribute if a value is non-empty.
                 final_attrs['value'] = force_text(option_value)
             option_label = force_text(option_label)
-            output.append(
-                format_html('<label{0}><input{1} /> <img class="{2} mid"> {3}</label><br>',
-                            label_for, flatatt(final_attrs), option_label, option_label.capitalize()))
+            output.append(format_html(
+                '<label{0}><input{1} /> <img class="{2} mid"> {3}</label><br>',
+                label_for, flatatt(final_attrs), option_label,
+                option_label.capitalize())
+            )
 
         return mark_safe('\n'.join(output))
+
 
 class ChooseDiceForm(forms.Form):
     given_dice = forms.MultipleChoiceField(
