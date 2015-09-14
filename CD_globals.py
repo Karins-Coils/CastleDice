@@ -80,38 +80,46 @@ DiceCount = {
 
 
 #- Turn Settings
-turn = {
+Turn = {
     00: {
         'given_dice': [],
-        'no_choices': 8
+        'no_choices': 8,
+        'market': False
     },
     1: {
         'given_dice': [Wood, Wood, Stone, Stone, Gold],
-        'no_choices': 2
+        'no_choices': 2,
+        'market': False
     },
     2: {
         'given_dice': [Wood, Stone, Gold, Gold],
-        'no_choices': 3
+        'no_choices': 3,
+        'market': False
     },
     3: {
         'given_dice': [Wood, Wood, Wood, Stone, Gold],
-        'no_choices': 3
+        'no_choices': 3,
+        'market': True
     },
     4: {
         'given_dice': [Wood, Stone, Stone, Gold],
-        'no_choices': 3
+        'no_choices': 3,
+        'market': False
     },
     5: {
         'given_dice': [Wood, Stone, Gold, Land, Iron],
-        'no_choices': 2
+        'no_choices': 2,
+        'market': True
     },
     6: {
         'given_dice': [Wood, Wood, Gold, Iron],
-        'no_choices': 3
+        'no_choices': 3,
+        'market': False
     },
     7: {
         'given_dice': [Wood, Stone, Stone, Land, Iron],
-        'no_choices': 3
+        'no_choices': 3,
+        'market': True
     }
 }
 
