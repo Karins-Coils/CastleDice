@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import widgets
-import CD_globals as CD
+from CD_globals import Turn, Wood, Stone, Gold, Land, Iron
+# I want to remove the above resources as LISTED things.
+# should not need to know, ever
 
 from itertools import chain
 from django.utils.encoding import force_text
@@ -8,20 +10,6 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
 
-# Resources
-## Building Materials
-Wood = CD.Wood
-Stone = CD.Stone
-Gold = CD.Gold
-Land = CD.Land
-Iron = CD.Iron
-## Animals
-Horse = CD.Horse
-Pig = CD.Pig
-Cow = CD.Cow
-Chicken = CD.Chicken
-## Lone Barbarian
-Barbarian = CD.Barbarian
 
 class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
 
@@ -33,7 +21,8 @@ class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
         # Normalize to strings
         str_values = set([force_text(v) for v in value])
         first = True
-        for i, (option_value, option_label) in enumerate(chain(self.choices, choices)):
+        for i, (option_value, option_label) in \
+                enumerate(chain(self.choices, choices)):
             # If an ID attribute was given, add a numeric index as a suffix,
             # so that the checkboxes don't all have the same ID attribute.
             if has_id:
@@ -46,8 +35,10 @@ class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
             option_value = force_text(option_value)
             rendered_cb = cb.render(name, option_value)
             option_label = force_text(option_label)
-            output.append(format_html('<label{0}>{1} <img class="{2} mid"></label>',
-                                      label_for, rendered_cb, option_label))
+            output.append(format_html(
+                '<label{0}>{1} <img class="{2} mid"></label>',
+                label_for, rendered_cb, option_label
+            ))
         output.append("<br>")
         return mark_safe('\n'.join(output))
 
@@ -80,8 +71,13 @@ class RadioImgWidget(widgets.RadioSelect):
         return mark_safe('\n'.join(output))
 
 class ChooseDiceForm(forms.Form):
-    given_dice = forms.MultipleChoiceField(label="Given Dice", widget=CheckboxMultipleImgWidget({
-        'style': "display:none", "checked": "checked"}))
+    given_dice = forms.MultipleChoiceField(
+        label="Given Dice",
+        widget=CheckboxMultipleImgWidget({
+            'style': "display:none",
+            "checked": "checked"
+        })
+    )
 
     def __init__(self, *args, **kwargs):
         super(ChooseDiceForm, self).__init__(*args, **kwargs)
@@ -91,8 +87,8 @@ class ChooseDiceForm(forms.Form):
         else:
             turn_no = 00
         choice_list = [Wood, Stone, Gold, Land, Iron]
-        given_list = CD.turn[turn_no]['given_dice']
-        no_choices = CD.turn[turn_no]['no_choices']
+        given_list = Turn[turn_no]['given_dice']
+        no_choices = Turn[turn_no]['no_choices']
         for x in range(1, no_choices+1):
             self.fields['choice_die'+str(x)] = forms.ChoiceField(
                 label="Choice Die #"+str(x),
