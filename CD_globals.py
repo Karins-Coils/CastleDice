@@ -7,7 +7,6 @@ Stone = 'stone'
 Gold = 'gold'
 Land = 'land'
 Iron = 'iron'
-Joan = 'joan'  # solo play only
 ## Animals
 Barn = "barn"  # on Joan's Die
 Horse = 'horse'
@@ -16,6 +15,8 @@ Cow = 'cow'
 Chicken = 'chicken'
 ## Lone Barbarian
 Barbarian = 'barbarian'
+## Joan - solo play only
+Joan = 'joan'
 
 # Dice Faces based on resource
 DiceFaces = {
