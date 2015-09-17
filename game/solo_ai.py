@@ -1,5 +1,6 @@
 from CD_globals \
-    import Horse, Pig, Cow, Chicken, Barn, Wood, Stone, Gold, Land, Iron, \
+    import Horse, Pig, Cow, Chicken, Barn, \
+    Wood, Stone, Gold, Land, Iron, Joan, \
     ResourcePreference, AnimalPreference, GatherPreference, Turn
 from dice.diceClass import Die
 
@@ -11,7 +12,7 @@ that are required for an update to the db, etc
 """
 
 
-class Joan:
+class JoanAI:
     # current count of Joan's animals
     animals = {
         Horse: 0,
