@@ -47,31 +47,31 @@ class Joan:
             key=lambda t: (GatherPreference.index(t[0]), -t[1])
         )
 
-        # first chooses of her resource
-        if resource is not Barn and world_pool_dict[resource]:
+        while True:
+            # first chooses of her resource
+            if resource is not Barn and world_pool_dict[resource]:
 
-            primary_choices = [x for x in world_pool_set if x[0] is resource]
-            if primary_choices:
-                return primary_choices[0]
+                primary_choices = [x for x in world_pool_set if x[0] is resource]
+                if primary_choices:
+                    return primary_choices[0]
 
-        # rolled a barn
-        elif resource is Barn:
-            # gather highest animal
-            primary_choices = [x for x in world_pool_set
-                               if x[0] in AnimalPreference]
-            if primary_choices:
-                return primary_choices[0]
+            # rolled a barn
+            elif resource is Barn:
+                # gather highest animal
+                primary_choices = [x for x in world_pool_set
+                                   if x[0] in AnimalPreference]
+                if primary_choices:
+                    return primary_choices[0]
 
-        # if still none & have not rolled yet, then rolls the die
-        if not die_choice:
-            die = Die(Joan).roll_die()[0]
-            return self.gather_die(world_pool_dict, die)
-        else:
-            # rolled it once already, so just return the rarest+highest
-            primary_choices = [x for x in world_pool_set
-                               if x[0] in ResourcePreference]
-            if primary_choices:
-                return primary_choices[0]
+            # if still none & have not rolled yet, then rolls the die
+            if not die_choice:
+                die_choice = Die(Joan).roll_die()[0]
+            else:
+                # rolled it once already, so just return the rarest+highest
+                primary_choices = [x for x in world_pool_set
+                                   if x[0] in ResourcePreference]
+                if primary_choices:
+                    return primary_choices[0]
 
     @staticmethod
     def determine_primary_resource(dice_list):
