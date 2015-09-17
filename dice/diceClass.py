@@ -36,32 +36,32 @@ class Die:
         resource, count = self.sides[roll]
         return resource, count
 
+    @staticmethod
+    def roll_multiple_die(die_set):
+        for d in die_set:
+            print d.resource + ": " + str(d.roll_die())
 
-def roll_multiple_die(die_set):
-    for d in die_set:
-        print d.resource + ": " + str(d.roll_die())
+    @staticmethod
+    def roll_and_total_dice(die_set):
+        r_rolled = {}
+        for d in die_set:
+            r, count = d.roll_die()
+            print d.resource + " die: " + str(count) + " " + r
+            if r in r_rolled:
+                r_rolled[r] += count
+            else:
+                r_rolled[r] = count
+        print r_rolled
 
-
-def roll_and_total_dice(die_set):
-    r_rolled = {}
-    for d in die_set:
-        r, count = d.roll_die()
-        print d.resource + " die: " + str(count) + " " + r
-        if r in r_rolled:
-            r_rolled[r] += count
-        else:
-            r_rolled[r] = count
-    print r_rolled
-
-
-def total_dice(rolled_die):
-    # takes in list formatted like so:
-    # ( (dice_type, (resource, count)), ...)
-    r_rolled = {}
-    for d, roll in rolled_die:
-        resource, count = roll
-        if resource in r_rolled:
-            r_rolled[resource] += count
-        else:
-            r_rolled[resource] = count
-    return r_rolled
+    @staticmethod
+    def total_dice(rolled_die):
+        # takes in list formatted like so:
+        # ( (dice_type, (resource, count)), ...)
+        r_rolled = {}
+        for d, roll in rolled_die:
+            resource, count = roll
+            if resource in r_rolled:
+                r_rolled[resource] += count
+            else:
+                r_rolled[resource] = count
+        return r_rolled

@@ -8,7 +8,6 @@ Gold = 'gold'
 Land = 'land'
 Iron = 'iron'
 ## Animals
-Barn = "barn"  # on Joan's Die
 Horse = 'horse'
 Pig = 'pig'
 Cow = 'cow'
@@ -18,6 +17,7 @@ Barbarian = 'barbarian'
 
 ## Joan - solo play only
 Joan = 'joan'
+Barn = "barn"  # on Joan's Die
 ### Joan's Preferences, with first element being her first choice
 ResourcePreference = [Iron, Land, Gold, Stone, Wood]
 AnimalPreference = [Pig, Horse, Chicken, Cow]
@@ -127,6 +127,20 @@ Turn = {
         'no_choices': 3,
         'market': True
     }
+}
+
+#- Phase Descriptions
+Phase = {
+    1:  "Determine who goes first",  # Horse
+    2:  "Choose & Draw cards in order (clockwise)",  # Draw phase, Chicken
+    3:  "Players pick Choice dice (clockwise)",  # Choose, Cow
+    4:  "All dice are rolled; World Formed",  # World Pool
+    5:  "Gather resources in order until gone (clockwise)",  # Gather, Pig
+    6:  "Go to Market (clockwise)",  # Market
+    7:  "Workers Produce",  # Workers
+    8:  "Merchants Work",  # Merchants
+    9:  "Build",  # Build
+    10: "Barbarians Raid"  # Barbarians
 }
 
 #easier/cleaner to have the dict be turn['given_dice'][#] ?

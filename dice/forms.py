@@ -30,8 +30,8 @@ class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
                 label_for = format_html(' for="{0}"', final_attrs['id'])
             else:
                 label_for = ''
-
             cb = widgets.CheckboxInput(
+
                 final_attrs,
                 check_test=lambda value: value in str_values
             )

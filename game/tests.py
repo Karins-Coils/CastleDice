@@ -27,7 +27,7 @@ class TestJoan(unittest.TestCase):
             Stone: [(Stone, 1), (Chicken, 1), (Stone, 2)],
             Gold: [(Gold, 2), (Horse, 1), (Gold, 2), (Gold, 1)],
             Land: [(Pig, 1), (Land, 2), (Land, 1), (Land, 1), (Pig, 1)],
-            Iron: [(Chicken, 1)]  #, (Iron, 1), (Pig, 1), (Horse, 1), (Iron, 2)]
+            Iron: [(Chicken, 1)]
         }
         self.pool3 = {
             # no Pig
