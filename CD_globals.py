@@ -2,135 +2,135 @@
 #- Die Faces & Values
 # Resources
 ## Building Materials
-Wood = 'wood'
-Stone = 'stone'
-Gold = 'gold'
-Land = 'land'
-Iron = 'iron'
+WOOD = 'wood'
+STONE = 'stone'
+GOLD = 'gold'
+LAND = 'land'
+IRON = 'iron'
 ## Animals
-Horse = 'horse'
-Pig = 'pig'
-Cow = 'cow'
-Chicken = 'chicken'
+HORSE = 'horse'
+PIG = 'pig'
+COW = 'cow'
+CHICKEN = 'chicken'
 ## Lone Barbarian
-Barbarian = 'barbarian'
+BARBARIAN = 'barbarian'
 
 ## Joan - solo play only
-Joan = 'joan'
-Barn = "barn"  # on Joan's Die
+JOAN = 'joan'
+BARN = 'barn'  # on Joan's Die
 ### Joan's Preferences, with first element being her first choice
-ResourcePreference = [Iron, Land, Gold, Stone, Wood]
-AnimalPreference = [Pig, Horse, Chicken, Cow]
-GatherPreference = ResourcePreference + AnimalPreference
+RESOURCE_PREFERENCE = [IRON, LAND, GOLD, STONE, WOOD]
+ANIMAL_PREFERENCE = [PIG, HORSE, CHICKEN, COW]
+GATHER_PREFERENCE = RESOURCE_PREFERENCE + ANIMAL_PREFERENCE
 
 # Dice Faces based on resource
-DiceFaces = {
-    Wood: [
-        (Wood, 1),
-        (Wood, 1),
-        (Wood, 2),
-        (Wood, 3),
-        (Cow, 1),
-        (Barbarian, 1)
+DICE_FACES = {
+    WOOD: [
+        (WOOD, 1),
+        (WOOD, 1),
+        (WOOD, 2),
+        (WOOD, 3),
+        (COW, 1),
+        (BARBARIAN, 1)
     ],
-    Stone: [
-        (Stone, 1),
-        (Stone, 1),
-        (Stone, 2),
-        (Stone, 2),
-        (Chicken, 1),
-        (Barbarian, 1)
+    STONE: [
+        (STONE, 1),
+        (STONE, 1),
+        (STONE, 2),
+        (STONE, 2),
+        (CHICKEN, 1),
+        (BARBARIAN, 1)
     ],
-    Gold: [
-        (Gold, 1),
-        (Gold, 1),
-        (Gold, 1),
-        (Gold, 2),
-        (Horse, 1),
-        (Barbarian, 1)
+    GOLD: [
+        (GOLD, 1),
+        (GOLD, 1),
+        (GOLD, 1),
+        (GOLD, 2),
+        (HORSE, 1),
+        (BARBARIAN, 1)
     ],
-    Land: [
-        (Land, 1),
-        (Land, 1),
-        (Land, 2),
-        (Pig, 1),
-        (Pig, 1),
-        (Barbarian, 1)
+    LAND: [
+        (LAND, 1),
+        (LAND, 1),
+        (LAND, 2),
+        (PIG, 1),
+        (PIG, 1),
+        (BARBARIAN, 1)
     ],
-    Iron: [
-        (Iron, 1),
-        (Iron, 2),
-        (Pig, 1),
-        (Horse, 1),
-        (Chicken, 1),
-        (Barbarian, 1)
+    IRON: [
+        (IRON, 1),
+        (IRON, 2),
+        (PIG, 1),
+        (HORSE, 1),
+        (CHICKEN, 1),
+        (BARBARIAN, 1)
     ],
-    Joan: [
-        (Wood, 1),
-        (Stone, 1),
-        (Gold, 1),
-        (Land, 1),
-        (Iron, 1),
-        (Barn, 1)
+    JOAN: [
+        (WOOD, 1),
+        (STONE, 1),
+        (GOLD, 1),
+        (LAND, 1),
+        (IRON, 1),
+        (BARN, 1)
     ]
 }
 
 # Count of each type in the WorldPool
-DiceCount = {
-    Wood:  14,
-    Stone: 14,
-    Gold:  13,
-    Land:  11,
-    Iron:  11
+DICE_COUNT = {
+    WOOD:  14,
+    STONE: 14,
+    GOLD:  13,
+    LAND:  11,
+    IRON:  11
 }
 
 
 #- Turn Settings
-Turn = {
+TURN = {
     00: {
         'given_dice': [],
         'no_choices': 8,
         'market': False
     },
     1: {
-        'given_dice': [Wood, Wood, Stone, Stone, Gold],
+        'given_dice': [WOOD, WOOD, STONE, STONE, GOLD],
         'no_choices': 2,
         'market': False
     },
     2: {
-        'given_dice': [Wood, Stone, Gold, Gold],
+        'given_dice': [WOOD, STONE, GOLD, GOLD],
         'no_choices': 3,
         'market': False
     },
     3: {
-        'given_dice': [Wood, Wood, Wood, Stone, Gold],
+        'given_dice': [WOOD, WOOD, WOOD, STONE, GOLD],
         'no_choices': 3,
         'market': True
     },
     4: {
-        'given_dice': [Wood, Stone, Stone, Gold],
+        'given_dice': [WOOD, STONE, STONE, GOLD],
         'no_choices': 3,
         'market': False
     },
     5: {
-        'given_dice': [Wood, Stone, Gold, Land, Iron],
+        'given_dice': [WOOD, STONE, GOLD, LAND, IRON],
         'no_choices': 2,
         'market': True
     },
     6: {
-        'given_dice': [Wood, Wood, Gold, Iron],
+        'given_dice': [WOOD, WOOD, GOLD, IRON],
         'no_choices': 3,
         'market': False
     },
     7: {
-        'given_dice': [Wood, Stone, Stone, Land, Iron],
+        'given_dice': [WOOD, STONE, STONE, LAND, IRON],
         'no_choices': 3,
         'market': True
     }
 }
 
 #- Phase Descriptions
-Phase = {
+PHASE = {
     1:  "Determine who goes first",  # Horse
     2:  "Choose & Draw cards in order (clockwise)",  # Draw phase, Chicken
     3:  "Players pick Choice dice (clockwise)",  # Choose, Cow
@@ -148,7 +148,7 @@ Phase = {
 # info for that turn, and may not know what exactly i need until I
 # have the info.  better to have it grouped by turn #
 
-castle_deck_components = {
+CASTLE_DECK_COMPONENTS = {
     # name: {
     #   'count' : x,
     #   'type' : #gather phase, build phase...

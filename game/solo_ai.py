@@ -15,10 +15,10 @@ that are required for an update to the db, etc
 class JoanAI:
     # current count of Joan's animals
     animals = {
-        Horse: 0,
-        Cow: 0,
-        Pig: 0,
-        Chicken: 0
+        HORSE: 0,
+        COW: 0,
+        PIG: 0,
+        CHICKEN: 0
     }
     # primary resource that Joan is focused on gathering
     resource = None
@@ -35,8 +35,8 @@ class JoanAI:
 
         append_count = 1
         while True:
-            die = Die(Joan).roll_die()[0]
-            if die is not Barn:
+            die = Die(JOAN).roll_die()[0]
+            if die is not BARN:
                 # append the non-Barn
                 choice_dice += [die for i in xrange(0, append_count)]
                 # decrement the pool count, to keep track locally
@@ -134,7 +134,7 @@ class JoanAI:
             # its a list because of a tie, need to pick best option
             count = 5
             for resource in max_resource:
-                i = ResourcePreference.index(resource)
+                i = RESOURCE_PREFERENCE.index(resource)
                 if i < count:
                     prime_resource = resource
                     count = i

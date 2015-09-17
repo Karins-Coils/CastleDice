@@ -1,5 +1,5 @@
 import random
-from CD_globals import DiceFaces
+from CD_globals import DICE_FACES
 
 
 class Die:
@@ -23,7 +23,7 @@ class Die:
 
     def create_die(self):
         if self.resource:
-            self.sides = DiceFaces[self.resource]
+            self.sides = DICE_FACES[self.resource]
             self.resource = self.resource.capitalize()
         else:
             self.sides = [1, 2, 3, 4, 5, 6]

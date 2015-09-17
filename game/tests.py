@@ -2,59 +2,59 @@ import unittest
 from django.test import TestCase
 from solo_ai import JoanAI
 from CD_globals \
-    import Horse, Pig, Cow, Chicken, \
-    Barn, Wood, Stone, Gold, Land, Iron, DiceCount, Turn
+    import HORSE, PIG, COW, CHICKEN, \
+    BARN, WOOD, STONE, GOLD, LAND, IRON, DICE_COUNT, TURN
 
 # Create your tests here.
 
 
 class TestJoanAI(unittest.TestCase):
     def setUp(self):
-        self.j_wood = JoanAI(resource=Wood)
+        self.j_wood = JoanAI(resource=WOOD)
         self.pool1 = {
             # no Gold
-            Wood: [(Wood, 3), (Wood, 1), (Cow, 1), (Wood, 2), (Wood, 2),
-                   (Wood, 1), (Wood, 1)],
-            Stone: [(Stone, 1), (Chicken, 1), (Stone, 2)],
-            Gold: [(Horse, 1)],
-            Land: [(Pig, 1), (Land, 2), (Land, 1), (Land, 1), (Pig, 1)],
-            Iron: [(Chicken, 1), (Iron, 1), (Pig, 1), (Horse, 1), (Iron, 2)]
+            WOOD: [(WOOD, 3), (WOOD, 1), (COW, 1), (WOOD, 2), (WOOD, 2),
+                   (WOOD, 1), (WOOD, 1)],
+            STONE: [(STONE, 1), (CHICKEN, 1), (STONE, 2)],
+            GOLD: [(HORSE, 1)],
+            LAND: [(PIG, 1), (LAND, 2), (LAND, 1), (LAND, 1), (PIG, 1)],
+            IRON: [(CHICKEN, 1), (IRON, 1), (PIG, 1), (HORSE, 1), (IRON, 2)]
         }
         self.pool2 = {
             # no Iron
-            Wood: [(Wood, 3), (Wood, 1), (Cow, 1), (Wood, 2), (Wood, 2),
-                   (Wood, 1), (Wood, 1)],
-            Stone: [(Stone, 1), (Chicken, 1), (Stone, 2)],
-            Gold: [(Gold, 2), (Horse, 1), (Gold, 2), (Gold, 1)],
-            Land: [(Pig, 1), (Land, 2), (Land, 1), (Land, 1), (Pig, 1)],
-            Iron: [(Chicken, 1)]
+            WOOD: [(WOOD, 3), (WOOD, 1), (COW, 1), (WOOD, 2), (WOOD, 2),
+                   (WOOD, 1), (WOOD, 1)],
+            STONE: [(STONE, 1), (CHICKEN, 1), (STONE, 2)],
+            GOLD: [(GOLD, 2), (HORSE, 1), (GOLD, 2), (GOLD, 1)],
+            LAND: [(PIG, 1), (LAND, 2), (LAND, 1), (LAND, 1), (PIG, 1)],
+            IRON: [(CHICKEN, 1)]
         }
         self.pool3 = {
             # no Pig
-            Wood: [(Wood, 3), (Wood, 1), (Cow, 1), (Wood, 2), (Wood, 2),
-                   (Wood, 1), (Wood, 1)],
-            Stone: [(Stone, 1), (Chicken, 1), (Stone, 2)],
-            Gold: [(Gold, 2), (Horse, 1), (Gold, 2), (Gold, 1)],
-            Land: [(Land, 1)],
-            Iron: [(Chicken, 1), (Iron, 1), (Horse, 1), (Iron, 2)]
+            WOOD: [(WOOD, 3), (WOOD, 1), (COW, 1), (WOOD, 2), (WOOD, 2),
+                   (WOOD, 1), (WOOD, 1)],
+            STONE: [(STONE, 1), (CHICKEN, 1), (STONE, 2)],
+            GOLD: [(GOLD, 2), (HORSE, 1), (GOLD, 2), (GOLD, 1)],
+            LAND: [(LAND, 1)],
+            IRON: [(CHICKEN, 1), (IRON, 1), (HORSE, 1), (IRON, 2)]
         }
 
     def test_determine_primary_resource(self):
-        test_list = [Wood, Wood, Iron, Land, Stone, Stone, Land, Stone]
-        self.assertEqual(JoanAI.determine_primary_resource(test_list), Stone)
+        test_list = [WOOD, WOOD, IRON, LAND, STONE, STONE, LAND, STONE]
+        self.assertEqual(JoanAI.determine_primary_resource(test_list), STONE)
 
-        test_list = [Wood, Wood, Iron, Land, Stone, Stone]
-        self.assertEqual(JoanAI.determine_primary_resource(test_list), Stone)
+        test_list = [WOOD, WOOD, IRON, LAND, STONE, STONE]
+        self.assertEqual(JoanAI.determine_primary_resource(test_list), STONE)
 
-        test_list = [Wood, Wood, Iron, Land, Stone, Stone, Land]
-        self.assertEqual(JoanAI.determine_primary_resource(test_list), Land)
+        test_list = [WOOD, WOOD, IRON, LAND, STONE, STONE, LAND]
+        self.assertEqual(JoanAI.determine_primary_resource(test_list), LAND)
 
     def test_gather_dice(self):
-        self.assertEqual(self.j_wood.gather_die(self.pool1), (Wood, 3))
-        self.assertEqual(self.j_wood.gather_die(self.pool3, Barn), (Horse, 1))
-        self.assertEqual(self.j_wood.gather_die(self.pool2, Iron), (Land, 2))
-        self.assertNotEqual(self.j_wood.gather_die(self.pool1, Gold)[0], Gold)
+        self.assertEqual(self.j_wood.gather_die(self.pool1), (WOOD, 3))
+        self.assertEqual(self.j_wood.gather_die(self.pool3, BARN), (HORSE, 1))
+        self.assertEqual(self.j_wood.gather_die(self.pool2, IRON), (LAND, 2))
+        self.assertNotEqual(self.j_wood.gather_die(self.pool1, GOLD)[0], GOLD)
 
     def test_choose_dice(self):
-        self.assertEqual(len(JoanAI.choose_dice(1, DiceCount)),
-                         Turn[1]['no_choices'])
+        self.assertEqual(len(JoanAI.choose_dice(1, DICE_COUNT)),
+                         TURN[1]['no_choices'])

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import widgets
-from CD_globals import Turn, Wood, Stone, Gold, Land, Iron
+from CD_globals import TURN, DICE_COUNT, WOOD, STONE, GOLD, LAND, IRON
 # I want to remove the above resources as LISTED things.
 # should not need to know, ever
 
@@ -94,9 +94,9 @@ class ChooseDiceForm(forms.Form):
             turn_no = initial['turn_no']
         else:
             turn_no = 00
-        choice_list = [Wood, Stone, Gold, Land, Iron]
-        given_list = Turn[turn_no]['given_dice']
-        no_choices = Turn[turn_no]['no_choices']
+        choice_list = [WOOD, STONE, GOLD, LAND, IRON]
+        given_list = TURN[turn_no]['given_dice']
+        no_choices = TURN[turn_no]['no_choices']
         for x in range(1, no_choices+1):
             self.fields['choice_die'+str(x)] = forms.ChoiceField(
                 label="Choice Die #"+str(x),
@@ -109,14 +109,14 @@ class ChooseDiceForm(forms.Form):
     def make_choices(self, d_list):
         d_choices = []
         for die in d_list:
-            if die == Wood:
-                d_choices.append((Wood, Wood))
-            elif die == Stone:
-                d_choices.append((Stone, Stone))
-            elif die == Gold:
-                d_choices.append((Gold, Gold))
-            elif die == Land:
-                d_choices.append((Land, Land))
-            elif die == Iron:
-                d_choices.append((Iron, Iron))
+            if die == WOOD:
+                d_choices.append((WOOD, WOOD))
+            elif die == STONE:
+                d_choices.append((STONE, STONE))
+            elif die == GOLD:
+                d_choices.append((GOLD, GOLD))
+            elif die == LAND:
+                d_choices.append((LAND, LAND))
+            elif die == IRON:
+                d_choices.append((IRON, IRON))
         return d_choices

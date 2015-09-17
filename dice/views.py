@@ -1,7 +1,7 @@
 
 import diceClass
 from diceClass import Die
-from CD_globals import Turn
+from CD_globals import TURN
 from django.views.generic.base import TemplateView
 from dice.forms import ChooseDiceForm
 from django.views.generic.edit import FormView
@@ -42,7 +42,7 @@ class ChooseDiceView(FormView):
 
     def form_valid(self, form):
         number_choice_die = int(
-            Turn[int(self.kwargs['turn_no'])]['no_choices']
+            TURN[int(self.kwargs['turn_no'])]['no_choices']
         )
         full_dice_list = form.cleaned_data['given_dice']
         for x in range(1, number_choice_die+1):
