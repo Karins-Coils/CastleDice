@@ -1,6 +1,6 @@
 from CD_globals \
     import Horse, Pig, Cow, Chicken, Barn, Wood, Stone, Gold, Land, Iron, \
-    ResourcePreference, AnimalPreference, GatherPreference
+    ResourcePreference, AnimalPreference, GatherPreference, Turn
 from dice.diceClass import Die
 
 """
@@ -25,6 +25,34 @@ class Joan:
     def __init__(self, **kwargs):
         self.animals = kwargs["animals"] if "animals" in kwargs else None
         self.resource = kwargs["resource"] if "resource" in kwargs else None
+
+    @staticmethod
+    def choose_dice(turn_no, pool_count_dict):
+        """choose her dice for this turn from the remaining in the world"""
+        choice_dice = []
+        #roll Joan die to determine her choice
+
+        append_count = 1
+        while True:
+            die = Die(Joan).roll_die()[0]
+            if die is not Barn:
+                # append the non-Barn
+                choice_dice += [die for i in xrange(0, append_count)]
+                # decrement the pool count, to keep track locally
+                pool_count_dict[die] -= append_count
+                append_count = 1
+            elif choice_dice:
+                # append a repeat of last die
+                choice_dice.append(choice_dice[-1])
+            else:
+                # append the NEXT die twice...
+                append_count += 1
+            if len(choice_dice) >= Turn[turn_no]['no_choices']:
+                break
+
+        # return list splice, just in case I rolled a bunch of barns in a row
+        return choice_dice[0:Turn[turn_no]['no_choices']]
+
 
     def gather_die(self, world_pool_dict, die_choice=None):
         """
