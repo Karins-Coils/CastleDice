@@ -158,6 +158,8 @@ class JoanAI:
         """
 
         return max(
-            [(x, dice_list.count(x)) for x in set(dice_list)],
+            # this creates a generator for one tuple, rather than a full list
+            # memory saving.  Thanks erich!
+            ((x, dice_list.count(x)) for x in set(dice_list)),
             key=lambda t: (t[1], -RESOURCE_PREFERENCE.index(t[0]))
         )[0]
