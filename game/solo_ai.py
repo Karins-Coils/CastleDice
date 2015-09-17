@@ -1,7 +1,7 @@
 from CD_globals \
-    import Horse, Pig, Cow, Chicken, Barn, \
-    Wood, Stone, Gold, Land, Iron, Joan, \
-    ResourcePreference, AnimalPreference, GatherPreference, Turn
+    import HORSE, PIG, COW, CHICKEN, BARN, \
+    WOOD, STONE, GOLD, LAND, IRON, JOAN, \
+    RESOURCE_PREFERENCE, ANIMAL_PREFERENCE, GATHER_PREFERENCE, TURN
 from dice.diceClass import Die
 
 """
