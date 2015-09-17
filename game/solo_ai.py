@@ -141,6 +141,12 @@ class JoanAI:
     def determine_primary_resource(dice_list):
         """Take in a given choice dice list, and return Joan's primary resource
 
+        Creates a list tuples, (type, count) based on dice_list, then finds the
+        max such that the count is used as a determinant first, then if a tie,
+        looks at RESOURCE_PREFERENCE to weigh the type correctly.  (negated
+        below to account for max wanting a LARGE integer, rather than the small
+        index)
+
         Args:
             dice_list: list of dice, only uses the die type
                 ex: [WOOD, WOOD, IRON, LAND]
@@ -151,29 +157,7 @@ class JoanAI:
 
         """
 
-        max_count = 0
-        max_resource = []
-        unique_dice = set(dice_list)
-
-        # loop through list find highest count.  create a list if a tie
-        for die in unique_dice:
-            count = dice_list.count(die)
-            if max_count < count:
-                max_count = count
-                max_resource = [die]
-            elif max_count == count:
-                max_resource.append(die)
-
-        if len(max_resource) is 1:
-            # we are done, Joan has a CLEAR primary resource
-            return max_resource[0]
-        else:
-            # its a list because of a tie, need to pick best option
-            count = 5
-            for resource in max_resource:
-                i = RESOURCE_PREFERENCE.index(resource)
-                if i < count:
-                    prime_resource = resource
-                    count = i
-
-            return prime_resource
+        return max(
+            [(x, dice_list.count(x)) for x in set(dice_list)],
+            key=lambda t: (t[1], -RESOURCE_PREFERENCE.index(t[0]))
+        )[0]
