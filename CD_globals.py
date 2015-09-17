@@ -15,8 +15,12 @@ Cow = 'cow'
 Chicken = 'chicken'
 ## Lone Barbarian
 Barbarian = 'barbarian'
+
 ## Joan - solo play only
 Joan = 'joan'
+### Joan's Preferences, with first element being her first choice
+ResourcePreference = [Iron, Land, Gold, Stone, Wood]
+AnimalPreference = [Pig, Horse, Chicken, Cow]
 
 # Dice Faces based on resource
 DiceFaces = {

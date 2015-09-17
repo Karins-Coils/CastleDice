@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'dice',
+    'game',
 )
 
 MIDDLEWARE_CLASSES = (
