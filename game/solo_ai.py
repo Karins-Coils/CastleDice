@@ -1,8 +1,7 @@
-__author__ = 'kelseyhawley'
-
 from CD_globals \
     import Horse, Pig, Cow, Chicken, Barn, Wood, Stone, Gold, Land, Iron, \
-    ResourcePreference, AnimalPreference
+    ResourcePreference, AnimalPreference, GatherPreference
+from dice.diceClass import Die
 
 """
 Idea, is a class that handles all the logic, and then returns the only things
@@ -23,12 +22,56 @@ class Joan:
     # primary resource that Joan is focused on gathering
     resource = None
 
-    def __init__(self, animals=None, resource=None):
-        if animals:
-            self.animals = animals
+    def __init__(self, **kwargs):
+        self.animals = kwargs["animals"] if "animals" in kwargs else None
+        self.resource = kwargs["resource"] if "resource" in kwargs else None
 
-        if resource:
-            self.resource = resource
+    def gather_die(self, world_pool_dict, die_choice=None):
+        """
+        assume world_pool_dict: { "wood": [(wood, 1), (cow, 1)] .....}
+
+        """
+        if not self.resource:
+            raise ValueError("Joan.resource has not been set")
+
+        if not self.resource in world_pool_dict:
+            raise ValueError("Joan.resource not found in world_pool_dict, "
+                             "may have been improperly set")
+
+        resource = self.resource if not die_choice else die_choice
+
+        # flatten dict values, then make set
+        world_pool_set = sorted(
+            [tup for val_list in world_pool_dict.values()
+             for tup in set(val_list)],
+            key=lambda t: (GatherPreference.index(t[0]), -t[1])
+        )
+
+        # first chooses of her resource
+        if resource is not Barn and world_pool_dict[resource]:
+
+            primary_choices = [x for x in world_pool_set if x[0] is resource]
+            if primary_choices:
+                return primary_choices[0]
+
+        # rolled a barn
+        elif resource is Barn:
+            # gather highest animal
+            primary_choices = [x for x in world_pool_set
+                               if x[0] in AnimalPreference]
+            if primary_choices:
+                return primary_choices[0]
+
+        # if still none & have not rolled yet, then rolls the die
+        if not die_choice:
+            die = Die(Joan).roll_die()[0]
+            return self.gather_die(world_pool_dict, die)
+        else:
+            # rolled it once already, so just return the rarest+highest
+            primary_choices = [x for x in world_pool_set
+                               if x[0] in ResourcePreference]
+            if primary_choices:
+                return primary_choices[0]
 
     @staticmethod
     def determine_primary_resource(dice_list):

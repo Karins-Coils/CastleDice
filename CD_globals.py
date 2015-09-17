@@ -21,6 +21,7 @@ Joan = 'joan'
 ### Joan's Preferences, with first element being her first choice
 ResourcePreference = [Iron, Land, Gold, Stone, Wood]
 AnimalPreference = [Pig, Horse, Chicken, Cow]
+GatherPreference = ResourcePreference + AnimalPreference
 
 # Dice Faces based on resource
 DiceFaces = {
