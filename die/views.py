@@ -1,9 +1,8 @@
 
-import diceClass
-from diceClass import Die
+from dieClass import Die
 from CD_globals import TURN
 from django.views.generic.base import TemplateView
-from dice.forms import ChooseDiceForm
+from die.forms import ChooseDiceForm
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse
 
@@ -73,7 +72,7 @@ class RollDiceView(TemplateView):
         for d in dice_to_roll:
             roll_me = Die(d)
             rolled_dice.append((d, roll_me.roll_die()))
-        totals = diceClass.total_dice(rolled_dice)
+        totals = Die.total_dice(rolled_dice)
         context['rolled_dice'] = rolled_dice
         context['totals'] = totals
         return context

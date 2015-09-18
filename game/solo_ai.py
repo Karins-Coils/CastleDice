@@ -2,7 +2,7 @@ from CD_globals \
     import HORSE, PIG, COW, CHICKEN, BARN, \
     WOOD, STONE, GOLD, LAND, IRON, JOAN, \
     RESOURCE_PREFERENCE, ANIMAL_PREFERENCE, GATHER_PREFERENCE, TURN
-from dice.diceClass import Die
+from die.dieClass import Die
 
 """
 Joan is a simplistic AI built for solo play.  She uses a dice to determine

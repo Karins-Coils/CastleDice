@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from dice.views import HomeView, ChooseDiceView, RollDiceView
+from die.views import HomeView, ChooseDiceView, RollDiceView
 #, ChooseDiceForm, RollDiceView
 
 from django.contrib import admin
