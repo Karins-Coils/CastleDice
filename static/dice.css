@@ -1,16 +1,16 @@
-.wood_die, .wood {
+.die_wood, .wood {
     background-color: #9e744f;
 }
-.stone_die, .stone {
+.die_stone, .stone {
     background-color: #9e9f9e;
 }
-.gold_die, .gold {
+.die_gold, .gold {
     background-color: #fff101;
 }
-.land_die, .land {
+.die_land, .land {
     background-color: #009949;
 }
-.iron_die, .iron {
+.die_iron, .iron {
     background-color: #d8232a;
 }
 
@@ -23,8 +23,9 @@
 .chickenx1, .cowx1, .pigx1, .horsex1, .barbarianx1{
     width: 50px;
     height: 50px;
-    border: 1px;
+    border: 1px solid grey;
     background-size: 50px;
+    border-radius: 5px;
 }
 
 .mid { vertical-align: middle; margin:2px;}

@@ -5,7 +5,7 @@
     <p>Player rolled: &nbsp;
     {% for d_name, list in rolled_dice.items %}
         {% for name, value in list %}
-            &nbsp;<img class ="{{  d_name }}_die {{ name }}x{{ value }} mid">&nbsp;
+            &nbsp;<img class ="die_{{  d_name }} {{ name }}x{{ value }} mid">&nbsp;
         {%  endfor %}
     {% endfor %}
     </p>
