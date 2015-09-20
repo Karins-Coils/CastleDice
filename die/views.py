@@ -51,12 +51,15 @@ class ChooseDiceView(FormView):
                           for x in range(1, number_choice_die+1)]
         rolled_dice = {}
         for d in full_dice_list:
-            rolled_die = Die(d).roll_die()
+            rolled_d = Die(d).roll_die()
             if d in rolled_dice:
-                rolled_dice[d].append(rolled_die)
+                rolled_dice[d].append(rolled_d)
             else:
-                rolled_dice[d] = [rolled_die]
+                rolled_dice[d] = [rolled_d]
 
+        game_obj.turn_no = self.kwargs['turn_no']
+        game_obj.phase_no = 3
+        game_obj.save()
         player_mat.dice_rolled = rolled_dice
         player_mat.save()
         return super(ChooseDiceView, self).form_valid(form)
@@ -86,8 +89,18 @@ class RollDiceView(TemplateView):
             context["cur_turn"] = turn_no
             context["nxt_turn"] = turn_no+1
 
-        # loop through dice in dice_rolled and move them to worldpool
-
+        # loop through dice in dice_rolled and move them to world_pool
         context['rolled_dice'] = player_mat.dice_rolled
+
+        game_obj.phase_no = 4
+        game_obj.world_pool = {
+            k: d for k, die_list in player_mat.dice_rolled.items()
+            for d in die_list if d is not Die().is_barbarian(d)
+        }
+        player_mat.dice_rolled = {
+            k: d for k,die_list in player_mat.dice_rolled.items()
+            for d in die_list if d is Die().is_barbarian(d)
+        }
+
         return context
 

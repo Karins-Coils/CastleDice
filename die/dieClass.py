@@ -1,5 +1,5 @@
 import random
-from CD_globals import DICE_FACES
+from CD_globals import DICE_FACES, BARBARIAN
 
 
 class Die:
@@ -8,7 +8,7 @@ class Die:
     sides = []
     debug = False
 
-    def __init__(self, resource, debug=False):
+    def __init__(self, resource=None, debug=False):
         self.resource = resource
         self.debug = debug
         self.create_die()
@@ -65,3 +65,7 @@ class Die:
             else:
                 r_rolled[resource] = count
         return r_rolled
+
+    @staticmethod
+    def is_barbarian(die_face):
+        return die_face[0] is BARBARIAN
