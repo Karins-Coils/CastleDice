@@ -68,4 +68,4 @@ class Die:
 
     @staticmethod
     def is_barbarian(die_face):
-        return die_face[0] is BARBARIAN
+        return die_face[0] == BARBARIAN

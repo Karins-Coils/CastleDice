@@ -6,12 +6,19 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+import unittest
+from die.dieClass import Die
+from CD_globals import BARBARIAN, HORSE, PIG, COW, CHICKEN, \
+    WOOD, STONE, GOLD, LAND, IRON
 
+class TestDieClass(unittest.TestCase):
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
-# Create your tests here.
+    def test_is_barbarian(self):
+        self.assertTrue(Die.is_barbarian((BARBARIAN, 1)))
+        self.assertTrue(Die.is_barbarian((u''+BARBARIAN, 1)))
+        self.assertTrue(Die.is_barbarian([BARBARIAN, 1]))
+        self.assertTrue(Die.is_barbarian([u''+BARBARIAN, 1]))
+        self.assertFalse(Die.is_barbarian((LAND, 2)))
+        self.assertFalse(Die.is_barbarian((u''+LAND, 2)))
+        self.assertFalse(Die.is_barbarian([LAND, 2]))
+        self.assertFalse(Die.is_barbarian([u''+LAND, 2]))
