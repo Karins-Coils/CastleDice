@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body %}
+    {%if new %}
+        <p>Starting a new game, with game id {{ game_id }}</p>
+    {% else %}
+        <p>Resuming game with id {{ game_id }} </p>
+    {% endif %}
+    <p><a href="{% url 'choosedice' turn_no=game_turn game_id=game_id %}">Turn {{ game_turn }} - Choose Dice</a></p>
+{%  endblock %}
