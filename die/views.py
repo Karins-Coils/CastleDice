@@ -1,18 +1,11 @@
 
 from dieClass import Die
 from CD_globals import TURN
+from game.models import Game, PlayerMat
 from django.views.generic.base import TemplateView
 from die.forms import ChooseDiceForm
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse
-
-
-class HomeView(TemplateView):
-    template_name = "home.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(HomeView, self).get_context_data(**kwargs)
-        return context
 
 
 class ChooseDiceView(FormView):
@@ -36,23 +29,42 @@ class ChooseDiceView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(ChooseDiceView, self).get_context_data(**kwargs)
+        context["game_id"] = int(self.kwargs["game_id"])
         context["cur_turn"] = self.turn_no
         return context
 
     def form_valid(self, form):
+        game_obj = Game.objects.get(pk=int(self.kwargs['game_id']))
+        user = self.request.user
+
+        # retrieve player mat if available, else make new one
+        try:
+            player_mat = PlayerMat.objects.get(game=game_obj, user=user)
+        except PlayerMat.DoesNotExist:
+            player_mat = PlayerMat(game=game_obj, user=user)
+
         number_choice_die = int(
             TURN[int(self.kwargs['turn_no'])]['no_choices']
         )
-        full_dice_list = form.cleaned_data['given_dice']
-        for x in range(1, number_choice_die+1):
-            full_dice_list.append(form.cleaned_data['choice_die'+str(x)])
-        self.dice_to_roll = prep_url_from_dice(full_dice_list)
+        full_dice_list = form.cleaned_data['given_dice'] + \
+                         [form.cleaned_data['choice_die'+str(x)]
+                          for x in range(1, number_choice_die+1)]
+        rolled_dice = {}
+        for d in full_dice_list:
+            rolled_die = Die(d).roll_die()
+            if d in rolled_dice:
+                rolled_dice[d].append(rolled_die)
+            else:
+                rolled_dice[d] = [rolled_die]
+
+        player_mat.dice_rolled = rolled_dice
+        player_mat.save()
         return super(ChooseDiceView, self).form_valid(form)
 
     def get_success_url(self):
         return reverse('rolldice', kwargs={
-            'dice_to_roll': self.dice_to_roll,
-            'turn_no': int(self.kwargs['turn_no'])
+            'game_id': int(self.kwargs['game_id']),
+            'turn_no': int(self.kwargs['turn_no']),
         })
 
 
@@ -60,29 +72,22 @@ class RollDiceView(TemplateView):
     template_name = "rolldice.html"
 
     def get_context_data(self, **kwargs):
+        # add error checking for getting game/user
+        game_obj = Game.objects.get(pk=int(self.kwargs['game_id']))
+        user = self.request.user
+
+        # add error checking for getting playermat
+        player_mat = PlayerMat.objects.get(game=game_obj, user=user)
+
         context = super(RollDiceView, self).get_context_data(**kwargs)
         if self.kwargs['turn_no']:
             turn_no = int(self.kwargs['turn_no'])
+            context["game_id"] = self.kwargs['game_id']
             context["cur_turn"] = turn_no
             context["nxt_turn"] = turn_no+1
 
-        dice_url = self.kwargs['dice_to_roll']
-        dice_to_roll = parse_dice_url(dice_url)
-        rolled_dice = []
-        for d in dice_to_roll:
-            roll_me = Die(d)
-            rolled_dice.append((d, roll_me.roll_die()))
-        totals = Die.total_dice(rolled_dice)
-        context['rolled_dice'] = rolled_dice
-        context['totals'] = totals
+        # loop through dice in dice_rolled and move them to worldpool
+
+        context['rolled_dice'] = player_mat.dice_rolled
         return context
 
-
-def prep_url_from_dice(dice_list):
-    url = "-".join(dice_list)
-    return url
-
-
-def parse_dice_url(url):
-    dice_list = url.split("-")
-    return dice_list
