@@ -1,26 +1,20 @@
-.die_wood, .wood {
+.die_wood, .wood, .wood_*, img[class*='wood'] {
     background-color: #9e744f;
 }
-.die_stone, .stone {
+.die_stone, .stone, .stone_*, img[class*='stone'] {
     background-color: #9e9f9e;
 }
-.die_gold, .gold {
+.die_gold, .gold, .gold_*, img[class*='gold'] {
     background-color: #fff101;
 }
-.die_land, .land {
+.die_land, .land, .land_*, img[class*='land'] {
     background-color: #009949;
 }
-.die_iron, .iron {
+.die_iron, .iron, .iron_*, img[class*='iron'] {
     background-color: #d8232a;
 }
 
-.wood, .woodx1, .woodx2, .woodx3,
-.stone, .stonex1, .stonex2,
-.gold, .goldx1, .goldx2,
-.land, .landx1, .landx2,
-.iron, .ironx1, .ironx2,
-.chicken, .cow, .pig, .horse, .barbarian,
-.chickenx1, .cowx1, .pigx1, .horsex1, .barbarianx1{
+.die, img[class*="die_"]{
     width: 50px;
     height: 50px;
     border: 1px solid grey;
@@ -30,57 +24,57 @@
 
 .mid { vertical-align: middle; margin:2px;}
 
-.wood, .woodx1 {
+.wood, .woodx1, .wood_wood_1 {
     background-image: url("/static/images/die_faces/Wood.png");
 }
-.woodx2 {
+.woodx2, .wood_wood_2 {
     background-image: url("/static/images/die_faces/Woodx2.png");
 }
-.woodx3 {
+.woodx3, .wood_wood_3 {
     background-image: url("/static/images/die_faces/Woodx3.png");
 }
 
-.stone, .stonex1{
+.stone, .stonex1, .stone_stone_1{
     background-image: url("/static/images/die_faces/Stone.png");
 }
-.stonex2{
+.stonex2 .stone_stone_2{
     background-image: url("/static/images/die_faces/Stonex2.png");
 }
 
-.gold, .goldx1{
+.gold, .goldx1, .gold_gold_1{
     background-image: url("/static/images/die_faces/Gold.png");
 }
-.goldx2{
+.goldx2, .gold_gold_2{
     background-image: url("/static/images/die_faces/Goldx2.png");
 }
 
-.land, .landx1{
+.land, .landx1, .land_land_1{
     background-image: url("/static/images/die_faces/Land.png");
 }
-.landx2{
+.landx2, .land_land_2{
     background-image: url("/static/images/die_faces/Landx2.png");
 }
 
-.iron, .ironx1{
+.iron, .ironx1, .iron_iron_1{
     background-image: url("/static/images/die_faces/Iron.png");
 }
-.ironx2{
+.ironx2, .iron_iron_2{
     background-image: url("/static/images/die_faces/Ironx2.png");
 }
 
-.barbarian, .barbarianx1{
+.barbarian, .barbarianx1, *[class*='barbarian']{
     background-image: url("/static/images/die_faces/Barbarian.png");
 }
 
-.cow, .cowx1{
+.cow, .cowx1, *[class*='cow']{
     background-image: url("/static/images/die_faces/Cow.png");
 }
-.chicken, .chickenx1{
+.chicken, .chickenx1, *[class*='chicken']{
     background-image: url("/static/images/die_faces/Chicken.png");
 }
-.horse, .horsex1{
+.horse, .horsex1, *[class*='horse']{
     background-image: url("/static/images/die_faces/Horse.png");
 }
-.pig, .pigx1{
+.pig, .pigx1, *[class*='pig']{
     background-image: url("/static/images/die_faces/Pig.png");
 }

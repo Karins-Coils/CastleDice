@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from game.views import HomeView, ChooseGameView, ContinueGameView, NewGameView
-from die.views import ChooseDiceView, RollDiceView
+from die.views import ChooseDiceView, RollDiceView, GatherDiceView
 #, ChooseDiceForm, RollDiceView
 
 from django.contrib import admin
@@ -19,14 +19,14 @@ urlpatterns = patterns('',
     url(r'^game_(?P<game_id>[\d])/continue', ContinueGameView.as_view(), name="continuegame"),
 
     # choose phase of game
-    url(r'^game_(?P<game_id>[\d])/turn_(?P<turn_no>[\d])/choose/$', ChooseDiceView.as_view(),
-        name="choosedice"),
-    url(r'^game_(?P<game_id>[\d])/turn_(?P<turn_no>[\d])/choose/rolled/$', RollDiceView.as_view(),
-        name="rolldice"),
+    url(r'^game_(?P<game_id>[\d])/turn_(?P<turn_no>[\d])/choose/$',
+        ChooseDiceView.as_view(), name="choosedice"),
+    url(r'^game_(?P<game_id>[\d])/turn_(?P<turn_no>[\d])/choose/rolled/$',
+        RollDiceView.as_view(), name="rolldice"),
 
     # gather phase of game
-    # url(r'^game-(?P<game_id>[\d])/turn_(?P<turn_no>[\d])/gather/'
-    #     r'(?P<round_no>[\d])/$', name="gatherdice"),
+    url(r'^game_(?P<game_id>[\d])/turn_(?P<turn_no>[\d])/gather/$',
+        GatherDiceView.as_view(), name="gatherdice"),
 
     url(r'^admin/', include(admin.site.urls)),
 )

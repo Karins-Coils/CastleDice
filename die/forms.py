@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import widgets
 from CD_globals import TURN, DICE_COUNT, WOOD, STONE, GOLD, LAND, IRON
+from game.models import Game
 # I want to remove the above resources as LISTED things.
 # should not need to know, ever
 
@@ -57,25 +58,49 @@ class RadioImgWidget(widgets.RadioSelect):
         for i, (option_value, option_label) in enumerate(chain(self.choices, choices)):
             # If an ID attribute was given, add a numeric index as a suffix,
             # so that the checkboxes don't all have the same ID attribute.
-            if has_id:
-                final_attrs = dict(final_attrs, id='%s_%s' % (attrs['id'], i))
-                label_for = format_html(' for="{0}"', final_attrs['id'])
+            if type(option_label) is list:
+                for j, die_face in enumerate(option_label):
+                    if has_id:
+                        final_attrs = dict(final_attrs, id='%s_%s_%s' % (attrs['id'], i, j))
+                        label_for = format_html(' for="{0}"', final_attrs['id'])
+                    else:
+                        label_for = ''
+                    if not (type(option_value) is bool or
+                            not option_value or value == ''):
+                        # Only add the 'value' attribute if a value is non-empty.
+                        final_attrs['value'] = force_text(
+                            unicode(str(option_value) + "_" + str(die_face[0])
+                            + "_" + str(die_face[1]), "utf-8")
+                        )
+                    die_face[0] = force_text(die_face[0])
+                    output.append(format_html(
+                        '<label{0}><input{1} /> <img class="die_{2} {3}x{4} mid"> {5}</label><br>',
+                        label_for, flatatt(final_attrs), option_value,
+                        die_face[0], die_face[1], die_face[0].capitalize())
+                    )
             else:
-                label_for = ''
-            if not (option_value is True or
-                    option_value is False or
-                    option_value is None or
-                    value == ''):
-                # Only add the 'value' attribute if a value is non-empty.
-                final_attrs['value'] = force_text(option_value)
-            option_label = force_text(option_label)
-            output.append(format_html(
-                '<label{0}><input{1} /> <img class="{2} mid"> {3}</label><br>',
-                label_for, flatatt(final_attrs), option_label,
-                option_label.capitalize())
-            )
+                # ('wood', 'wood')
+                if has_id:
+                    final_attrs = dict(final_attrs, id='%s_%s' % (attrs['id'], i))
+                    label_for = format_html(' for="{0}"', final_attrs['id'])
+                else:
+                    label_for = ''
+                if not (option_value is True or
+                                option_value is False or
+                                option_value is None or
+                                value == ''):
+                    # Only add the 'value' attribute if a value is non-empty.
+                    final_attrs['value'] = force_text(option_value)
+                option_label = force_text(option_label)
+                output.append(format_html(
+                    '<label{0}><input{1} /> <img class="die {2} mid"> {3}</label><br>',
+                    label_for, flatatt(final_attrs), option_value,
+                    option_label)
+                )
 
         return mark_safe('\n'.join(output))
+
+    # def make_labe_and_input(self, option_value, option_label):
 
 
 class ChooseDiceForm(forms.Form):
@@ -120,3 +145,25 @@ class ChooseDiceForm(forms.Form):
             elif die == IRON:
                 d_choices.append((IRON, IRON))
         return d_choices
+
+
+class GatherDiceForm(forms.Form):
+    dice_pool = forms.ChoiceField(
+        label="Gather Your Die",
+        widget=RadioImgWidget()
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(GatherDiceForm, self).__init__(*args, **kwargs)
+        game_obj = Game.objects.get(pk=kwargs['initial']['game_id'])
+
+        self.fields['dice_pool'].choices = tuple(
+            (str(str(k) + "_" + str(t[0]) + "_" + str(t[1])),
+             str(str(t[1])+ " " + str(t[0]).capitalize()))
+            for k, l in game_obj.world_pool.items()
+            for t in l
+        )
+
+        # self.fields['dice_pool'].choices = [
+        #     [k, l] for k, l in game_obj.world_pool.items()
+        # ]
