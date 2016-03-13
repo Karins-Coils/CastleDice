@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from game.views import HomeView, ChooseGameView, ContinueGameView, NewGameView
 from die.views import ChooseDiceView, RollDiceView, GatherDiceView
 #, ChooseDiceForm, RollDiceView
@@ -6,12 +6,14 @@ from die.views import ChooseDiceView, RollDiceView, GatherDiceView
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Examples:
     # url(r'^$', 'CastleDice.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', HomeView.as_view(), name='home'),
+
+    url(r'^accounts/', include('allauth.urls')),
 
     # choose/start a game
     url(r'^start/$', ChooseGameView.as_view(), name='start'),
@@ -29,4 +31,4 @@ urlpatterns = patterns('',
         GatherDiceView.as_view(), name="gatherdice"),
 
     url(r'^admin/', include(admin.site.urls)),
-)
+]
