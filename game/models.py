@@ -6,11 +6,14 @@ from CD_globals import GAME_DECK_NAMES
 
 
 class Game(models.Model):
-    current_player = models.ForeignKey(User, related_name='+')
+    current_player = models.ForeignKey(User,
+                                       related_name='+',
+                                       blank=True,
+                                       null=True)
     current_turn = models.PositiveSmallIntegerField(default=1)
     current_phase = models.PositiveSmallIntegerField(default=1)
-    choice_dice = JSONField(blank=True)
-    gather_dice = JSONField(blank=True)
+    choice_dice = JSONField(blank=True, null=True)
+    gather_dice = JSONField(blank=True, null=True)
     true_porkchop_used = models.BooleanField(default=False)
 
 

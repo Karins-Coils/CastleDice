@@ -9,14 +9,14 @@ class PlayerMat(models.Model):
     player = models.ForeignKey(User)
     game = models.ForeignKey('game.Game')
     victory_points = models.PositiveSmallIntegerField(default=0)
-    player_hand = JSONField(blank=True)
-    player_merchant_hand = JSONField(blank=True)
+    player_hand = JSONField(blank=True, null=True)
+    player_merchant_hand = JSONField(blank=True, null=True)
 
     # turn based values - will be reset each turn
     player_order = models.PositiveSmallIntegerField(default=0)
     has_porkchopped = models.BooleanField(default=False)
     has_first_gathered = models.BooleanField(default=False)
-    choice_dice = JSONField()
+    choice_dice = JSONField(blank=True, null=True)
 
     #-- counts for game --#
     # animals
@@ -58,9 +58,10 @@ class PlayerBuilt(models.Model):
     """
     The card that a player has built this game.
     """
-    ANIMAL_CHOICES = (
+    ANIMAL_CHOICES = [
         (name, name) for name in ANIMAL_PREFERENCE
-    )
+    ]
+    ANIMAL_CHOICES.append(('', ''))
 
     player_mat = models.ForeignKey(PlayerMat)
     card = models.CharField(max_length=52)

@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import widgets
 
+
 class ChooseGameForm(forms.Form):
     game_choice = forms.ChoiceField(
         label="New or existing Game?",

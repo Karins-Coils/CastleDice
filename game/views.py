@@ -4,8 +4,8 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from game.forms import ChooseGameForm
 from game.models import Game
+from player_mat.models import PlayerMat
 
-# Create your views here.
 
 class HomeView(TemplateView):
     template_name = "home.html"
@@ -14,13 +14,13 @@ class HomeView(TemplateView):
         context = super(HomeView, self).get_context_data(**kwargs)
         return context
 
+
 class ChooseGameView(FormView):
     # have form that self submits, redirects to /game_<>/turn_<>
     template_name = 'choosegame.html'
     form_class = ChooseGameForm
     game_obj = None
     game_type = None
-
 
     def form_valid(self, form):
         data = form.cleaned_data
@@ -32,8 +32,10 @@ class ChooseGameView(FormView):
                 self.game_type = "old"
 
         if not self.game_obj:
-            new_game = Game(turn_no=1, phase_no=1)
+            new_game = Game()
             new_game.save()
+            new_player_mat = PlayerMat(player=self.request.user, game=new_game)
+            new_player_mat.save()
             self.game_obj = new_game
             self.game_type = "new"
 
@@ -48,6 +50,7 @@ class ChooseGameView(FormView):
 
         # return reverse('choosedice', kwargs={'turn_no': 1})
 
+
 class NewGameView(TemplateView):
     template_name = "start.html"
 
@@ -57,6 +60,7 @@ class NewGameView(TemplateView):
         context["game_id"] = int(self.kwargs["game_id"])
         context["game_turn"] = 1
         return context
+
 
 class ContinueGameView(TemplateView):
     template_name = "start.html"
