@@ -1,8 +1,9 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
+
+from CD_globals import WOOD, STONE, GOLD, LAND, IRON, TURN
 from game.models import Game
 from playermat.models import PlayerMat
-from django.contrib.auth.models import User
-from CD_globals import WOOD, STONE, GOLD, LAND, IRON, TURN
 
 
 class TestGameModel(TestCase):
