@@ -28,6 +28,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    # django-annoying - https://github.com/skorokithakis/django-annoying
+    'annoying',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +40,7 @@ INSTALLED_APPS = (
     'deck',
     'die',
     'game',
+    'player_mat'
 )
 
 MIDDLEWARE_CLASSES = (
