@@ -1,6 +1,6 @@
 from django.test import TestCase
 from game.models import Game
-from player_mat.models import PlayerMat
+from playermat.models import PlayerMat
 from django.contrib.auth.models import User
 from CD_globals import WOOD, STONE, GOLD, LAND, IRON, TURN
 

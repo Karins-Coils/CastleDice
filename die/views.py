@@ -6,7 +6,7 @@ from CD_globals import TURN
 from die.forms import ChooseDiceForm, GatherDiceForm
 from dieClass import Die
 from game.models import Game
-from player_mat.models import PlayerMat
+from playermat.models import PlayerMat
 
 
 class ChooseDiceView(FormView):

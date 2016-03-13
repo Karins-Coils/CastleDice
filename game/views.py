@@ -4,7 +4,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from game.forms import ChooseGameForm
 from game.models import Game
-from player_mat.models import PlayerMat
+from playermat.models import PlayerMat
 
 
 class HomeView(TemplateView):

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from annoying.fields import JSONField
 
-from CD_globals import GUARD, WORKER, BARBARIAN, ANIMAL_PREFERENCE
+from CD_globals import GUARD, WORKER, BARBARIAN, ANIMAL_PREFERENCE, TURN
 
 
 class PlayerMat(models.Model):
@@ -35,6 +35,11 @@ class PlayerMat(models.Model):
     # villagers w/ only count
     merchants = models.PositiveSmallIntegerField(default=0)
     farmers = models.PositiveSmallIntegerField(default=0)
+
+    def get_player_choice_extra_dice(self):
+        # based on turn no, get number of 'extra' dice player will choose
+        # to be added: logic to confirm if player has Royal Chambers etc
+        return TURN[self.game.current_turn]['no_choices']
 
 
 class PlayerMatResourcePeople(models.Model):

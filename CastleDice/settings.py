@@ -46,7 +46,7 @@ INSTALLED_APPS = (
     'deck',
     'die',
     'game',
-    'player_mat'
+    'playermat'
 )
 
 MIDDLEWARE_CLASSES = (

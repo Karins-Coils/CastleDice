@@ -60,12 +60,12 @@ class Migration(migrations.Migration):
                 ('gold', models.PositiveSmallIntegerField(default=0)),
                 ('land', models.PositiveSmallIntegerField(default=0)),
                 ('iron', models.PositiveSmallIntegerField(default=0)),
-                ('player_mat', models.ForeignKey(to='player_mat.PlayerMat')),
+                ('player_mat', models.ForeignKey(to='playermat.PlayerMat')),
             ],
         ),
         migrations.AddField(
             model_name='playerbuilt',
             name='player_mat',
-            field=models.ForeignKey(to='player_mat.PlayerMat'),
+            field=models.ForeignKey(to='playermat.PlayerMat'),
         ),
     ]
