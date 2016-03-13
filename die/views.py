@@ -1,11 +1,12 @@
-
-from dieClass import Die
-from CD_globals import TURN
-from game.models import Game, PlayerMat
-from django.views.generic.base import TemplateView
-from die.forms import ChooseDiceForm, GatherDiceForm
-from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse
+from django.views.generic.base import TemplateView
+from django.views.generic.edit import FormView
+
+from CD_globals import TURN
+from die.forms import ChooseDiceForm, GatherDiceForm
+from dieClass import Die
+from game.models import Game
+from player_mat.models import PlayerMat
 
 
 class ChooseDiceView(FormView):

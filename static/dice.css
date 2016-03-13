@@ -1,16 +1,16 @@
-.die_wood, .wood, .wood_*, img[class*='wood'] {
+.wood {
     background-color: #9e744f;
 }
-.die_stone, .stone, .stone_*, img[class*='stone'] {
+.stone {
     background-color: #9e9f9e;
 }
-.die_gold, .gold, .gold_*, img[class*='gold'] {
+.gold {
     background-color: #fff101;
 }
-.die_land, .land, .land_*, img[class*='land'] {
+.land{
     background-color: #009949;
 }
-.die_iron, .iron, .iron_*, img[class*='iron'] {
+.iron {
     background-color: #d8232a;
 }
 

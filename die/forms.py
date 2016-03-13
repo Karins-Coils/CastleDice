@@ -40,7 +40,7 @@ class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
             rendered_cb = cb.render(name, option_value)
             option_label = force_text(option_label)
             output.append(format_html(
-                '<label{0}>{1} <img class="{2} mid"></label>',
+                '<label{0}>{1} <img class="die {2} mid"></label>',
                 label_for, rendered_cb, option_label
             ))
         output.append("<br>")
