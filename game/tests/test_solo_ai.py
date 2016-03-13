@@ -1,6 +1,6 @@
 import unittest
 from django.test import TestCase
-from solo_ai import JoanAI
+from game.solo_ai import JoanAI
 from CD_globals \
     import HORSE, PIG, COW, CHICKEN, \
     BARN, WOOD, STONE, GOLD, LAND, IRON, DICE_COUNT, TURN
