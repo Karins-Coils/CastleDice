@@ -1,26 +1,31 @@
 
-#- Die Faces & Values
-# Resources
-## Building Materials
+# -- Die Faces & Values -- #
+# - Resources - #
+# Building Materials
 WOOD = 'wood'
 STONE = 'stone'
 GOLD = 'gold'
 LAND = 'land'
 IRON = 'iron'
-## Animals
+# Animals
 HORSE = 'horse'
 PIG = 'pig'
 COW = 'cow'
 CHICKEN = 'chicken'
-## Lone Barbarian
+# Lone Barbarian
 BARBARIAN = 'barbarian'
+# Villagers
+WORKER = 'worker'
+GUARD = 'guard'
+FARMER = 'farmer'
+MERCHANT = 'merchant'
 
-## Joan - solo play only
+# Joan - solo play only
 JOAN = 'joan'
 BARN = 'barn'  # on Joan's Die
-### Joan's Preferences, with first element being her first choice
-RESOURCE_PREFERENCE = [IRON, LAND, GOLD, STONE, WOOD]
-ANIMAL_PREFERENCE = [PIG, HORSE, CHICKEN, COW]
+# Joan's Preferences, with first element being her first choice
+RESOURCE_PREFERENCE = (IRON, LAND, GOLD, STONE, WOOD)
+ANIMAL_PREFERENCE = (PIG, HORSE, CHICKEN, COW)
 GATHER_PREFERENCE = RESOURCE_PREFERENCE + ANIMAL_PREFERENCE
 
 # Dice Faces based on resource
@@ -84,8 +89,8 @@ DICE_COUNT = {
     IRON:  11
 }
 
-
-#- Turn Settings
+# ----- Convert to Enum/objects
+# -- Turn Settings -- #
 TURN = {
     00: {
         'given_dice': [],
@@ -93,43 +98,74 @@ TURN = {
         'market': False
     },
     1: {
-        'given_dice': [WOOD, WOOD, STONE, STONE, GOLD],
+        'given_dice': {
+            WOOD: 2,
+            STONE: 2,
+            GOLD: 1
+        },  # [WOOD, WOOD, STONE, STONE, GOLD],
         'no_choices': 2,
         'market': False
     },
     2: {
-        'given_dice': [WOOD, STONE, GOLD, GOLD],
+        'given_dice': {
+            WOOD: 1,
+            STONE: 1,
+            GOLD: 2
+        },  # [WOOD, STONE, GOLD, GOLD],
         'no_choices': 3,
         'market': False
     },
     3: {
-        'given_dice': [WOOD, WOOD, WOOD, STONE, GOLD],
+        'given_dice': {
+            WOOD: 3,
+            STONE: 1,
+            GOLD: 1
+        },  # [WOOD, WOOD, WOOD, STONE, GOLD],
         'no_choices': 3,
         'market': True
     },
     4: {
-        'given_dice': [WOOD, STONE, STONE, GOLD],
+        'given_dice': {
+            WOOD: 1,
+            STONE: 2,
+            GOLD: 1
+        },  # [WOOD, STONE, STONE, GOLD],
         'no_choices': 3,
         'market': False
     },
     5: {
-        'given_dice': [WOOD, STONE, GOLD, LAND, IRON],
+        'given_dice': {
+            WOOD: 1,
+            STONE: 1,
+            GOLD: 1,
+            LAND: 1,
+            IRON: 1
+        },  # [WOOD, STONE, GOLD, LAND, IRON],
         'no_choices': 2,
         'market': True
     },
     6: {
-        'given_dice': [WOOD, WOOD, GOLD, IRON],
+        'given_dice': {
+            WOOD: 2,
+            GOLD: 2,
+            IRON: 2
+        },  # [WOOD, WOOD, GOLD, IRON],
         'no_choices': 3,
         'market': False
     },
     7: {
-        'given_dice': [WOOD, STONE, STONE, LAND, IRON],
+        'given_dice': {
+            WOOD: 1,
+            STONE: 2,
+            LAND: 1,
+            IRON: 1
+        },  # [WOOD, STONE, STONE, LAND, IRON],
         'no_choices': 3,
         'market': True
     }
 }
 
-#- Phase Descriptions
+# -- Phase Descriptions -- #
 PHASE = {
     1:  "Determine who goes first",  # Horse
     2:  "Choose & Draw cards in order (clockwise)",  # Draw phase, Chicken
@@ -143,12 +179,13 @@ PHASE = {
     10: "Barbarians Raid"  # Barbarians
 }
 
-#easier/cleaner to have the dict be turn['given_dice'][#] ?
+# easier/cleaner to have the dict be turn['given_dice'][#] ?
 # logically no.  more confusing, to me at least.  because I need all
 # info for that turn, and may not know what exactly i need until I
 # have the info.  better to have it grouped by turn #
 
-CASTLE_DECK_COMPONENTS = {
+CASTLE_DECK_NAME = 'castle'
+CASTLE_DECK_CARDS = {
     # name: {
     #   'count' : x,
     #   'type' : #gather phase, build phase...
@@ -159,6 +196,25 @@ CASTLE_DECK_COMPONENTS = {
     # }
 
 }
+
+VILLAGER_DECK_NAME = 'villager'
+VILLAGER_DECK_CARDS = {
+
+}
+
+
+MARKET_DECK_NAME = 'market'
+MARKET_DECK_CARDS = {
+
+}
+
+GAME_DECK_NAMES = [CASTLE_DECK_NAME, VILLAGER_DECK_NAME, MARKET_DECK_NAME]
+GAME_DECK_CARDS = {
+    CASTLE_DECK_NAME: CASTLE_DECK_CARDS,
+    VILLAGER_DECK_NAME: CASTLE_DECK_CARDS,
+    MARKET_DECK_NAME: MARKET_DECK_CARDS
+}
+
 # build cards need to track possible usage during turn (Moat, Royal Chamber) or modify the player's stats
 
 # 'effect' cards (squire, advisor, etc) can only be used during the matching phase, [match phase type, then allow usage]
