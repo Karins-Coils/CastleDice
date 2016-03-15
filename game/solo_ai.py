@@ -1,7 +1,7 @@
-from common.globals \
-    import HORSE, PIG, COW, CHICKEN, BARN, \
-    JOAN, \
-    RESOURCE_PREFERENCE, ANIMAL_PREFERENCE, GATHER_PREFERENCE, TURN
+# from django.contrib.auth.models import User
+
+from common.globals import BARN, JOAN, TURN, \
+    RESOURCE_PREFERENCE, ANIMAL_PREFERENCE, GATHER_PREFERENCE
 from die.dieClass import Die
 
 """
@@ -16,16 +16,7 @@ which die to roll into the world pool.  And gathers with a very specific logic:
 """
 
 
-class JoanAI:
-    # current count of Joan's animals
-    animals = {
-        HORSE: 0,
-        COW: 0,
-        PIG: 0,
-        CHICKEN: 0
-    }
-    # primary resource that Joan is focused on gathering
-    resource = None
+class JoanAI(object):
 
     def __init__(self, **kwargs):
         self.animals = kwargs["animals"] if "animals" in kwargs else None
@@ -74,7 +65,8 @@ class JoanAI:
         # return list splice, just in case I rolled a bunch of barns in a row
         return choice_dice[0:TURN[turn_no]['no_choices']]
 
-    def gather_die(self, world_pool_dict, die_choice=None):
+    @staticmethod
+    def gather_die(primary_resource, world_pool_dict, die_choice=None):
         """Based on her logic, picks a die from the passed in world_pool_dict
 
         Flattens the world_pool_dict into a set, then orders it based on her
@@ -83,6 +75,9 @@ class JoanAI:
         animal).  If none, then grabs the rarest & highest value resource left.
 
         Args:
+            primary_resource: str, no longer stored on class, passed in order
+                to be static
+                ex: WOOD
             world_pool_dict: a dict of lists of tuples
                 ex: { WOOD: [(WOOD, 1), (COW, 1)], STONE: [(CHICKEN, 1)], ... }
             die_choice: str
@@ -94,14 +89,7 @@ class JoanAI:
 
         """
 
-        if not self.resource:
-            raise ValueError("Joan.resource has not been set")
-
-        if not self.resource in world_pool_dict:
-            raise ValueError("Joan.resource not found in world_pool_dict, "
-                             "may have been improperly set")
-
-        resource = self.resource if not die_choice else die_choice
+        resource = primary_resource if not die_choice else die_choice
 
         # flatten dict values, then make set
         world_pool_set = sorted(
