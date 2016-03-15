@@ -1,9 +1,11 @@
 import unittest
-from django.test import TestCase
-from game.solo_ai import JoanAI
-from CD_globals \
+
+from common.dice import DICE_COUNT
+from common.globals \
     import HORSE, PIG, COW, CHICKEN, \
-    BARN, WOOD, STONE, GOLD, LAND, IRON, DICE_COUNT, TURN
+    BARN, WOOD, STONE, GOLD, LAND, IRON, TURN
+from game.solo_ai import JoanAI
+
 
 # Create your tests here.
 

@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
-from CD_globals import TURN
+from common.globals import TURN
 from die.forms import ChooseDiceForm, GatherDiceForm
 from dieClass import Die
 from game.models import Game

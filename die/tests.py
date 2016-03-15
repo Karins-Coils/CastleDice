@@ -5,11 +5,11 @@ when you run "manage.py test".
 Replace this with more appropriate tests for your application.
 """
 
-from django.test import TestCase
 import unittest
+
+from common.globals import BARBARIAN, LAND
 from die.dieClass import Die
-from CD_globals import BARBARIAN, HORSE, PIG, COW, CHICKEN, \
-    WOOD, STONE, GOLD, LAND, IRON
+
 
 class TestDieClass(unittest.TestCase):
 

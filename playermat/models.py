@@ -1,8 +1,8 @@
-from django.db import models
-from django.contrib.auth.models import User
 from annoying.fields import JSONField
+from django.contrib.auth.models import User
+from django.db import models
 
-from CD_globals import GUARD, WORKER, BARBARIAN, ANIMAL_PREFERENCE, TURN
+from common.globals import GUARD, WORKER, BARBARIAN, ANIMAL_PREFERENCE, TURN
 
 
 class PlayerMat(models.Model):

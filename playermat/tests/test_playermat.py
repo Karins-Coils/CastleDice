@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from CD_globals import TURN
+from common.globals import TURN
 from game.models import Game
 from playermat.models import PlayerMat
 

@@ -1,6 +1,6 @@
-from CD_globals \
+from common.globals \
     import HORSE, PIG, COW, CHICKEN, BARN, \
-    WOOD, STONE, GOLD, LAND, IRON, JOAN, \
+    JOAN, \
     RESOURCE_PREFERENCE, ANIMAL_PREFERENCE, GATHER_PREFERENCE, TURN
 from die.dieClass import Die
 

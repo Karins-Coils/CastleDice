@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import widgets
-from CD_globals import TURN, DICE_COUNT, WOOD, STONE, GOLD, LAND, IRON
+from common.dice import DICE_COUNT, WOOD, STONE, GOLD, LAND, IRON
+from common.globals import TURN
 from game.models import Game
 # I want to remove the above resources as LISTED things.
 # should not need to know, ever

@@ -2,92 +2,31 @@
 # -- Die Faces & Values -- #
 # - Resources - #
 # Building Materials
-WOOD = 'wood'
-STONE = 'stone'
-GOLD = 'gold'
-LAND = 'land'
-IRON = 'iron'
+WOOD = 'Wood'
+STONE = 'Stone'
+GOLD = 'Gold'
+LAND = 'Land'
+IRON = 'Iron'
 # Animals
-HORSE = 'horse'
-PIG = 'pig'
-COW = 'cow'
-CHICKEN = 'chicken'
+HORSE = 'Horse'
+PIG = 'Pig'
+COW = 'Cow'
+CHICKEN = 'Chicken'
 # Lone Barbarian
-BARBARIAN = 'barbarian'
+BARBARIAN = 'Barbarian'
 # Villagers
-WORKER = 'worker'
-GUARD = 'guard'
-FARMER = 'farmer'
-MERCHANT = 'merchant'
+WORKER = 'Worker'
+GUARD = 'Guard'
+FARMER = 'Farmer'
+MERCHANT = 'Merchant'
 
 # Joan - solo play only
-JOAN = 'joan'
-BARN = 'barn'  # on Joan's Die
+JOAN = 'Joan'
+BARN = 'Barn'  # on Joan's Die
 # Joan's Preferences, with first element being her first choice
 RESOURCE_PREFERENCE = (IRON, LAND, GOLD, STONE, WOOD)
 ANIMAL_PREFERENCE = (PIG, HORSE, CHICKEN, COW)
 GATHER_PREFERENCE = RESOURCE_PREFERENCE + ANIMAL_PREFERENCE
-
-# Dice Faces based on resource
-DICE_FACES = {
-    WOOD: [
-        (WOOD, 1),
-        (WOOD, 1),
-        (WOOD, 2),
-        (WOOD, 3),
-        (COW, 1),
-        (BARBARIAN, 1)
-    ],
-    STONE: [
-        (STONE, 1),
-        (STONE, 1),
-        (STONE, 2),
-        (STONE, 2),
-        (CHICKEN, 1),
-        (BARBARIAN, 1)
-    ],
-    GOLD: [
-        (GOLD, 1),
-        (GOLD, 1),
-        (GOLD, 1),
-        (GOLD, 2),
-        (HORSE, 1),
-        (BARBARIAN, 1)
-    ],
-    LAND: [
-        (LAND, 1),
-        (LAND, 1),
-        (LAND, 2),
-        (PIG, 1),
-        (PIG, 1),
-        (BARBARIAN, 1)
-    ],
-    IRON: [
-        (IRON, 1),
-        (IRON, 2),
-        (PIG, 1),
-        (HORSE, 1),
-        (CHICKEN, 1),
-        (BARBARIAN, 1)
-    ],
-    JOAN: [
-        (WOOD, 1),
-        (STONE, 1),
-        (GOLD, 1),
-        (LAND, 1),
-        (IRON, 1),
-        (BARN, 1)
-    ]
-}
-
-# Count of each type in the WorldPool
-DICE_COUNT = {
-    WOOD:  14,
-    STONE: 14,
-    GOLD:  13,
-    LAND:  11,
-    IRON:  11
-}
 
 # ----- Convert to Enum/objects
 # -- Turn Settings -- #
@@ -183,42 +122,3 @@ PHASE = {
 # logically no.  more confusing, to me at least.  because I need all
 # info for that turn, and may not know what exactly i need until I
 # have the info.  better to have it grouped by turn #
-
-CASTLE_DECK_NAME = 'castle'
-CASTLE_DECK_CARDS = {
-    # name: {
-    #   'count' : x,
-    #   'type' : #gather phase, build phase...
-    #   #if build
-    #   'resources' : [(Wood, 2), (Stone, 1)]
-    #   'victory_points' : #value the built item is worth
-    #   'text' : # card text/description to make it easier for player to read
-    # }
-
-}
-
-VILLAGER_DECK_NAME = 'villager'
-VILLAGER_DECK_CARDS = {
-
-}
-
-
-MARKET_DECK_NAME = 'market'
-MARKET_DECK_CARDS = {
-
-}
-
-GAME_DECK_NAMES = [CASTLE_DECK_NAME, VILLAGER_DECK_NAME, MARKET_DECK_NAME]
-GAME_DECK_CARDS = {
-    CASTLE_DECK_NAME: CASTLE_DECK_CARDS,
-    VILLAGER_DECK_NAME: CASTLE_DECK_CARDS,
-    MARKET_DECK_NAME: MARKET_DECK_CARDS
-}
-
-# build cards need to track possible usage during turn (Moat, Royal Chamber) or modify the player's stats
-
-# 'effect' cards (squire, advisor, etc) can only be used during the matching phase, [match phase type, then allow usage]
-
-# separate dict for effects?
-
-# similar makeup for villager_deck_components

@@ -1,5 +1,6 @@
 import random
-from CD_globals import DICE_FACES, BARBARIAN
+
+from common.dice import DICE_FACES, BARBARIAN
 
 
 class Die:

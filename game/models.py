@@ -1,10 +1,12 @@
 from collections import defaultdict
 
-from django.db import models
-from django.contrib.auth.models import User
 from annoying.fields import JSONField
+from django.contrib.auth.models import User
+from django.db import models
 
-from CD_globals import GAME_DECK_NAMES, TURN, DICE_COUNT
+from common.dice import DICE_COUNT
+from common.cards import GAME_DECK_NAMES
+from common.globals import TURN
 
 
 class Game(models.Model):
