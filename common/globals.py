@@ -2,27 +2,27 @@
 # -- Die Faces & Values -- #
 # - Resources - #
 # Building Materials
-WOOD = 'Wood'
-STONE = 'Stone'
-GOLD = 'Gold'
-LAND = 'Land'
-IRON = 'Iron'
+WOOD = 'wood'
+STONE = 'stone'
+GOLD = 'gold'
+LAND = 'land'
+IRON = 'iron'
 # Animals
-HORSE = 'Horse'
-PIG = 'Pig'
-COW = 'Cow'
-CHICKEN = 'Chicken'
+HORSE = 'horse'
+PIG = 'pig'
+COW = 'cow'
+CHICKEN = 'chicken'
 # Lone Barbarian
-BARBARIAN = 'Barbarian'
+BARBARIAN = 'barbarian'
 # Villagers
-WORKER = 'Worker'
-GUARD = 'Guard'
-FARMER = 'Farmer'
-MERCHANT = 'Merchant'
+WORKER = 'worker'
+GUARD = 'guard'
+FARMER = 'farmer'
+MERCHANT = 'merchant'
 
 # Joan - solo play only
-JOAN = 'Joan'
-BARN = 'Barn'  # on Joan's Die
+JOAN = 'joan'
+BARN = 'barn'  # on Joan's Die
 # Joan's Preferences, with first element being her first choice
 RESOURCE_PREFERENCE = (IRON, LAND, GOLD, STONE, WOOD)
 ANIMAL_PREFERENCE = (PIG, HORSE, CHICKEN, COW)
