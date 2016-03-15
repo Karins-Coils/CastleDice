@@ -21,9 +21,9 @@ urlpatterns = [
     url(r'^game_(?P<game_id>[\d])/continue', ContinueGameView.as_view(), name="continuegame"),
 
     # choose phase of game
-    url(r'^game_(?P<game_id>[\d])/turn_(?P<turn_no>[\d])/choose/$',
+    url(r'^game_(?P<game_id>[\d])/choose/$',
         ChooseDiceView.as_view(), name="choosedice"),
-    url(r'^game_(?P<game_id>[\d])/turn_(?P<turn_no>[\d])/choose/rolled/$',
+    url(r'^game_(?P<game_id>[\d])/choose/rolled/$',
         RollDiceView.as_view(), name="rolldice"),
 
     # gather phase of game

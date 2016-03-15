@@ -10,6 +10,7 @@ from common.globals import TURN
 
 
 class Game(models.Model):
+    is_solo_game = models.BooleanField(default=False)
     current_player = models.ForeignKey(User,
                                        related_name='+',
                                        blank=True,

@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import widgets
-from common.dice import DICE_COUNT, WOOD, STONE, GOLD, LAND, IRON
-from common.globals import TURN
+
+from common.dice import DICE_COUNT
 from game.models import Game
 # I want to remove the above resources as LISTED things.
 # should not need to know, ever
@@ -116,35 +116,33 @@ class ChooseDiceForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ChooseDiceForm, self).__init__(*args, **kwargs)
         initial = kwargs.pop('initial')
-        if 'turn_no' in initial:
-            turn_no = initial['turn_no']
-        else:
-            turn_no = 00
-        choice_list = [WOOD, STONE, GOLD, LAND, IRON]
-        given_list = TURN[turn_no]['given_dice']
-        no_choices = TURN[turn_no]['no_choices']
+        choice_list = DICE_COUNT.keys()
+        given_dict = initial['given_dice']
+        no_choices = initial['no_choices']
         for x in range(1, no_choices+1):
             self.fields['choice_die'+str(x)] = forms.ChoiceField(
                 label="Choice Die #"+str(x),
                 widget=RadioImgWidget(),
                 choices=self.make_choices(choice_list)
             )
-        self.fields['given_dice'].choices = self.make_choices(given_list)
+        self.fields['given_dice'].choices = \
+            self.make_choices_from_dict(given_dict)
+
+    def make_choices_from_dict(self, die_count_dict):
+        d_list = [
+            key for key, value in die_count_dict.iteritems()
+            for i in range(0, value)
+        ]
+
+        return self.make_choices(d_list)
 
     # preps the form choices for user
-    def make_choices(self, d_list):
+    @staticmethod
+    def make_choices(d_list):
         d_choices = []
         for die in d_list:
-            if die == WOOD:
-                d_choices.append((WOOD, WOOD))
-            elif die == STONE:
-                d_choices.append((STONE, STONE))
-            elif die == GOLD:
-                d_choices.append((GOLD, GOLD))
-            elif die == LAND:
-                d_choices.append((LAND, LAND))
-            elif die == IRON:
-                d_choices.append((IRON, IRON))
+            if die in DICE_COUNT.keys():
+                d_choices.append((die, die))
         return d_choices
 
 

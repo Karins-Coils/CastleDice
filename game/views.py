@@ -5,6 +5,7 @@ from django.views.generic.edit import FormView
 from game.forms import ChooseGameForm
 from game.models import Game
 from playermat.models import PlayerMat
+from game.solo_ai import JoanAI
 
 
 class HomeView(TemplateView):
@@ -25,7 +26,7 @@ class ChooseGameView(FormView):
     def form_valid(self, form):
         data = form.cleaned_data
 
-        if data['game_choice'] != "new":
+        if data['game_choice'] == "id":
             old_game = Game.objects.get(pk=int(data["game_id"]))
             if old_game:
                 self.game_obj = old_game
@@ -33,9 +34,17 @@ class ChooseGameView(FormView):
 
         if not self.game_obj:
             new_game = Game()
+            if data['game_choice'] == "solo":
+                new_game.is_solo_game = True
             new_game.save()
             new_player_mat = PlayerMat(player=self.request.user, game=new_game)
             new_player_mat.save()
+
+            if new_game.is_solo_game:
+                joan_playermat = PlayerMat(player=JoanAI.get_user_joan(),
+                                           game=new_game)
+                joan_playermat.save()
+
             self.game_obj = new_game
             self.game_type = "new"
 
@@ -54,6 +63,18 @@ class ChooseGameView(FormView):
 class NewGameView(TemplateView):
     template_name = "start.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        game = Game.objects.get(id=kwargs['game_id'])
+
+        # if GET, setup choice dice for the first time, if empty
+        if request.method is "GET":
+            game.setup_choice_dice_for_turn()
+
+        request.game = game
+        request.playermat = game.playermat_set.get(player=self.request.user)
+
+        return super(NewGameView, self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(NewGameView, self).get_context_data(**kwargs)
         context["new"] = True
@@ -64,6 +85,18 @@ class NewGameView(TemplateView):
 
 class ContinueGameView(TemplateView):
     template_name = "start.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        game = Game.objects.get(id=kwargs['game_id'])
+
+        # if GET, setup choice dice for the first time, if empty
+        if request.method is "GET":
+            game.setup_choice_dice_for_turn()
+
+        request.game = game
+        request.playermat = game.playermat_set.get(player=self.request.user)
+
+        return super(ContinueGameView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ContinueGameView, self).get_context_data(**kwargs)

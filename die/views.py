@@ -16,16 +16,26 @@ class ChooseDiceView(FormView):
     dice_to_roll = None
 
     def dispatch(self, request, *args, **kwargs):
-        # fetch turn_no from url
-        if kwargs['turn_no']:
-            self.turn_no = int(kwargs['turn_no'])
+        game = Game.objects.get(id=kwargs['game_id'])
+
+        # if GET, setup choice dice for the first time, if empty
+        if request.method == "GET":
+            game.setup_choice_dice_for_turn()
+
+        request.game_id = game.id
+        self.turn_no = game.current_turn
+
         return super(ChooseDiceView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
+        game = Game.objects.get(id=self.request.game_id)
+        playermat = PlayerMat.objects.get(player=self.request.user, game=game)
+
         # attach turn_no to form vars
         kwargs = super(ChooseDiceView, self).get_form_kwargs()
-        if self.turn_no:
-            kwargs['initial']['turn_no'] = self.turn_no
+        kwargs['initial']['game'] = game
+        kwargs['initial']['given_dice'] = playermat.choice_dice
+        kwargs['initial']['no_choices'] = playermat.get_player_choice_extra_dice()
         return kwargs
 
     def get_context_data(self, **kwargs):
@@ -35,17 +45,19 @@ class ChooseDiceView(FormView):
         return context
 
     def form_valid(self, form):
-        game_obj = Game.objects.get(pk=int(self.kwargs['game_id']))
+        # game = self.request.game
+        game = Game.objects.get(id=int(self.kwargs['game_id']))
         user = self.request.user
+        turn_no = game.current_turn
 
         # retrieve player mat if available, else make new one
         try:
-            player_mat = PlayerMat.objects.get(game=game_obj, user=user)
+            player_mat = PlayerMat.objects.get(game=game, player=user)
         except PlayerMat.DoesNotExist:
-            player_mat = PlayerMat(game=game_obj, user=user)
+            player_mat = PlayerMat(game=game, player=user)
 
         number_choice_die = int(
-            TURN[int(self.kwargs['turn_no'])]['no_choices']
+            TURN[turn_no]['no_choices']
         )
         full_dice_list = form.cleaned_data['given_dice'] + \
                          [form.cleaned_data['choice_die'+str(x)]
@@ -58,9 +70,7 @@ class ChooseDiceView(FormView):
             else:
                 rolled_dice[d] = [rolled_d]
 
-        game_obj.turn_no = self.kwargs['turn_no']
-        game_obj.phase_no = 3
-        game_obj.save()
+        game.advance_phase()
         player_mat.dice_rolled = rolled_dice
         player_mat.save()
         return super(ChooseDiceView, self).form_valid(form)
@@ -68,7 +78,7 @@ class ChooseDiceView(FormView):
     def get_success_url(self):
         return reverse('rolldice', kwargs={
             'game_id': int(self.kwargs['game_id']),
-            'turn_no': int(self.kwargs['turn_no']),
+            # 'turn_no': int(self.kwargs['turn_no']),
         })
 
 

@@ -2,7 +2,8 @@ from annoying.fields import JSONField
 from django.contrib.auth.models import User
 from django.db import models
 
-from common.globals import GUARD, WORKER, BARBARIAN, ANIMAL_PREFERENCE, TURN
+from common.globals import GUARD, WORKER, BARBARIAN, \
+    ANIMAL_PREFERENCE, RESOURCE_PREFERENCE, TURN
 
 
 class PlayerMat(models.Model):
@@ -18,7 +19,7 @@ class PlayerMat(models.Model):
     has_first_gathered = models.BooleanField(default=False)
     choice_dice = JSONField(blank=True, null=True)
 
-    #-- counts for game --#
+    # -- counts for game -- #
     # animals
     horses = models.PositiveSmallIntegerField(default=0)
     pigs = models.PositiveSmallIntegerField(default=0)
@@ -40,6 +41,18 @@ class PlayerMat(models.Model):
         # based on turn no, get number of 'extra' dice player will choose
         # to be added: logic to confirm if player has Royal Chambers etc
         return TURN[self.game.current_turn]['no_choices']
+
+
+class JoanPlayerMat(PlayerMat):
+    resource_choices = (
+        (die, die) for die in RESOURCE_PREFERENCE
+    )
+
+    # turn based values - will be reset each turn
+    primary_resource = models.CharField(max_length=12,
+                                        blank=True,
+                                        null=True,
+                                        choices=resource_choices)
 
 
 class PlayerMatResourcePeople(models.Model):
