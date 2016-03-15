@@ -1,4 +1,4 @@
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 
 from common.globals import BARN, JOAN, TURN, \
     RESOURCE_PREFERENCE, ANIMAL_PREFERENCE, GATHER_PREFERENCE
@@ -151,3 +151,15 @@ class JoanAI(object):
             ((x, dice_list.count(x)) for x in set(dice_list)),
             key=lambda t: (t[1], -RESOURCE_PREFERENCE.index(t[0]))
         )[0]
+
+    @staticmethod
+    def get_user_joan():
+        """
+        Will get or create user Joan
+        :return: Joan user object
+        :rtype: User
+        """
+        u = User.objects.get_or_create(username="JOAN_AI",
+                                       email="joan@karinscoils.com")
+        # 'u' is a tuple, User object is index 0
+        return u[0]
