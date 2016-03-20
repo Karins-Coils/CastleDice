@@ -17,6 +17,7 @@ class PlayerMat(models.Model):
     player_order = models.PositiveSmallIntegerField(default=0)
     has_porkchopped = models.BooleanField(default=False)
     has_first_gathered = models.BooleanField(default=False)
+    has_farmered = models.BooleanField(default=False)
     choice_dice = JSONField(blank=True, null=True)
 
     # -- counts for game -- #
@@ -45,7 +46,7 @@ class PlayerMat(models.Model):
 
 class JoanPlayerMat(PlayerMat):
     resource_choices = (
-        (die, die) for die in RESOURCE_PREFERENCE
+        (die, die) for die in list(RESOURCE_PREFERENCE) + [None]
     )
 
     # turn based values - will be reset each turn
@@ -70,6 +71,9 @@ class PlayerMatResourcePeople(models.Model):
     gold = models.PositiveSmallIntegerField(default=0)
     land = models.PositiveSmallIntegerField(default=0)
     iron = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        unique_together = (("player_mat", "type"),)
 
 
 class PlayerBuilt(models.Model):
