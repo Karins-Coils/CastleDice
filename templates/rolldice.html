@@ -5,14 +5,14 @@
     <p>Player rolled: &nbsp;
     {% for d_name, list in rolled_dice.items %}
         {% for name, value in list %}
-            &nbsp;<img class ="die_{{  d_name }} {{ name }}x{{ value }} mid">&nbsp;
+            &nbsp;<img class ="die {{  d_name }} {{ name }}x{{ value }} mid">&nbsp;
         {%  endfor %}
     {% endfor %}
     </p>
 
 {#    {% if nxt_turn < 8 %}#}
         <p>
-            <a href="{% url 'gatherdice' turn_no=cur_turn game_id=game_id %}">
+            <a href="{% url 'gatherdice' game_id=game_id %}">
                 Gather Dice from World Pool {{ cur_turn }}
             </a>
         </p>

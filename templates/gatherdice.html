@@ -3,7 +3,7 @@
 {% block content %}
 
 
-    <form action="{% url 'gatherdice' turn_no=turn_no game_id=game_id %}" method="post">
+    <form action="{% url 'gatherdice' game_id=game_id %}" method="post">
         {% csrf_token %}
         <p><b>For Turn #{{ cur_turn }}</b></p>
         <table><tr>

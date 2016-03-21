@@ -51,28 +51,14 @@ class ChooseDiceView(FormView):
         turn_no = game.current_turn
 
         # retrieve player mat if available, else make new one
-        try:
-            player_mat = PlayerMat.objects.get(game=game, player=user)
-        except PlayerMat.DoesNotExist:
-            player_mat = PlayerMat(game=game, player=user)
+        playermat = PlayerMat.objects.get(game=game, player=user)
 
-        number_choice_die = int(
-            TURN[turn_no]['no_choices']
-        )
-        full_dice_list = form.cleaned_data['given_dice'] + \
-                         [form.cleaned_data['choice_die'+str(x)]
-                          for x in range(1, number_choice_die+1)]
-        rolled_dice = {}
-        for d in full_dice_list:
-            rolled_d = Die(d).roll_die()
-            if d in rolled_dice:
-                rolled_dice[d].append(rolled_d)
-            else:
-                rolled_dice[d] = [rolled_d]
+        number_choice_die = playermat.get_player_choice_extra_dice()
+        playermat.choice_dice = form.cleaned_data['given_dice'] + \
+                                [form.cleaned_data['choice_die'+str(x)]
+                                 for x in range(1, number_choice_die+1)]
 
-        game.advance_phase()
-        player_mat.dice_rolled = rolled_dice
-        player_mat.save()
+        playermat.save()
         return super(ChooseDiceView, self).form_valid(form)
 
     def get_success_url(self):
@@ -91,30 +77,19 @@ class RollDiceView(TemplateView):
         user = self.request.user
 
         # add error checking for getting playermat
-        player_mat = PlayerMat.objects.get(game=game_obj, user=user)
+        playermat = PlayerMat.objects.get(game=game_obj, player=user)
 
         context = super(RollDiceView, self).get_context_data(**kwargs)
-        if self.kwargs['turn_no']:
-            turn_no = int(self.kwargs['turn_no'])
-            context["game_id"] = self.kwargs['game_id']
-            context["cur_turn"] = turn_no
-            context["nxt_turn"] = turn_no+1
 
-        # loop through dice in dice_rolled and move them to world_pool
-        context['rolled_dice'] = player_mat.dice_rolled
+        dice_rolled = playermat.roll_choice_dice()
+        context['rolled_dice'] = dice_rolled
 
-        game_obj.phase_no = 4
-        game_obj.world_pool = {
+        game_obj.add_dice_to_world({
             k: [d for d in die_list if not Die.is_barbarian(d)]
-            for k, die_list in player_mat.dice_rolled.items()
-        }
-
-        player_mat.dice_rolled = {
-            k: [d for d in die_list if Die.is_barbarian(d)]
-            for k, die_list in player_mat.dice_rolled.items()
-        }
+            for k, die_list in dice_rolled.items()
+        })
         game_obj.save()
-        player_mat.save()
+        playermat.save()
 
         return context
 
