@@ -16,19 +16,21 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
 
     # choose/start a game
-    url(r'^start/$', ChooseGameView.as_view(), name='start'),
-    url(r'^game_(?P<game_id>[\d])/start', NewGameView.as_view(), name="newgame"),
-    url(r'^game_(?P<game_id>[\d])/continue', ContinueGameView.as_view(), name="continuegame"),
+    url(r'^start$', ChooseGameView.as_view(), name='start'),
+    url(r'^game_(?P<game_id>\d+)/start', NewGameView.as_view(), name="newgame"),
+    url(r'^game_(?P<game_id>\d+)/continue', ContinueGameView.as_view(), name="continuegame"),
 
     # choose phase of game
-    url(r'^game_(?P<game_id>[\d])/choose/$',
+    url(r'^game_(?P<game_id>\d+)/choose$',
         ChooseDiceView.as_view(), name="choosedice"),
-    url(r'^game_(?P<game_id>[\d])/choose/rolled/$',
+
+    # roll phase of game
+    url(r'^game_(?P<game_id>\d+)/rolled$',
         RollDiceView.as_view(), name="rolldice"),
 
     # gather phase of game
-    url(r'^game_(?P<game_id>[\d])/turn_(?P<turn_no>[\d])/gather/$',
+    url(r'^game_(?P<game_id>\d+)/gather$',
         GatherDiceView.as_view(), name="gatherdice"),
 
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^porkchop/', include(admin.site.urls)),
 ]
