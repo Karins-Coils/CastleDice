@@ -12,13 +12,11 @@
 
                 <td style="width:{% if forloop.counter == 1 %}112px{% else %}140px{% endif %}">
                     {{ field.label_tag }}<br><br></td>
-                <td style="width:900px">        {{ field }}
-                    {{ field.errors }}
-                </td>
+                <td style="width:800px"> {{ field }}</td>
+                <td style="width:200px; text-align: center">{{ field.errors }}<br><input type="submit" value="Gather" ></td>
             </tr>
             {% endfor %}
-            <tr><td style="text-align: center"><input type="submit" value="Gather" ></td>
-            </tr></table>
+            </table>
     </form>
 
 
