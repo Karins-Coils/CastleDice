@@ -1,16 +1,20 @@
-.wood {
+label[for*='id_dice_pool'] {
+    width: 150px;
+    white-space: nowrap;
+}
+.wood, *[class*='wood'] {
     background-color: #9e744f;
 }
-.stone {
+.stone, *[class*='stone'] {
     background-color: #9e9f9e;
 }
-.gold {
+.gold, *[class*='gold'] {
     background-color: #fff101;
 }
-.land{
+.land, *[class*='land'] {
     background-color: #009949;
 }
-.iron {
+.iron, *[class*='iron'] {
     background-color: #d8232a;
 }
 
@@ -34,47 +38,47 @@
     background-image: url("/static/images/die_faces/Woodx3.png");
 }
 
-.stone, .stonex1, .stone_stone_1{
+.stone, .stone_1{
     background-image: url("/static/images/die_faces/Stone.png");
 }
-.stonex2 .stone_stone_2{
+.stone_2{
     background-image: url("/static/images/die_faces/Stonex2.png");
 }
 
-.gold, .goldx1, .gold_gold_1{
+.gold, .gold_1{
     background-image: url("/static/images/die_faces/Gold.png");
 }
-.goldx2, .gold_gold_2{
+.gold_2{
     background-image: url("/static/images/die_faces/Goldx2.png");
 }
 
-.land, .landx1, .land_land_1{
+.land, .land_1{
     background-image: url("/static/images/die_faces/Land.png");
 }
-.landx2, .land_land_2{
+.land_2{
     background-image: url("/static/images/die_faces/Landx2.png");
 }
 
-.iron, .ironx1, .iron_iron_1{
+.iron, .iron_1{
     background-image: url("/static/images/die_faces/Iron.png");
 }
-.ironx2, .iron_iron_2{
+.iron_2{
     background-image: url("/static/images/die_faces/Ironx2.png");
 }
 
-.barbarian, .barbarianx1, *[class*='barbarian']{
+.barbarian, .barbarian_1, *[class*='barbarian']{
     background-image: url("/static/images/die_faces/Barbarian.png");
 }
 
-.cow, .cowx1, *[class*='cow']{
+.cow, .cow_1, *[class*='cow']{
     background-image: url("/static/images/die_faces/Cow.png");
 }
-.chicken, .chickenx1, *[class*='chicken']{
+.chicken, .chicken_1, *[class*='chicken']{
     background-image: url("/static/images/die_faces/Chicken.png");
 }
-.horse, .horsex1, *[class*='horse']{
+.horse, .horse_1, *[class*='horse']{
     background-image: url("/static/images/die_faces/Horse.png");
 }
-.pig, .pigx1, *[class*='pig']{
+.pig, .pig_1, *[class*='pig']{
     background-image: url("/static/images/die_faces/Pig.png");
 }

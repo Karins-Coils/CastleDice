@@ -5,16 +5,18 @@
 
     <form action="{% url 'gatherdice' game_id=game_id %}" method="post">
         {% csrf_token %}
-        <p><b>For Turn #{{ cur_turn }}</b></p>
-        <table><tr>
+        <p><b>For Turn #{{ turn_no }}</b></p>
+        <table>
             {%  for field in form %}
+            <tr>
+
                 <td style="width:{% if forloop.counter == 1 %}112px{% else %}140px{% endif %}">
-                    {{ field.label_tag }}<br><br>
-                    {{ field }}<br>
+                    {{ field.label_tag }}<br><br></td>
+                <td style="width:900px">        {{ field }}
                     {{ field.errors }}
                 </td>
+            </tr>
             {% endfor %}
-        </tr>
             <tr><td style="text-align: center"><input type="submit" value="Gather" ></td>
             </tr></table>
     </form>
