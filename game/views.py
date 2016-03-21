@@ -31,6 +31,15 @@ class ChooseGameView(FormView):
             if old_game:
                 self.game_obj = old_game
                 self.game_type = "old"
+                user = self.request.user
+
+                # confirm a playermat exists for this player + game
+                # otherwise, make a new one
+                try:
+                    playermat = PlayerMat.objects.get(player=user, game=old_game)
+                except PlayerMat.DoesNotExist:
+                    playermat = PlayerMat(player=user, game=old_game)
+                    playermat.save()
 
         if not self.game_obj:
             new_game = Game()
@@ -101,5 +110,4 @@ class ContinueGameView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ContinueGameView, self).get_context_data(**kwargs)
         context["game_id"] = int(self.kwargs["game_id"])
-        game_obj = Game.objects.get(pk=int(self.kwargs["game_id"]))
         return context
