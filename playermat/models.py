@@ -19,7 +19,7 @@ class PlayerMat(models.Model):
     has_porkchopped = models.BooleanField(default=False)
     has_first_gathered = models.BooleanField(default=False)
     has_farmered = models.BooleanField(default=False)
-    choice_dice = JSONField(blank=True, null=True)
+    choice_dice = JSONField(blank=True, null=True, default=[])
 
     # -- counts for game -- #
     # animals
@@ -120,6 +120,8 @@ class PlayerMat(models.Model):
                         type=BARBARIAN)[0]
                     barbarians.add_resource(resource_type)
 
+        self.choice_dice = []
+        self.save()
         return rolled_dice
 
 
