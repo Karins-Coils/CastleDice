@@ -4,6 +4,7 @@ from django.db import models
 
 from common.globals import GUARD, WORKER, BARBARIAN, \
     ANIMAL_PREFERENCE, RESOURCE_PREFERENCE, TURN
+from die.dieClass import Die
 
 
 class PlayerMat(models.Model):
@@ -43,6 +44,84 @@ class PlayerMat(models.Model):
         # to be added: logic to confirm if player has Royal Chambers etc
         return TURN[self.game.current_turn]['no_choices']
 
+    def add_resource(self, die_tuple):
+        """
+        Match the resource to the column and add to value
+        :param tuple die_tuple: (resource, count) ex: (WOOD, 2)
+        :return:
+        """
+        self.__dict__[die_tuple[0]] += die_tuple[1]
+        self.save()
+
+    def remove_resource(self, resource, count=1):
+        """
+        Match resource to column and remove count, default 1
+        :param resource:
+        :param count:
+        :return:
+        """
+        self.__dict__[resource] -= count
+        self.save()
+
+    def reset_turn_based(self):
+        self.has_porkchopped = False
+        self.has_first_gathered = False
+        self.has_farmered = False
+        self.choice_dice = False
+        self.save()
+
+        try:
+            barbarians = self.playermatresourcepeople_set.get(type=BARBARIAN)
+            barbarians.clear_all()
+        except self.DoesNotExist:
+            # no barbarians to clear
+            pass
+
+    def current_hand_size(self):
+        return len(self.player_hand)
+
+    def update_rolled_dice(self, dice_list):
+        # take in a list of dice, if barbarian, add to playerResourcePeople
+        # if regular resource, add to game world pool
+        # for die in dice_list:
+        #     if
+        pass
+
+    def has_max_animal(self, animal):
+        """
+        Given an animal, query the related players.  If any have value
+        greater than or equal to current player, returns False.  Else True.
+        :param str animal: CastleDice constant
+        :return: whether this player has the most of that animal
+        :rtype: bool
+        """
+        kwargs = {animal+"__gte": self.__dict__[animal]}
+        if self.game.playermat_set.filter(**kwargs).exclude(id=self.id):
+            return False
+        return True
+
+    def go_to_market(self, count=1, max=False):
+
+        # can go to market as many times as the least animal
+        max_market = min(self.cows, self.chickens, self.horses, self.pigs)
+        if max_market == 0:
+            return
+
+        # go to market for count, or max
+        pass
+
+    def roll_choice_dice(self):
+        rolled_dice = Die.roll_die_list(self.choice_dice)
+
+        for resource_type, die_face_list in rolled_dice.items():
+            for die_face in die_face_list:
+                if Die.is_barbarian(die_face):
+                    barbarians = self.playermatresourcepeople_set.get_or_create(
+                        type=BARBARIAN)[0]
+                    barbarians.add_resource(resource_type)
+
+        return rolled_dice
+
 
 class JoanPlayerMat(PlayerMat):
     resource_choices = (
@@ -54,6 +133,11 @@ class JoanPlayerMat(PlayerMat):
                                         blank=True,
                                         null=True,
                                         choices=resource_choices)
+
+    def reset_turn_based(self):
+        self.primary_resource = None
+        self.save()
+        super(JoanPlayerMat, self).reset_turn_based()
 
 
 class PlayerMatResourcePeople(models.Model):
@@ -74,6 +158,22 @@ class PlayerMatResourcePeople(models.Model):
 
     class Meta:
         unique_together = (("player_mat", "type"),)
+
+    def clear_all(self):
+        # should only be done on barbarian rows
+        for resource in list(RESOURCE_PREFERENCE) + ['total']:
+            self.__dict__[resource] = 0
+        self.save()
+
+    def remove_resource(self, resource, count=1):
+        self.__dict__[resource] -= count
+        self.total -= count
+        self.save()
+
+    def add_resource(self, resource, count=1):
+        self.__dict__[resource] += count
+        self.total += count
+        self.save()
 
 
 class PlayerBuilt(models.Model):
