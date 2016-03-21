@@ -17,8 +17,8 @@ class Game(models.Model):
                                        null=True)
     current_turn = models.PositiveSmallIntegerField(default=1)
     current_phase = models.PositiveSmallIntegerField(default=1)
-    choice_dice = JSONField(blank=True, null=True)
-    gather_dice = JSONField(blank=True, null=True)
+    choice_dice = JSONField(blank=True, null=True, default=[])
+    gather_dice = JSONField(blank=True, null=True, default={})
     true_porkchop_used = models.BooleanField(default=False)
 
     def setup_choice_dice_for_turn(self):
@@ -125,6 +125,8 @@ class Game(models.Model):
         return self.playermat_set.get(id=self.current_player)
 
     def add_dice_to_world(self, die_dict):
+        if not self.gather_dice:
+            self.gather_dice = {}
         for resource_type, die_faces_list in die_dict.items():
-            self.gather_dice[resource_type] = self.gather_dice.get(resource_type, []) + [die_faces_list]
+            self.gather_dice[resource_type] = self.gather_dice.get(resource_type, []) + die_faces_list
         self.save()
