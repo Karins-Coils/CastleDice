@@ -75,9 +75,9 @@ class RadioImgWidget(widgets.RadioSelect):
                         )
                     die_face[0] = force_text(die_face[0])
                     output.append(format_html(
-                        '<label{0}><input{1} /> <img class="die {2} {3}_{4} mid"> {5}</label>',
+                        '<label{0}><input{1} /> <img class="die {2} {3}_{4} mid"></label>',
                         label_for, flatatt(final_attrs), option_value,
-                        die_face[0], die_face[1], die_face[0].capitalize())
+                        die_face[0], die_face[1])
                     )
             else:
                 # ('wood', 'wood')
@@ -94,7 +94,7 @@ class RadioImgWidget(widgets.RadioSelect):
                     final_attrs['value'] = force_text(option_value)
                 option_label = force_text(option_label)
                 output.append(format_html(
-                    '<label{0}><input{1} /> <img class="die {2} mid"> {3}</label>',
+                    '<label{0}><input{1} /> <img class="die {2} mid"></label>',
                     label_for, flatatt(final_attrs), option_value,
                     option_label)
                 )
