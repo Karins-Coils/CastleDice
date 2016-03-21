@@ -103,29 +103,21 @@ class GatherDiceView(FormView):
 
     def dispatch(self, request, *args, **kwargs):
         # fetch turn_no from url
-        if kwargs['game_id']:
-            self.game_id = int(kwargs['game_id'])
-        if kwargs['turn_no']:
-            self.turn_no = int(kwargs['turn_no'])
-        # if kwargs['round_no']:
-            # self.round_no = int(kwargs['round_no'])
+        self.game = Game.objects.get(id=int(kwargs['game_id']))
         return super(GatherDiceView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         # attach turn_no to form vars
         kwargs = super(GatherDiceView, self).get_form_kwargs()
-        if self.game_id:
-            kwargs['initial']['game_id'] = self.game_id
-        if self.turn_no:
-            kwargs['initial']['turn_no'] = self.turn_no
+        kwargs['initial']['game_id'] = self.game.id
+        kwargs['initial']['turn_no'] = self.game.current_turn
 
         return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(GatherDiceView, self).get_context_data(**kwargs)
-        context["game_id"] = self.game_id
-        context["turn_no"] = self.turn_no
-        # context["round_no"] = self.round_no
+        context["game_id"] = self.game.id
+        context["turn_no"] = self.game.current_turn
 
         return context
 
@@ -134,15 +126,11 @@ class GatherDiceView(FormView):
         user = self.request.user
 
         # retrieve player mat if available, else make new one
-        try:
-            player_mat = PlayerMat.objects.get(game=game_obj, user=user)
-        except PlayerMat.DoesNotExist:
-            player_mat = PlayerMat(game=game_obj, user=user)
+        player_mat = PlayerMat.objects.get(game=game_obj, player=user)
 
         # remove user gathered die from the world_pool
         data = form.cleaned_data
         # store user gathered die in playermat dice_rolled
-
 
         game_obj.save()
         player_mat.save()
@@ -151,5 +139,4 @@ class GatherDiceView(FormView):
     def get_success_url(self):
         return reverse('gatherdice', kwargs={
             'game_id': int(self.kwargs['game_id']),
-            'turn_no': int(self.kwargs['turn_no']),
         })
