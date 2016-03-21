@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from common.globals import BARN, JOAN, TURN, \
     RESOURCE_PREFERENCE, ANIMAL_PREFERENCE, GATHER_PREFERENCE
 from die.dieClass import Die
+from game.models import Game
+from playermat.models import JoanPlayerMat
 
 """
 Joan is a simplistic AI built for solo play.  She uses a dice to determine
@@ -42,7 +44,7 @@ class JoanAI(object):
 
         """
         choice_dice = []
-        #roll Joan die to determine her choice
+        # roll Joan die to determine her choice
 
         append_count = 1
         while True:
@@ -163,3 +165,45 @@ class JoanAI(object):
                                        email="joan@karinscoils.com")
         # 'u' is a tuple, User object is index 0
         return u[0]
+
+
+class JoanActions(object):
+
+    @classmethod
+    def execute(cls, game_obj):
+        """
+
+        :param Game game_obj:
+        :return:
+        """
+        joan_playermat = JoanPlayerMat(game=game_obj,
+                                       player=JoanAI.get_user_joan())
+
+        if game_obj.current_phase == 3:
+            cls.phase_three(game_obj, joan_playermat)
+        elif game_obj.current_phase == 5:
+            cls.phase_five(game_obj, joan_playermat)
+        elif game_obj.current_phase == 6:
+            cls.phase_six(game_obj, joan_playermat)
+
+    # choose dice
+    @staticmethod
+    def phase_three(game_obj, joan_playermat):
+        joan_playermat.choice_dice += JoanAI.choose_dice(game_obj.current_turn,
+                                                         game_obj.choice_dice)
+        joan_playermat.primary_resource = \
+            JoanAI.determine_primary_resource(joan_playermat.choice_dice)
+        joan_playermat.save()
+
+    # gather dice
+    @staticmethod
+    def phase_five(game_obj, joan_playermat):
+        resource_tuple = JoanAI.gather_die(joan_playermat.primary_resource,
+                                           game_obj.gather_dice)
+        joan_playermat.add_resource(resource_tuple)
+
+    # go to market
+    @staticmethod
+    def phase_six(game_obj, joan_playermat):
+        if game_obj.current_turn in [3, 5, 7]:
+            joan_playermat.go_to_market(max=True)
