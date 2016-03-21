@@ -102,5 +102,4 @@ class ContinueGameView(TemplateView):
         context = super(ContinueGameView, self).get_context_data(**kwargs)
         context["game_id"] = int(self.kwargs["game_id"])
         game_obj = Game.objects.get(pk=int(self.kwargs["game_id"]))
-        context["game_turn"] = game_obj.turn_no
         return context
