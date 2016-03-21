@@ -75,7 +75,7 @@ class RadioImgWidget(widgets.RadioSelect):
                         )
                     die_face[0] = force_text(die_face[0])
                     output.append(format_html(
-                        '<label{0}><input{1} /> <img class="die_{2} {3}x{4} mid"> {5}</label><br>',
+                        '<label{0}><input{1} /> <img class="die {2} {3}_{4} mid"> {5}</label>',
                         label_for, flatatt(final_attrs), option_value,
                         die_face[0], die_face[1], die_face[0].capitalize())
                     )
@@ -87,14 +87,14 @@ class RadioImgWidget(widgets.RadioSelect):
                 else:
                     label_for = ''
                 if not (option_value is True or
-                                option_value is False or
-                                option_value is None or
-                                value == ''):
+                        option_value is False or
+                        option_value is None or
+                        value == ''):
                     # Only add the 'value' attribute if a value is non-empty.
                     final_attrs['value'] = force_text(option_value)
                 option_label = force_text(option_label)
                 output.append(format_html(
-                    '<label{0}><input{1} /> <img class="die {2} mid"> {3}</label><br>',
+                    '<label{0}><input{1} /> <img class="die {2} mid"> {3}</label>',
                     label_for, flatatt(final_attrs), option_value,
                     option_label)
                 )
@@ -154,13 +154,19 @@ class GatherDiceForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(GatherDiceForm, self).__init__(*args, **kwargs)
-        game_obj = Game.objects.get(pk=kwargs['initial']['game_id'])
+        game_obj = Game.objects.get(id=kwargs['initial']['game_id'])
 
         self.fields['dice_pool'].choices = tuple(
-            (str(str(k) + "_" + str(t[0]) + "_" + str(t[1])),
-             str(str(t[1])+ " " + str(t[0]).capitalize()))
-            for k, l in game_obj.world_pool.items()
-            for t in l
+            ("{resource} {face}_{count}".format(
+                resource=resource,
+                face=die_face_tuple[0],
+                count=die_face_tuple[1]),
+             "{count} {face}".format(
+                 count=die_face_tuple[1],
+                 face=die_face_tuple[0].capitalize())
+            )
+            for resource, dice_face_list in game_obj.gather_dice.items()
+            for die_face_tuple in dice_face_list
         )
 
         # self.fields['dice_pool'].choices = [
