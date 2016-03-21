@@ -43,6 +43,15 @@ class Die:
             print d.resource + ": " + str(d.roll_die())
 
     @staticmethod
+    def roll_die_list(die_list):
+        rolled_dice = {}
+        for d in die_list:
+            rolled_d = Die(d).roll_die()
+            rolled_dice[d] = rolled_dice.get(d, []) + [rolled_d]
+
+        return rolled_dice
+
+    @staticmethod
     def roll_and_total_dice(die_set):
         r_rolled = {}
         for d in die_set:
