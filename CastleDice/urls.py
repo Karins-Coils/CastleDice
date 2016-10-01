@@ -1,5 +1,6 @@
 from django.conf.urls import include, url
-from game.views import HomeView, ChooseGameView, ContinueGameView, NewGameView
+from game.views import HomeView, ChooseGameView, ContinueGameView,\
+    NewGameView, PlayOrderView
 from die.views import ChooseDiceView, RollDiceView, GatherDiceView
 #, ChooseDiceForm, RollDiceView
 
@@ -19,6 +20,10 @@ urlpatterns = [
     url(r'^start$', ChooseGameView.as_view(), name='start'),
     url(r'^game_(?P<game_id>\d+)/start', NewGameView.as_view(), name="newgame"),
     url(r'^game_(?P<game_id>\d+)/continue', ContinueGameView.as_view(), name="continuegame"),
+
+    # player order of Turn
+    url(r'^game_(?P<game_id>\d+)/player_order$',
+        PlayOrderView.as_view(), name="player_order"),
 
     # choose phase of game
     url(r'^game_(?P<game_id>\d+)/choose$',

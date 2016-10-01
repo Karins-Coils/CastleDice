@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
+
 from game.forms import ChooseGameForm
 from game.models import Game
-from playermat.models import PlayerMat
 from game.solo_ai import JoanAI
+from playermat.models import PlayerMat
 
 
 class HomeView(TemplateView):
@@ -110,4 +111,20 @@ class ContinueGameView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ContinueGameView, self).get_context_data(**kwargs)
         context["game_id"] = int(self.kwargs["game_id"])
+        return context
+
+
+class PlayOrderView(TemplateView):
+    template_name = "player_order.html"
+    # if not solo + turn = 1 + current_player not set, players must roll
+    # else, call game.determine_player_order + display for round
+
+    def get_context_data(self, **kwargs):
+        game = Game.objects.get(id=kwargs['game_id'])
+        playermats = game.playermat_set.all().order_by('player_order')
+
+        context = super(PlayOrderView, self).get_context_data(**kwargs)
+        context['game_id'] = kwargs['game_id']
+        context['players'] = [User.objects.get(id=playermat.player_id)
+                              for playermat in playermats]
         return context

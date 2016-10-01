@@ -6,5 +6,5 @@
     {% else %}
         <p>Resuming game with id {{ game_id }} </p>
     {% endif %}
-    <p><a href="{% url 'choosedice' game_id=game_id %}">Turn {{ game_turn }} - Choose Dice</a></p>
+    <p><a href="{% url 'player_order' game_id=game_id %}">View Player Order</a></p>
 {%  endblock %}

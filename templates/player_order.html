@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <p>The current Turn's player order is:</p>
+    <ul>
+        {% for player in players %}
+            <li>{{ player.username }}</li>
+        {% endfor %}
+    </ul>
+    <p><a href="{% url 'choosedice' game_id=game_id %}">Turn {{ game_turn }} - Choose Dice</a></p>
+{%  endblock %}
