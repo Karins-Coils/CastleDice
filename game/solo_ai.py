@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from common.globals import BARN, JOAN, TURN, \
     RESOURCE_PREFERENCE, ANIMAL_PREFERENCE, GATHER_PREFERENCE
 from die.dieClass import Die
-from game.models import Game
 from playermat.models import JoanPlayerMat
 
 """
@@ -173,7 +172,7 @@ class JoanActions(object):
     def execute(cls, game_obj):
         """
 
-        :param Game game_obj:
+        :param game.models.Game game_obj:
         :return:
         """
         joan_playermat = JoanPlayerMat(game=game_obj,
