@@ -18,8 +18,8 @@ urlpatterns = [
 
     # choose/start a game
     url(r'^start$', ChooseGameView.as_view(), name='start'),
-    url(r'^game_(?P<game_id>\d+)/start', NewGameView.as_view(), name="newgame"),
-    url(r'^game_(?P<game_id>\d+)/continue', ContinueGameView.as_view(), name="continuegame"),
+    url(r'^game_(?P<game_id>\d+)/start', NewGameView.as_view(), name="new_game"),
+    url(r'^game_(?P<game_id>\d+)/continue', ContinueGameView.as_view(), name="continue_game"),
 
     # player order of Turn
     url(r'^game_(?P<game_id>\d+)/player_order$',
@@ -27,15 +27,15 @@ urlpatterns = [
 
     # choose phase of game
     url(r'^game_(?P<game_id>\d+)/choose$',
-        ChooseDiceView.as_view(), name="choosedice"),
+        ChooseDiceView.as_view(), name="choose_dice"),
 
     # roll phase of game
     url(r'^game_(?P<game_id>\d+)/rolled$',
-        RollDiceView.as_view(), name="rolldice"),
+        RollDiceView.as_view(), name="roll_dice"),
 
     # gather phase of game
     url(r'^game_(?P<game_id>\d+)/gather$',
-        GatherDiceView.as_view(), name="gatherdice"),
+        GatherDiceView.as_view(), name="gather_dice"),
 
     url(r'^porkchop/', include(admin.site.urls)),
 ]

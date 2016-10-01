@@ -62,7 +62,7 @@ class ChooseDiceView(FormView):
         return super(ChooseDiceView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('rolldice', kwargs={
+        return reverse('roll_dice', kwargs={
             'game_id': int(self.kwargs['game_id']),
             # 'turn_no': int(self.kwargs['turn_no']),
         })
@@ -137,6 +137,6 @@ class GatherDiceView(FormView):
         return super(GatherDiceView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('gatherdice', kwargs={
+        return reverse('gather_dice', kwargs={
             'game_id': int(self.kwargs['game_id']),
         })

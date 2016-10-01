@@ -63,11 +63,11 @@ class ChooseGameView(FormView):
     def get_success_url(self):
         # get current turn from db or '1'
         if self.game_type is "new":
-            return reverse('newgame', kwargs={'game_id': self.game_obj.id})
+            return reverse('new_game', kwargs={'game_id': self.game_obj.id})
         else:
-            return reverse('continuegame', kwargs={'game_id': self.game_obj.id})
+            return reverse('continue_game', kwargs={'game_id': self.game_obj.id})
 
-        # return reverse('choosedice', kwargs={'turn_no': 1})
+        # return reverse('choose_dice', kwargs={'turn_no': 1})
 
 
 class NewGameView(TemplateView):

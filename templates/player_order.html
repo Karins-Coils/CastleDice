@@ -7,5 +7,5 @@
             <li>{{ player.username }}</li>
         {% endfor %}
     </ul>
-    <p><a href="{% url 'choosedice' game_id=game_id %}">Turn {{ game_turn }} - Choose Dice</a></p>
+    <p><a href="{% url 'choose_dice' game_id=game_id %}">Turn {{ game_turn }} - Choose Dice</a></p>
 {%  endblock %}
