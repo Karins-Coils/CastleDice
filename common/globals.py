@@ -106,16 +106,26 @@ TURN = {
 
 # -- Phase Descriptions -- #
 PHASE = {
-    1:  "Determine who goes first",  # Horse
-    2:  "Choose & Draw cards in order (clockwise)",  # Draw phase, Chicken
-    3:  "Players pick Choice dice (clockwise)",  # Choose, Cow
-    4:  "All dice are rolled; World Formed",  # World Pool
-    5:  "Gather resources in order until gone (clockwise)",  # Gather, Pig
-    6:  "Go to Market (clockwise)",  # Market
-    7:  "Workers Produce",  # Workers
-    8:  "Merchants Work",  # Merchants
-    9:  "Build",  # Build
-    10: "Barbarians Raid"  # Barbarians
+    # Horse
+    1:  ("Player Order", "Determine who goes first"),
+    # Draw phase, Chicken
+    2:  ("Choose Cards", "Choose & Draw cards in order (clockwise)"),
+    # Choose, Cow
+    3:  ("Choose Dice", "Players pick Choice dice (clockwise)"),
+    # World Pool
+    4:  ("Roll Dice", "All dice are rolled; World Formed"),
+    # Gather, Pig
+    5:  ("Gather Dice", "Gather resources in order until gone (clockwise)"),
+    # Market
+    6:  ("Go to Market", "Go to Market (clockwise)"),
+    # Workers
+    7:  ("Workers Produce", "Workers Produce"),
+    # Merchants
+    8:  ("Merchants Trade", "Merchants Trade"),
+    # Build
+    9:  ("Build", "Build"),
+    # Barbarians
+    10: ("Barbarians Raid", "Barbarians Raid")
 }
 
 # easier/cleaner to have the dict be turn['given_dice'][#] ?
