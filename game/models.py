@@ -1,8 +1,10 @@
-from collections import defaultdict
+import random
 
 from annoying.fields import JSONField
 from django.contrib.auth.models import User
 from django.db import models
+
+from game.solo_ai import JoanAI
 
 from common.dice import DICE_COUNT
 from common.cards import GAME_DECK_NAMES
@@ -84,42 +86,44 @@ class Game(models.Model):
         self.save()
 
     def determine_player_order(self):
+        playermats = self.playermat_set.all().order_by('id')
+        playermats_list = list(playermats)
+        max_horses = self.playermat_set.all().aggregate(
+            models.Max('horses')).items()[0][1]
+        max_horse_players = self.playermat_set.filter(horses=max_horses)
+
         # first turn, no player order set yet, no horses
-        if self.turn == 1:
-            initial_order = 1
-            for playermat in self.playermat_set.all().order_by('id'):
-                # initial turn, just go clockwise
-                playermat.player_order = initial_order
-                playermat.save()
-                initial_order += 1
-            return
+        # this is ok for INITIAL drat but should be updated to dice rolling to
+        # match game rules expectation
+        if self.current_turn == 1:
+            if self.is_solo_game:
+                ai_idx = playermats_list.index(JoanAI.get_user_joan())
+                player_one_idx = int(not ai_idx)
+            else:
+                player_one_idx = playermats_list.index(random.choice(playermats))
 
         # check for clear max_horses
-        max_horses = self.playermat_set.all().order_by('-horses')[0]
-        if max_horses > 0 and \
-                self.playermat_set.filter(horses=max_horses).count() == 1:
-            player_one = self.playermat_set.get(horses=max_horses)
-            player_one_idx = None
-            for idx, playermat in enumerate(self.playermat_set.order_by('id')):
-                if playermat.id == player_one.id:
-                    player_one_idx = idx
-                    break
+        elif max_horse_players.count() == 1:
+            player_one = max_horse_players[0]
+            player_one_idx = playermats_list.index(player_one)
 
-            initial_order = 1
-            for idx in [range(player_one_idx, self.playermat_set.all().count())] + [range(0, player_one_idx)]:
-                playermat = self.playermat_set.order_by('id')[idx]
-                playermat.player_order = initial_order
-                playermat.save()
-                initial_order += 1
-            return
+        else:
+            # no max horses, simply increment the player_order
+            player_one = playermats.get(player_order=2)
+            player_one_idx = playermats_list.index(player_one)
 
-        # no max horses, simply increment the player_order
-        for playermat in self.playermat_set.all().order_by('player_order'):
-            if playermat.player_order == self.playermat_set.count():
-                playermat.player_order = 1
-            else:
-                playermat.player_order += 1
+        # reorder playermats so that player_one_idx is first, but still
+        # 'incremental' ids
+        reordered_mats = playermats[player_one_idx:] + \
+            playermats[:player_one_idx]
+
+        initial_order = 1
+        for playermat in reordered_mats:
+            # initial turn, just go clockwise
+            playermat.player_order = initial_order
             playermat.save()
+            initial_order += 1
+        return
 
     def get_current_player_playermat(self):
         return self.playermat_set.get(id=self.current_player)
