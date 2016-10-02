@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from game.views import HomeView, ChooseGameView, ContinueGameView,\
-    NewGameView, PlayOrderView
+    NewGameView, PlayOrderView, WaitingView, PassPhaseView
 from die.views import ChooseDiceView, RollDiceView, GatherDiceView
 #, ChooseDiceForm, RollDiceView
 
@@ -36,6 +36,14 @@ urlpatterns = [
     # gather phase of game
     url(r'^game_(?P<game_id>\d+)/gather$',
         GatherDiceView.as_view(), name="gather_dice"),
+
+    # wait for other player during game
+    url(r'^game_(?P<game_id>\d+)/waiting$',
+        WaitingView.as_view(), name='waiting'),
+
+    # pass view, to temporary advance through missing phases
+    url(r'^game_(?P<game_id>\d+)/pass_phase',
+        PassPhaseView.as_view(), name='pass_phase'),
 
     url(r'^porkchop/', include(admin.site.urls)),
 ]

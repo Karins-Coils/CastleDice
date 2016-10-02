@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.views.generic.base import TemplateView
+from django.shortcuts import redirect
+from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.edit import FormView
 
 from game.forms import ChooseGameForm
@@ -115,6 +116,22 @@ class ContinueGameView(TemplateView):
         return context
 
 
+class WaitingView(TemplateView):
+    template_name = "waiting.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        game = Game.objects.get(id=kwargs["game_id"])
+        if not Switcher.is_player_waiting(game, self.request.user):
+            return redirect('home', permanent=False)
+        return super(WaitingView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+
+        context = super(WaitingView, self).get_context_data(**kwargs)
+        context['game_id'] = kwargs['game_id']
+        return context
+
+
 class PlayOrderView(TemplateView):
     template_name = "player_order.html"
     # if not solo + turn = 1 + current_player not set, players must roll
@@ -135,3 +152,19 @@ class PlayOrderView(TemplateView):
         context['players'] = [User.objects.get(id=playermat.player_id)
                               for playermat in playermats]
         return context
+
+
+class PassPhaseView(RedirectView):
+    """
+    A temporary view to allow the phases to be advanced when some don't exist
+    """
+    permanent = False
+    pattern_name = "waiting"
+
+    def get_redirect_url(self, *args, **kwargs):
+        game = Game.objects.get(id=kwargs['game_id'])
+        if Switcher.is_unbuilt_phase(game):
+            Switcher.initiate_next_phase(game)
+
+        self.pattern_name = Switcher.send_player_to_view(game, self.request.user)
+        return super(PassPhaseView, self).get_redirect_url(*args, **kwargs)

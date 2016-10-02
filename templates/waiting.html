@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <p>
+            <a href="{% url 'waiting' game_id=game_id %}">Check waiting</a>
+        </p>
+    {% else %}
+        <p>
+            Please <a href="{% url 'account_signup' %}">register</a> or <a href="{% url 'account_login' %}">login</a>.
+        </p>
+    {% endif %}
+
+{%  endblock %}
