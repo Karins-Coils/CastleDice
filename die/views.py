@@ -18,17 +18,20 @@ class ChooseDiceView(FormView):
     def dispatch(self, request, *args, **kwargs):
         game = Game.objects.get(id=kwargs['game_id'])
 
-        # if GET, setup choice dice for the first time, if empty
-        if request.method == "GET":
-            game.setup_choice_dice_for_turn()
-
-        request.game_id = game.id
-        self.turn_no = game.current_turn
+        self.game = game
 
         return super(ChooseDiceView, self).dispatch(request, *args, **kwargs)
 
+    # on initial load/request - blank form
+    def get(self, request, *args, **kwargs):
+        # setup choice dice for the first time, if empty
+        self.game.setup_choice_dice_for_turn()
+        self.turn_no = self.game.current_turn
+
+        return super(ChooseDiceView, self).get(request, *args, **kwargs)
+
     def get_form_kwargs(self):
-        game = Game.objects.get(id=self.request.game_id)
+        game = self.game
         playermat = PlayerMat.objects.get(player=self.request.user, game=game)
 
         # attach turn_no to form vars
@@ -44,6 +47,7 @@ class ChooseDiceView(FormView):
         context["cur_turn"] = self.turn_no
         return context
 
+    # on submission
     def form_valid(self, form):
         # game = self.request.game
         game = Game.objects.get(id=int(self.kwargs['game_id']))
