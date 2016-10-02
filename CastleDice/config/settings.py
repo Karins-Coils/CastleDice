@@ -43,7 +43,6 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
 
-    'deck',
     'die',
     'game',
     'playermat'
