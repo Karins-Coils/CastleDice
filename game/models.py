@@ -71,17 +71,17 @@ class Game(models.Model):
         """
         # get the current player's order
         current_player_order = self.playermat_set.get(
-            player=self.current_player)
+            player=self.current_player).player_order
 
         # if the player_order is equal to the total number of players,
         # go back to the first player
         if current_player_order == self.playermat_set.count():
-            self.current_player = self.playermat_set.get(player_order=1)
+            self.current_player = self.playermat_set.get(player_order=1).player
 
         # else get the player with the next highest player_order
         else:
             self.current_player = self.playermat_set.get(
-                player_order=current_player_order+1)
+                player_order=current_player_order + 1).player
 
         self.save()
 
