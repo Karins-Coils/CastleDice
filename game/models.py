@@ -7,7 +7,6 @@ from django.db import models
 from game.solo_ai import JoanAI
 
 from common.dice import DICE_COUNT
-from common.cards import GAME_DECK_NAMES
 from common.globals import TURN
 
 
