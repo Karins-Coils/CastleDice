@@ -6,7 +6,7 @@ from django.views.generic.edit import FormView
 from game.forms import ChooseGameForm
 from game.models import Game
 from game.solo_ai import JoanAI
-from playermat.models import PlayerMat
+from playermat.models import PlayerMat, JoanPlayerMat
 
 
 class HomeView(TemplateView):
@@ -51,7 +51,7 @@ class ChooseGameView(FormView):
             new_player_mat.save()
 
             if new_game.is_solo_game:
-                joan_playermat = PlayerMat(player=JoanAI.get_user_joan(),
+                joan_playermat = JoanPlayerMat(player=JoanAI.get_user_joan(),
                                            game=new_game)
                 joan_playermat.save()
 
