@@ -2,3 +2,4 @@
 .Python
 venv
 staticfiles
+.django-env.json

@@ -1,0 +1,4 @@
+{
+  "DJANGO_SECRET_KEY": "you will never guess my secret...",
+  "DATABASE_URL": "postgres://user:password@127.0.0.1:8458/database"
+}
