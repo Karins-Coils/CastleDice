@@ -6,6 +6,7 @@ from django.views.generic.edit import FormView
 from game.forms import ChooseGameForm
 from game.models import Game
 from game.solo_ai import JoanAI
+from game.switcher import Switcher
 from playermat.models import PlayerMat, JoanPlayerMat
 
 
@@ -121,6 +122,12 @@ class PlayOrderView(TemplateView):
 
     def get_context_data(self, **kwargs):
         game = Game.objects.get(id=kwargs['game_id'])
+
+        # confirm we are in phase 1 still
+        if game.current_phase == 1:
+            game.determine_player_order()
+            Switcher.initiate_next_phase(game)
+
         playermats = game.playermat_set.all().order_by('player_order')
 
         context = super(PlayOrderView, self).get_context_data(**kwargs)

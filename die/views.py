@@ -1,4 +1,5 @@
 from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
@@ -6,6 +7,7 @@ from common.globals import TURN
 from die.forms import ChooseDiceForm, GatherDiceForm
 from dieClass import Die
 from game.models import Game
+from game.switcher import Switcher
 from playermat.models import PlayerMat
 
 
@@ -17,6 +19,11 @@ class ChooseDiceView(FormView):
 
     def dispatch(self, request, *args, **kwargs):
         game = Game.objects.get(id=kwargs['game_id'])
+
+        # confirm that we are on phase 3, else redirect to current phase
+        if game.current_phase != 3:
+            view_name = Switcher.send_player_to_view(game, request.user)
+            return redirect(view_name, game_id=game.id, permanent=False)
 
         self.game = game
 
@@ -75,6 +82,15 @@ class ChooseDiceView(FormView):
 class RollDiceView(TemplateView):
     template_name = "rolldice.html"
 
+    def get(self, request, *args, **kwargs):
+        game = Game.objects.get(id=kwargs['game_id'])
+
+        # confirm that we are on phase 4, else redirect to current phase
+        if game.current_phase != 4:
+            view_name = Switcher.send_player_to_view(game, request.user)
+            return redirect(view_name, game_id=game.id, permanent=False)
+        return super(RollDiceView, self).get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         # add error checking for getting game/user
         game_obj = Game.objects.get(pk=int(self.kwargs['game_id']))
@@ -108,6 +124,11 @@ class GatherDiceView(FormView):
     def dispatch(self, request, *args, **kwargs):
         # fetch turn_no from url
         self.game = Game.objects.get(id=int(kwargs['game_id']))
+        # confirm that we are on phase 5, else redirect to current phase
+        if self.game.current_phase != 5:
+            view_name = Switcher.send_player_to_view(self.game, request.user)
+            return redirect(view_name, game_id=self.game.id, permanent=False)
+
         return super(GatherDiceView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
