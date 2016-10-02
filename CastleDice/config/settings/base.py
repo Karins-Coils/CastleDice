@@ -48,8 +48,7 @@ def get_env_var(var, default=None):
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'jr6q)wn0l3ix#9_$rg^ifuel#nxg$v!r+l+#$df7c%(ahv+j!g'
+SECRET_KEY = get_env_var('DJANGO_SECRET_KEY')
 
 ALLOWED_HOSTS = []
 
