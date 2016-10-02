@@ -58,7 +58,7 @@ class Game(models.Model):
         # custom logic to check if all players have had their turn
         # or other conditions met (gathered all dice, etc)
         self.current_phase += 1
-        self.current_player = self.playermat_set.get(player_order=1)
+        self.current_player = self.playermat_set.get(player_order=1).player
 
         self.save()
 
@@ -97,7 +97,8 @@ class Game(models.Model):
         # match game rules expectation
         if self.current_turn == 1:
             if self.is_solo_game:
-                ai_idx = playermats_list.index(JoanAI.get_user_joan())
+                ai_playermat = playermats.get(player=JoanAI.get_user_joan())
+                ai_idx = playermats_list.index(ai_playermat)
                 player_one_idx = int(not ai_idx)
             else:
                 player_one_idx = playermats_list.index(random.choice(playermats))
