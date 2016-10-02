@@ -12,6 +12,8 @@ import os
 import json
 from unipath import Path
 
+from django.core.exceptions import ImproperlyConfigured
+
 # assumes .django-env.json exists in the same folder as this settings file
 ENV_FILE = Path(__file__).ancestor(1).child('.django-env.json')
 BASE_DIR = Path(__file__).ancestor(3)
@@ -23,7 +25,7 @@ def get_env_var(var, default=None):
     :param str|unicode var:
     :param default:
     :return: either the retrieved value from the env or file, or the default
-    :raises KeyError:
+    :raises ImproperlyConfigured:
         if the key is not found in either place, and no default is passed
     """
     env_value = None
@@ -39,9 +41,9 @@ def get_env_var(var, default=None):
 
     # still no value, and no default value
     if env_value is None and default is None:
-        raise KeyError("The environment variable {} was not found in "
-                       "the environment, nor in {}.".format(var, ENV_FILE))
-
+        error_msg = "The environment variable {} was not found in the " \
+                    "environment, nor in {}.".format(var, ENV_FILE)
+        raise ImproperlyConfigured(error_msg)
     return env_value if env_value is not None else default
 
 
