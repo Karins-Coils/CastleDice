@@ -8,10 +8,42 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import os
+import json
 from unipath import Path
 
+# assumes .django-env.json exists in the same folder as this settings file
+ENV_FILE = Path(__file__).ancestor(1).child('.django-env.json')
 BASE_DIR = Path(__file__).ancestor(3)
+
+
+def get_env_var(var, default=None):
+    """
+    Retrieve the variable from the Environment, or a specified env file
+    :param str|unicode var:
+    :param default:
+    :return: either the retrieved value from the env or file, or the default
+    :raises KeyError:
+        if the key is not found in either place, and no default is passed
+    """
+    env_value = None
+
+    # try loading the env file and getting it from there
+    try:
+        with open(ENV_FILE) as f:
+            environs = json.loads(f.read())
+            env_value = environs.get(var)
+    except IOError, ValueError:
+        # if it wasn't there, try loading directly from the ENV
+        env_value = os.environ.get(var)
+
+    # still no value, and no default value
+    if env_value is None and default is None:
+        raise KeyError("The environment variable {} was not found in "
+                       "the environment, nor in {}.".format(var, ENV_FILE))
+
+    return env_value if env_value is not None else default
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
