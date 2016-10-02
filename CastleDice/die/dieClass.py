@@ -33,14 +33,14 @@ class Die:
     def roll_die(self):
         roll = random.randint(0, 5)
         if self.debug:
-            print "rolled " + str(roll) + "\n"
+            print("rolled " + str(roll) + "\n")
         resource, count = self.sides[roll]
         return resource, count
 
     @staticmethod
     def roll_multiple_die(die_set):
         for d in die_set:
-            print d.resource + ": " + str(d.roll_die())
+            print(d.resource + ": " + str(d.roll_die()))
 
     @staticmethod
     def roll_die_list(die_list):
@@ -56,12 +56,12 @@ class Die:
         r_rolled = {}
         for d in die_set:
             r, count = d.roll_die()
-            print d.resource + " die: " + str(count) + " " + r
+            print(d.resource + " die: " + str(count) + " " + r)
             if r in r_rolled:
                 r_rolled[r] += count
             else:
                 r_rolled[r] = count
-        print r_rolled
+        print(r_rolled)
 
     @staticmethod
     def total_dice(rolled_die):
