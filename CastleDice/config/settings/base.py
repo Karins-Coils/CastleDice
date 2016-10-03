@@ -35,7 +35,7 @@ def get_env_var(var, default=None):
         with open(ENV_FILE) as f:
             environs = json.loads(f.read())
             env_value = environs.get(var)
-    except IOError, ValueError:
+    except (IOError, ValueError):
         # if it wasn't there, try loading directly from the ENV
         env_value = os.environ.get(var)
 
