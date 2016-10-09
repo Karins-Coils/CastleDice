@@ -150,7 +150,7 @@ class PlayerMatResourcePeople(models.Model):
     )
 
     player_mat = models.ForeignKey(PlayerMat)
-    type = models.CharField(max_length='12', choices=TYPE_CHOICES)
+    type = models.CharField(max_length=12, choices=TYPE_CHOICES)
     total = models.PositiveSmallIntegerField(default=0)
     wood = models.PositiveSmallIntegerField(default=0)
     stone = models.PositiveSmallIntegerField(default=0)
