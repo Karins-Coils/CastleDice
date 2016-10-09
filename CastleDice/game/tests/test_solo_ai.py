@@ -46,14 +46,14 @@ class TestJoanAI(unittest.TestCase):
         }
 
     def test_determine_primary_resource(self):
-        test_list = [WOOD, WOOD, IRON, LAND, STONE, STONE, LAND, STONE]
-        self.assertEqual(JoanAI.determine_primary_resource(test_list), STONE)
+        test_dict = {WOOD: 2, IRON: 1, LAND: 2, STONE: 3}
+        self.assertEqual(JoanAI.determine_primary_resource(test_dict), STONE)
 
-        test_list = [WOOD, WOOD, IRON, LAND, STONE, STONE]
-        self.assertEqual(JoanAI.determine_primary_resource(test_list), STONE)
+        test_dict = {WOOD: 2, IRON: 1, LAND: 1, STONE: 2}
+        self.assertEqual(JoanAI.determine_primary_resource(test_dict), STONE)
 
-        test_list = [WOOD, WOOD, IRON, LAND, STONE, STONE, LAND]
-        self.assertEqual(JoanAI.determine_primary_resource(test_list), LAND)
+        test_dict = {WOOD: 2, IRON: 1, LAND: 2, STONE: 2}
+        self.assertEqual(JoanAI.determine_primary_resource(test_dict), LAND)
 
     def test_gather_dice(self):
         self.assertEqual(JoanAI.gather_die(WOOD, self.pool1), (WOOD, 3))
