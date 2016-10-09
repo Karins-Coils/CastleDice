@@ -126,7 +126,7 @@ class Game(models.Model):
         return
 
     def get_current_player_playermat(self):
-        return self.playermat_set.get(id=self.current_player)
+        return self.playermat_set.get(player=self.current_player)
 
     def add_dice_to_world(self, die_dict):
         if not self.gather_dice:
