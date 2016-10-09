@@ -175,7 +175,7 @@ class JoanActions(object):
         :param game.models.Game game_obj:
         :return:
         """
-        joan_playermat = JoanPlayerMat.objects.get_or_create(game=game_obj)
+        joan_playermat = JoanPlayerMat.objects.get_or_create(game=game_obj)[0]
 
         if game_obj.current_phase == 3:
             cls.phase_three(game_obj, joan_playermat)
