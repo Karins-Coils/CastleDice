@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='playermatresourcepeople',
             name='type',
-            field=models.CharField(max_length=b'12', choices=[(b'guard', b'guard'), (b'worker', b'worker'), (b'barbarian', b'barbarian')]),
+            field=models.CharField(max_length=12, choices=[(b'guard', b'guard'), (b'worker', b'worker'), (b'barbarian', b'barbarian')]),
         ),
         migrations.AlterUniqueTogether(
             name='playermatresourcepeople',

@@ -27,6 +27,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='playermatresourcepeople',
             name='type',
-            field=models.CharField(max_length=b'12', choices=[(b'Guard', b'Guard'), (b'Worker', b'Worker'), (b'Barbarian', b'Barbarian')]),
+            field=models.CharField(max_length=12, choices=[(b'Guard', b'Guard'), (b'Worker', b'Worker'), (b'Barbarian', b'Barbarian')]),
         ),
     ]

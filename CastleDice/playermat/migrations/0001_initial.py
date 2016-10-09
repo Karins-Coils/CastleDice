@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
             name='PlayerMatResourcePeople',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('type', models.CharField(max_length=b'12', choices=[(b'guard', b'guard'), (b'worker', b'worker'), (b'barbarian', b'barbarian')])),
+                ('type', models.CharField(max_length=12, choices=[(b'guard', b'guard'), (b'worker', b'worker'), (b'barbarian', b'barbarian')])),
                 ('total', models.PositiveSmallIntegerField(default=0)),
                 ('wood', models.PositiveSmallIntegerField(default=0)),
                 ('stone', models.PositiveSmallIntegerField(default=0)),
