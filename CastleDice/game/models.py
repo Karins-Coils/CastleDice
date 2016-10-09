@@ -88,7 +88,7 @@ class Game(models.Model):
         playermats = self.playermat_set.all().order_by('id')
         playermats_list = list(playermats)
         max_horses = self.playermat_set.all().aggregate(
-            models.Max('horses')).items()[0][1]
+            models.Max('horses'))['horses__max']
         max_horse_players = self.playermat_set.filter(horses=max_horses)
 
         # first turn, no player order set yet, no horses
