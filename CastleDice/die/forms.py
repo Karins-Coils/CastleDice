@@ -130,7 +130,7 @@ class ChooseDiceForm(forms.Form):
 
     def make_choices_from_dict(self, die_count_dict):
         d_list = [
-            key for key, value in die_count_dict.iteritems()
+            key for key, value in die_count_dict.items()
             for i in range(0, value)
         ]
 

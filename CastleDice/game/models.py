@@ -36,7 +36,7 @@ class Game(models.Model):
         # subtract the already claimed dice from the remaining pool
         total_dice = {
             resource: value - (given_dice.get(resource, 0) * player_count)
-            for resource, value in DICE_COUNT.iteritems()
+            for resource, value in DICE_COUNT.items()
         }
         self.choice_dice = total_dice
         self.save()
