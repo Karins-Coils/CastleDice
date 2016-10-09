@@ -70,6 +70,7 @@ class ChooseDiceView(FormView):
                                  for x in range(1, number_choice_die+1)]
 
         playermat.save()
+        Switcher.advance_round_player(game)
         return super(ChooseDiceView, self).form_valid(form)
 
     def get_success_url(self):
