@@ -5,7 +5,7 @@ from django.views.generic.edit import FormView
 
 from common.globals import TURN
 from die.forms import ChooseDiceForm, GatherDiceForm
-from dieClass import Die
+from die.dieClass import Die
 from game.models import Game
 from game.switcher import Switcher
 from playermat.models import PlayerMat
