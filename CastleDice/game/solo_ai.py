@@ -127,7 +127,7 @@ class JoanAI(object):
                     return primary_choices[0]
 
     @staticmethod
-    def determine_primary_resource(dice_list):
+    def determine_primary_resource(dice_dict):
         """Take in a given choice dice list, and return Joan's primary resource
 
         Creates a list tuples, (type, count) based on dice_list, then finds the
@@ -137,8 +137,8 @@ class JoanAI(object):
         index)
 
         Args:
-            dice_list: list of dice, only uses the die type
-                ex: [WOOD, WOOD, IRON, LAND]
+            dice_dict: dict of dice counts, only uses the die type
+                ex: {WOOD: 3, IRON: 1, LAND: 2}
 
         Returns:
             the string & die type/primary resource
@@ -149,7 +149,7 @@ class JoanAI(object):
         return max(
             # this creates a generator for one tuple, rather than a full list
             # memory saving.  Thanks erich!
-            ((x, dice_list.count(x)) for x in set(dice_list)),
+            dice_dict.items(),
             key=lambda t: (t[1], -RESOURCE_PREFERENCE.index(t[0]))
         )[0]
 
@@ -187,8 +187,13 @@ class JoanActions(object):
     # choose dice
     @staticmethod
     def phase_three(game_obj, joan_playermat):
-        joan_playermat.choice_dice += JoanAI.choose_dice(game_obj.current_turn,
-                                                         game_obj.choice_dice)
+        new_choices = JoanAI.choose_dice(game_obj.current_turn,
+                                         game_obj.choice_dice)
+
+        for choice in new_choices:
+            joan_playermat.choice_dice[choice] = \
+                joan_playermat.choice_dice.get(choice, 0) + 1
+
         joan_playermat.primary_resource = \
             JoanAI.determine_primary_resource(joan_playermat.choice_dice)
         joan_playermat.save()
