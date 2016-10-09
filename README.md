@@ -79,3 +79,11 @@ python manage.py runserver --settings config.settings.local
 ```
 
 You can now access the website at `localhost:8000`
+
+## Run tests
+
+Be sure to add tests to any code you add, and update tests if you make changes
+
+```
+python manage.py test --settings config.settings.local
+```
