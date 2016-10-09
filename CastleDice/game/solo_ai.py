@@ -50,7 +50,7 @@ class JoanAI(object):
             die = Die(JOAN).roll_die()[0]
             if die is not BARN:
                 # append the non-Barn
-                choice_dice += [die for i in xrange(0, append_count)]
+                choice_dice += [die for i in range(0, append_count)]
                 # decrement the pool count, to keep track locally
                 pool_count_dict[die] -= append_count
                 append_count = 1
