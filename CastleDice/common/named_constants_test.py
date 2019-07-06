@@ -37,6 +37,12 @@ class ObjectType(FigConstants):
     CompoundEnd = -6
 
 
+class StringConstant(Constants):
+    A = 'apple'
+    B = 'banana'
+    C = 'carrot'
+
+
 class Tests(unittest.TestCase):
     def _confirm_assertions(self, assertions):
         """
@@ -120,7 +126,6 @@ class Tests(unittest.TestCase):
 
     def test_methods(self):
         named_int = _named_types.get(int)
-        named_str = _named_types.get(str)
         assertions = [
             # (actual, expected)
             (isinstance(Colors.values()[0], named_int), True),
@@ -141,3 +146,51 @@ class Tests(unittest.TestCase):
         ]
 
         self._confirm_assertions(assertions)
+
+    def test_flexible_key_lookup(self):
+        assertions = [
+            # (actual, expected)
+            (Colors('yellow', case_sensitive=False), Colors.yellow),
+            (Colors('Yellow', case_sensitive=False), Colors.yellow),
+            (Colors('YELLOW', case_sensitive=False), Colors.yellow),
+            (MyConstants('boilerplate', case_sensitive=False), MyConstants.BOILERPLATE),
+            (MyConstants('Boilerplate', case_sensitive=False), MyConstants.BOILERPLATE),
+            (MyConstants('BOILERPLATE', case_sensitive=False), MyConstants.BOILERPLATE),
+        ]
+        self._confirm_assertions(assertions)
+
+    def test_non_flexible_key_lookup(self):
+        tests = [
+            (Colors, 'Yellow'),
+            (Colors, 'YELLOW'),
+            (MyConstants, 'boilerplate'),
+            (MyConstants, 'Boilerplate'),
+        ]
+
+        for cls, arg in tests:
+            with self.assertRaises(ValueError):
+                cls(arg)
+
+    def test_flexible_value_lookup(self):
+        assertions = [
+            (StringConstant('apple'), StringConstant.A),
+            (StringConstant('apple', case_sensitive=False), StringConstant.A),
+            (StringConstant('Apple', case_sensitive=False), StringConstant.A),
+            (StringConstant('APPLE', case_sensitive=False), StringConstant.A),
+
+            # should be a no-op with number values
+            (Colors(0), Colors.red),
+            (Colors(0, case_sensitive=False), Colors.red),
+        ]
+
+        self._confirm_assertions(assertions)
+
+    def test_non_flexible_value_lookup(self):
+        tests = [
+            (StringConstant, 'APPLE'),
+            (StringConstant, 'Apple'),
+        ]
+
+        for cls, arg in tests:
+            with self.assertRaises(ValueError):
+                cls(arg)
