@@ -12,15 +12,17 @@ __all__ = [
 ]
 
 
+_named_types = {}
+
+
 class _ConstantsMeta(type):
-    __named_types = {}
 
     @classmethod
     def named_value(mcs, typ):
         """Returns a 'NamedTyp' class derived from the given 'typ'.
         The results are cached, i.e. given the same type, the same
         class will be returned in subsequent calls."""
-        const = mcs.__named_types.get(typ, None)
+        const = _named_types.get(typ, None)
 
         if const is None:
 
@@ -65,7 +67,7 @@ The name is also available via a `name()` method.""".lstrip(),
             new_type_name = 'Named' + typ_name[0].upper() + typ_name[1:]
             const = type(new_type_name, (typ, ), dct)
 
-            mcs.__named_types[typ] = const
+            _named_types[typ] = const
 
         return const
 

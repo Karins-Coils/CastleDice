@@ -1,6 +1,7 @@
 import unittest
 
 from .named_constants import Constants
+from .named_constants import _named_types
 
 
 class MyConstants(Constants):
@@ -43,9 +44,13 @@ class Tests(unittest.TestCase):
         """
         for idx, assertion in enumerate(assertions):
             actual, expected = assertion
-            self.assertEqual(actual,
-                             expected,
+            self.assertEqual(expected,
+                             actual,
                              msg=f"assertion #{idx} failed")
+
+    def test_assignment_error(self):
+        with self.assertRaises(TypeError):
+            Colors.black = None
 
     def test_ObjectType_has_methods(self):
         assertions = [
@@ -91,10 +96,6 @@ class Tests(unittest.TestCase):
         ]
         self._confirm_assertions(assertions)
 
-    def test_assignment_error(self):
-        with self.assertRaises(TypeError):
-            Colors.black = None
-
     def test_MyConstants(self):
         assertions = [
             # (actual, expected)
@@ -108,6 +109,7 @@ class Tests(unittest.TestCase):
 
     def test_dictness(self):
         assertions = [
+            # (actual, expected)
             (len(Colors), 5),
             (Colors.values() == list(range(5)) == list(Colors), True),
             (Colors.keys(), ['red', 'yellow', 'green', 'blue', 'white']),
@@ -115,5 +117,27 @@ class Tests(unittest.TestCase):
         ]
 
         self._confirm_assertions(assertions)
-        print(MyConstants.values())
-        # print(MyConstants.__reverse__)
+
+    def test_methods(self):
+        named_int = _named_types.get(int)
+        named_str = _named_types.get(str)
+        assertions = [
+            # (actual, expected)
+            (isinstance(Colors.values()[0], named_int), True),
+            (isinstance(Colors.values()[0], int), True),  # NamedInt is a subtype of int
+            (isinstance(Colors.bare_values()[0], named_int), False),
+            (isinstance(Colors.bare_values()[0], int), True),
+
+            # key in the tuple - str
+            (isinstance(Colors.items()[0][0], str), True),
+            (isinstance(Colors.bare_items()[0][0], str), True),
+
+            # value in the tuple - int
+            (isinstance(Colors.items()[0][1], named_int), True),
+            (isinstance(Colors.items()[0][1], int), True),  # NamedInt is a subtype of int
+
+            (isinstance(Colors.bare_items()[0][1], named_int), False),
+            (isinstance(Colors.bare_items()[0][1], int), True),
+        ]
+
+        self._confirm_assertions(assertions)
