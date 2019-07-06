@@ -1,3 +1,16 @@
+# CastleDice _Revamped_
+
+I started this project many years ago, back in the days when python 3 was less popular, and I was
+less experienced.  I've been thinking about it recently, and decided to start from scratch, as many
+pieces were tangled and confusing, and severely lacking tests.
+
+Welcome to the revamp - an exclusively python 3 endeavor to convert one of my favorite board games,
+**Castle Dice**, into a multi-player web application built in Django.  This is a labor of love and
+has no definite end date in mind.  Merely a constant attempt to one day reach the finish line...
+
+The below instructions will change and be updated as this project is transitioned.  I do not
+promise their accuracy nor their usability.  Chunks will be updated piece-meal as I get to them.
+
 # CastleDice Project
 
 This repo is my attempt to convert a beloved board game into a multi-player web app using Django.
