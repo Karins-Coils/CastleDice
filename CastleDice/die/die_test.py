@@ -13,23 +13,32 @@ from .die import _Die
 from .die import _DieSide
 from ..common import DieFaces
 from ..common import JOAN
+from ..common import Resources
 
 
 class DieTest(unittest.TestCase):
     def test_die_lookup(self):
         die_types = [
             # (resource, die)
-            (DieFaces.WOOD, WoodDie),
-            (DieFaces.STONE, StoneDie),
-            (DieFaces.GOLD, GoldDie),
-            (DieFaces.LAND, LandDie),
-            (DieFaces.IRON, IronDie),
+            (Resources.WOOD, WoodDie),
+            (Resources.STONE, StoneDie),
+            (Resources.GOLD, GoldDie),
+            (Resources.LAND, LandDie),
+            (Resources.IRON, IronDie),
         ]
 
         for resource, die_type in die_types:
-            self.assertTrue(
-                isinstance(Die(resource), die_type)
-            )
+            die = Die(resource)
+            self.assertTrue(isinstance(die, die_type))
+            self.assertEqual(die.type(), resource)
+
+    def test_die_lookup_with_rolled_value(self):
+        die = Die(Resources.WOOD, DieFaces.BARBARIAN, 1)
+
+        self.assertEqual(die.type(), Resources.WOOD)
+        self.assertIsNotNone(die.value)
+        self.assertEqual(die.value.resource, DieFaces.BARBARIAN)
+        self.assertEqual(die.value.amount, 1)
 
     def test_die_lookup_uknown_type(self):
         with self.assertRaises(TypeError):

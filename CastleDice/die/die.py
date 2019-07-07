@@ -1,7 +1,9 @@
 import random
 
 from ..common import DieFaces
+from ..common import JOAN
 from ..common import JoanDieFaces
+from ..common import Resources
 
 __all__ = [
     'Die',
@@ -63,6 +65,7 @@ class _DieSide(object):
 
 class _Die(object):
     """Non-importable base class.  Should NEVER be used without inheriting and setting _sides"""
+    _type = None
     _sides = ()
     _rolled_side = None
 
@@ -78,6 +81,13 @@ class _Die(object):
                 raise InvalidDieSideError()
 
         self._rolled_side = value
+
+    @classmethod
+    def type(cls):
+        """
+        :return (common.Resources):
+        """
+        return cls._type
 
     def _find_side(self, resource, amount):
         """Locates the first side in Die's _sides that matches parameters
@@ -139,6 +149,7 @@ class _Die(object):
 
 
 class WoodDie(_Die):
+    _type = Resources.WOOD
     _sides = (
         _DieSide(DieFaces.WOOD, 1),
         _DieSide(DieFaces.WOOD, 1),
@@ -150,6 +161,7 @@ class WoodDie(_Die):
 
 
 class StoneDie(_Die):
+    _type = Resources.STONE
     _sides = (
         _DieSide(DieFaces.STONE, 1),
         _DieSide(DieFaces.STONE, 1),
@@ -161,6 +173,7 @@ class StoneDie(_Die):
 
 
 class GoldDie(_Die):
+    _type = Resources.GOLD
     _sides = (
         _DieSide(DieFaces.GOLD, 1),
         _DieSide(DieFaces.GOLD, 1),
@@ -172,6 +185,7 @@ class GoldDie(_Die):
 
 
 class LandDie(_Die):
+    _type = Resources.LAND
     _sides = (
         _DieSide(DieFaces.LAND, 1),
         _DieSide(DieFaces.LAND, 1),
@@ -183,6 +197,7 @@ class LandDie(_Die):
 
 
 class IronDie(_Die):
+    _type = Resources.IRON
     _sides = (
         _DieSide(DieFaces.IRON, 1),
         _DieSide(DieFaces.IRON, 2),
@@ -194,6 +209,7 @@ class IronDie(_Die):
 
 
 class JoanDie(_Die):
+    _type = JOAN
     _sides = (
         _DieSide(JoanDieFaces.WOOD, 1),
         _DieSide(JoanDieFaces.STONE, 1),
@@ -215,8 +231,8 @@ class Die(object):
         DieFaces.IRON: IronDie,
     }
 
-    def __new__(self, die_type):
+    def __new__(self, die_type, resource=None, amount=None):
         if die_type in self.die_map:
-            return self.die_map[die_type]()
+            return self.die_map[die_type](resource, amount)
 
         raise TypeError("Unknown resource type, could not find die")
