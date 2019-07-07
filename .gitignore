@@ -1,4 +1,8 @@
+# Files in any directory:
+*#*
+*~
 *.pyc
+.DS_Store
 .Python
 venv
 staticfiles

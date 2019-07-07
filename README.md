@@ -33,20 +33,28 @@ This code is written and tested for use with **Python3**.
 
 If on Mac, install and start Postgres.app, and add `:/Applications/Postgres.app/Contents/Versions/latest/bin` to PATH
 
-I recommend virtualenv or virtualenvwrapper.
-```
-virtualenv --python=python3 venv
+I recommend virtualenv, especially utilized by [pyenv](https://github.com/pyenv/pyenv#homebrew-on-macos).
+
+Confirm you have the right version of python3 installed.
+
+```bash
+pyenv install 3.7.3
 ```
 
-Then activate your virtualenv
+Setup the local pyenv for this project.
 
+```bash
+pyenv virtualenv 3.7.3 cd_revamp
 ```
-source venv/bin/activate
+
+Then set that pyenv as your default env for this directory.
+```bash
+pyenv local cd_revamp
 ```
 
 Install the package requirements
 
-```
+```bash
 pip install -r requirements/local.txt
 ```
 
