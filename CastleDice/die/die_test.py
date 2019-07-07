@@ -1,15 +1,18 @@
 import unittest
 
-from ..common import DieFaces
-from .die import _Die
-from .die import _DieSide
 from .die import Die
+from .die import DieAlreadyRolledError
 from .die import GoldDie
+from .die import InvalidDieSideError
 from .die import IronDie
 from .die import JoanDie
 from .die import LandDie
 from .die import StoneDie
 from .die import WoodDie
+from .die import _Die
+from .die import _DieSide
+from ..common import DieFaces
+from ..common import JOAN
 
 
 class DieTest(unittest.TestCase):
@@ -27,6 +30,10 @@ class DieTest(unittest.TestCase):
             self.assertTrue(
                 isinstance(Die(resource), die_type)
             )
+
+    def test_die_lookup_uknown_type(self):
+        with self.assertRaises(TypeError):
+            Die(JOAN)
 
     def test_die_lookup_has_die_functions(self):
         wood_die = Die(DieFaces.WOOD)
@@ -53,15 +60,42 @@ class _DieTest(unittest.TestCase):
         sides += (None, None)
         self.assertNotEqual(wood_die.sides(), sides)
 
-    def test_roll(self):
-        result = JoanDie.roll()
+    def test_initialized_with_value(self):
+        land_die = LandDie(DieFaces.LAND, 1)
+        self.assertEqual(land_die.value.resource, DieFaces.LAND)
+        self.assertEqual(land_die.value.amount, 1)
 
-        self.assertIn(result, JoanDie.sides())
+    def test_initialized_with_bad_value(self):
+        with self.assertRaises(InvalidDieSideError):
+            IronDie(DieFaces.STONE, 1)
+
+    def test_roll(self):
+        joan_die = JoanDie()
+        result = joan_die.roll()
+
+        self.assertIn(result, joan_die.sides())
+        self.assertEqual(result, joan_die.value)
 
         # confirm the resource is a DieFace, and knows its name
         self.assertTrue(isinstance(result, _DieSide))
         self.assertTrue(isinstance(result.resource.name, str))
         self.assertTrue(isinstance(result.amount, int))
+
+    def test_roll_prevents_reroll(self):
+        joan_die = JoanDie()
+        result = joan_die.roll()
+
+        with self.assertRaises(DieAlreadyRolledError):
+            joan_die.roll()
+
+    def test_reroll_resets_value(self):
+        stone_die = StoneDie()
+        stone_die.roll()
+
+        # second roll should NOT raise an error
+        self.assertTrue(stone_die.reroll())
+
+        # cannot compare two rolls are different reliably, as 1 in 6 times they would be equal
 
 
 class _DieSideTest(unittest.TestCase):
