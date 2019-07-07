@@ -1,4 +1,5 @@
 from .base_classes import BaseCard
+from .base_classes import BuildPhaseMixin
 from .base_classes import GatherPhaseMixin
 from .base_classes import NoBuildMixin
 from .base_classes import NoDescriptionMixin
@@ -39,7 +40,7 @@ class Soldier(
 
 
 class Worker(
-    GatherPhaseMixin,
+    BuildPhaseMixin,
     NoDescriptionMixin,
     NoOngoingMixin,
     NormalDiscardMixin,
@@ -68,7 +69,7 @@ class Worker(
 
 
 class Farmer(
-    GatherPhaseMixin,
+    BuildPhaseMixin,
     NoDescriptionMixin,
     NoOngoingMixin,
     NormalDiscardMixin,
@@ -84,6 +85,118 @@ class Farmer(
             ResourceCost(Resources.WOOD, 2),
             ResourceCost(Resources.LAND, 1),
         )
+
+    def is_playable(self):
+        # if current phase is playable phase return True
+        raise NotImplementedError()
+
+    def play(self):
+        # confirm is_playable
+        # reroll player's barbarians
+        # keep any that were barbarians again
+        raise NotImplementedError()
+
+
+class Guard(
+    BuildPhaseMixin,
+    NoDescriptionMixin,
+    NoOngoingMixin,
+    NormalDiscardMixin,
+    NoScoreMixin,
+    VillagerDeckMixin,
+    BaseCard
+):
+    _constant = VillagerCards.GUARD
+
+    @property
+    def build_cost(self):
+        return (
+            ResourceCost(Resources.WOOD, 2),
+        )
+
+    def is_playable(self):
+        # if current phase is playable phase return True
+        raise NotImplementedError()
+
+    def play(self):
+        # confirm is_playable
+        # reroll player's barbarians
+        # keep any that were barbarians again
+        raise NotImplementedError()
+
+
+class Merchant(
+    BuildPhaseMixin,
+    NoBuildMixin,
+    NoDescriptionMixin,
+    NoOngoingMixin,
+    NormalDiscardMixin,
+    NoScoreMixin,
+    VillagerDeckMixin,
+    BaseCard
+):
+    _constant = VillagerCards.MERCHANT
+
+    @property
+    def build_cost(self):
+        return (
+            ResourceCost(Resources.GOLD, 2),
+        )
+
+    def is_playable(self):
+        # if current phase is playable phase return True
+        raise NotImplementedError()
+
+    def play(self):
+        # confirm is_playable
+        # reroll player's barbarians
+        # keep any that were barbarians again
+        raise NotImplementedError()
+
+
+class KingsMessenger(
+    GatherPhaseMixin,
+    NoBuildMixin,
+    NoOngoingMixin,
+    NormalDiscardMixin,
+    NoScoreMixin,
+    VillagerDeckMixin,
+    BaseCard
+):
+    _constant = VillagerCards.KINGS_MESSENGER
+
+    @property
+    def description(self):
+        return "Play instead of gathering. The next player chooses a Villager type that you " \
+               "have room for.  You get that one for free!"
+
+    def is_playable(self):
+        # if current phase is playable phase return True
+        raise NotImplementedError()
+
+    def play(self):
+        # confirm is_playable
+        # reroll player's barbarians
+        # keep any that were barbarians again
+        raise NotImplementedError()
+
+
+class WiseGrandfather(
+    GatherPhaseMixin,
+    NoBuildMixin,
+    NoOngoingMixin,
+    NormalDiscardMixin,
+    NoScoreMixin,
+    VillagerDeckMixin,
+    BaseCard
+):
+    _constant = VillagerCards.WISE_GRANDFATHER
+
+    @property
+    def description(self):
+        return "Play before you gather.  Gather one extra time this round. After you've " \
+               "collected resources from both of your gatherings, roll those two dice back " \
+               "into the world pool."
 
     def is_playable(self):
         # if current phase is playable phase return True
