@@ -34,12 +34,20 @@ class BaseCard(metaclass=abc.ABCMeta):
     # --- read only public class attributes --- #
     @property
     def card_id(self):
-        """Used for serialization purposes"""
+        """
+        Used for serialization purposes
+
+        :return str:
+        """
         return self._constant.value
 
     @property
     def name(self):
-        """Human readable name of card"""
+        """
+        Human readable name of card
+
+        :return str:
+        """
 
         # convert name from snake_case to spaces and title case
         return self._constant.name.replace('_', ' ').title()
@@ -53,7 +61,10 @@ class BaseCard(metaclass=abc.ABCMeta):
     @property
     @abc.abstractmethod
     def description(self):
-        """Human readable description of card"""
+        """Human readable description of card
+
+        :return str:
+        """
 
     @property
     @abc.abstractmethod
@@ -61,6 +72,8 @@ class BaseCard(metaclass=abc.ABCMeta):
         """
         Phase in which this card can be used - will be used as a precondition check in
         self.is_playable
+
+        :return common.Phases:
         """
 
     @property
@@ -68,19 +81,26 @@ class BaseCard(metaclass=abc.ABCMeta):
     def ongoing_phase(self):
         """
         Phase in which any ongoing special effects can be enacted
+
+        :return common.Phases:
         """
 
     @property
     @abc.abstractmethod
     def deck_type(self):
-        """Deck in which this card belongs - Castle, Villager, Market, etc"""
+        """
+        Deck in which this card belongs - Castle, Villager, Market, etc
+
+        :return common.DeckNames:
+        """
 
     @property
     @abc.abstractmethod
     def victory_points(self):
         """
-        (optional)
         Victory Points this card gives, if any - will be used when calling self.score
+
+        :return int:
         """
 
     @property
@@ -88,6 +108,7 @@ class BaseCard(metaclass=abc.ABCMeta):
     def build_cost(self):
         """
         List of resources required to build this card
+
         :return tuple(ResourceCost):
         """
 
