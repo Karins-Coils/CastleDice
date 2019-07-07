@@ -8,7 +8,9 @@ __all__ = [
     'DeckNames',
     'DieFaces',
     'JoanDieFaces',
+    'Phases',
     'Resources',
+    'Turns',
     'Villagers',
     'JOAN',
     'JOAN_GATHER_PREFERENCE',
@@ -106,6 +108,37 @@ class DeckNames(Constants):
     CASTLE = _Globals.CASTLE.value
     MARKET = _Globals.MARKET.value
     VILLAGER = _Globals.VILLAGER.value
+
+
+class Phases(Constants):
+    """
+    These attributes do not stem from _Globals, as their explicit numbers are needed for
+    ordering and display
+    """
+    ORDER = 1
+    DRAW = 2
+    CHOOSE = 3
+    ROLL = 4
+    GATHER = 5
+    MARKET = 6
+    WORKERS = 7
+    MERCHANTS = 8
+    BUILD = 9
+    BARBARIANS = 10
+
+
+class Turns(Constants):
+    """
+    These attributes do not stem from _Globals, as their explicit numbers are needed for
+    ordering and display
+    """
+    FIRST = 1
+    SECOND = 2
+    THIRD = 3
+    FOURTH = 4
+    FIFTH = 5
+    SIXTH = 6
+    SEVENTH = 7
 
 
 # -- SOLO Play constants -- #
