@@ -63,8 +63,8 @@ class Worker(
 
     def play(self):
         # confirm is_playable
-        # reroll player's barbarians
-        # keep any that were barbarians again
+        # subtract build materials
+        # add worker to player's set of villagers
         raise NotImplementedError()
 
 
@@ -92,8 +92,8 @@ class Farmer(
 
     def play(self):
         # confirm is_playable
-        # reroll player's barbarians
-        # keep any that were barbarians again
+        # subtract build materials
+        # add farmer to player's set of villagers
         raise NotImplementedError()
 
 
@@ -120,8 +120,8 @@ class Guard(
 
     def play(self):
         # confirm is_playable
-        # reroll player's barbarians
-        # keep any that were barbarians again
+        # subtract build materials
+        # add guardian to player's set of villagers
         raise NotImplementedError()
 
 
@@ -149,8 +149,8 @@ class Merchant(
 
     def play(self):
         # confirm is_playable
-        # reroll player's barbarians
-        # keep any that were barbarians again
+        # subtract build materials
+        # add merchant to player's set of villagers
         raise NotImplementedError()
 
 
@@ -176,8 +176,9 @@ class KingsMessenger(
 
     def play(self):
         # confirm is_playable
-        # reroll player's barbarians
-        # keep any that were barbarians again
+        # Skip gather phase this round
+        # v1, pick a villager at random and add to player's set of villagers.  (true for solo play)
+        # v2, setup player interaction
         raise NotImplementedError()
 
 
@@ -204,6 +205,8 @@ class WiseGrandfather(
 
     def play(self):
         # confirm is_playable
-        # reroll player's barbarians
-        # keep any that were barbarians again
+        # allow the player 2 gathers this round
+        # collect those resources
+        # reroll the dice
+        # add those die + resources back to world pool
         raise NotImplementedError()
