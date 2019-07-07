@@ -1,8 +1,8 @@
 from django import forms
 from django.forms import widgets
 
-from common.dice import DICE_COUNT
-from game.models import Game
+from ..common.dice import DICE_COUNT
+from ..game.models import Game
 # I want to remove the above resources as LISTED things.
 # should not need to know, ever
 
@@ -10,7 +10,7 @@ from itertools import chain
 from django.utils.encoding import force_text
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
-from django.forms.util import flatatt
+from django.forms.utils import flatatt
 
 
 class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):

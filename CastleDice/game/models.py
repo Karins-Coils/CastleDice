@@ -4,15 +4,16 @@ from annoying.fields import JSONField
 from django.contrib.auth.models import User
 from django.db import models
 
-from game.solo_ai import JoanAI
+from .solo_ai import JoanAI
 
-from common.dice import DICE_COUNT
-from common.globals import TURN
+from ..common.dice import DICE_COUNT
+from ..common.globals import TURN
 
 
 class Game(models.Model):
     is_solo_game = models.BooleanField(default=False)
     current_player = models.ForeignKey(User,
+                                       on_delete=models.CASCADE,
                                        related_name='+',
                                        blank=True,
                                        null=True)

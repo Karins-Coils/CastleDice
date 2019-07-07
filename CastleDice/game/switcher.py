@@ -1,6 +1,6 @@
-from game.models import Game
-from playermat.models import PlayerMat
-from game.solo_ai import JoanAI, JoanActions
+from .models import Game
+from .solo_ai import JoanAI, JoanActions
+from ..playermat.models import PlayerMat
 
 
 PHASE_VIEW_MAPPER = {

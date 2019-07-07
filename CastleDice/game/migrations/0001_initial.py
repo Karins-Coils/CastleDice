@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('choice_dice', annoying.fields.JSONField(null=True, blank=True)),
                 ('gather_dice', annoying.fields.JSONField(null=True, blank=True)),
                 ('true_porkchop_used', models.BooleanField(default=False)),
-                ('current_player', models.ForeignKey(related_name='+', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('current_player', models.ForeignKey(related_name='+', on_delete=models.CASCADE, blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
         ),
         migrations.CreateModel(

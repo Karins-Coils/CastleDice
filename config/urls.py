@@ -1,10 +1,11 @@
-from django.conf.urls import include, url
-from game.views import HomeView, ChooseGameView, ContinueGameView,\
+from django.contrib import admin
+from django.urls import include, path
+
+from CastleDice.game.views import HomeView, ChooseGameView, ContinueGameView,\
     NewGameView, PlayOrderView, WaitingView, PassPhaseView
-from die.views import ChooseDiceView, RollDiceView, GatherDiceView
+from CastleDice.die.views import ChooseDiceView, RollDiceView, GatherDiceView
 #, ChooseDiceForm, RollDiceView
 
-from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = [
@@ -12,38 +13,38 @@ urlpatterns = [
     # url(r'^$', 'CastleDice.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^$', HomeView.as_view(), name='home'),
+    path('', HomeView.as_view(), name='home'),
 
-    url(r'^accounts/', include('allauth.urls')),
+    path('accounts/', include('allauth.urls')),
 
     # choose/start a game
-    url(r'^start$', ChooseGameView.as_view(), name='start'),
-    url(r'^game_(?P<game_id>\d+)/start', NewGameView.as_view(), name="new_game"),
-    url(r'^game_(?P<game_id>\d+)/continue', ContinueGameView.as_view(), name="continue_game"),
+    path('start', ChooseGameView.as_view(), name='start'),
+    path('game_<int:game_id>/start', NewGameView.as_view(), name="new_game"),
+    path('game_<int:game_id>/continue', ContinueGameView.as_view(), name="continue_game"),
 
     # player order of Turn
-    url(r'^game_(?P<game_id>\d+)/player_order$',
-        PlayOrderView.as_view(), name="player_order"),
+    path('game_<int:game_id>/player_order',
+         PlayOrderView.as_view(), name="player_order"),
 
     # choose phase of game
-    url(r'^game_(?P<game_id>\d+)/choose$',
-        ChooseDiceView.as_view(), name="choose_dice"),
+    path('game_<int:game_id>/choose',
+         ChooseDiceView.as_view(), name="choose_dice"),
 
     # roll phase of game
-    url(r'^game_(?P<game_id>\d+)/rolled$',
-        RollDiceView.as_view(), name="roll_dice"),
+    path('game_<int:game_id>/rolled',
+         RollDiceView.as_view(), name="roll_dice"),
 
     # gather phase of game
-    url(r'^game_(?P<game_id>\d+)/gather$',
-        GatherDiceView.as_view(), name="gather_dice"),
+    path('game_<int:game_id>/gather',
+         GatherDiceView.as_view(), name="gather_dice"),
 
     # wait for other player during game
-    url(r'^game_(?P<game_id>\d+)/waiting$',
-        WaitingView.as_view(), name='waiting'),
+    path('game_<int:game_id>/waiting',
+         WaitingView.as_view(), name='waiting'),
 
     # pass view, to temporary advance through missing phases
-    url(r'^game_(?P<game_id>\d+)/pass_phase',
-        PassPhaseView.as_view(), name='pass_phase'),
+    path('game_<int:game_id>/pass_phase',
+         PassPhaseView.as_view(), name='pass_phase'),
 
-    url(r'^porkchop/', include(admin.site.urls)),
+    path('porkchop/', admin.site.urls),
 ]

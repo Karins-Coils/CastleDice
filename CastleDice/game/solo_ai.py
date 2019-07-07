@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 
-from common.globals import BARN, JOAN, TURN, \
+from ..common.globals import BARN, JOAN, TURN, \
     RESOURCE_PREFERENCE, ANIMAL_PREFERENCE, GATHER_PREFERENCE
-from die.dieClass import Die
-from playermat.models import JoanPlayerMat
+from ..die.dieClass import Die
+from ..playermat.models import JoanPlayerMat
 
 """
 Joan is a simplistic AI built for solo play.  She uses a dice to determine

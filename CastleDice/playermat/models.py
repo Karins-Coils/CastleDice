@@ -2,14 +2,14 @@ from annoying.fields import JSONField
 from django.contrib.auth.models import User
 from django.db import models
 
-from common.globals import GUARD, WORKER, BARBARIAN, \
+from ..common.globals import GUARD, WORKER, BARBARIAN, \
     ANIMAL_PREFERENCE, RESOURCE_PREFERENCE, TURN
-from die.dieClass import Die
+from ..die.dieClass import Die
 
 
 class PlayerMat(models.Model):
-    player = models.ForeignKey(User)
-    game = models.ForeignKey('game.Game')
+    player = models.ForeignKey(User, on_delete=models.CASCADE)
+    game = models.ForeignKey('game.Game', on_delete=models.CASCADE)
     victory_points = models.PositiveSmallIntegerField(default=0)
     player_hand = JSONField(blank=True, null=True)
     player_merchant_hand = JSONField(blank=True, null=True)
@@ -149,7 +149,7 @@ class PlayerMatResourcePeople(models.Model):
         (BARBARIAN, BARBARIAN)
     )
 
-    player_mat = models.ForeignKey(PlayerMat)
+    player_mat = models.ForeignKey(PlayerMat, on_delete=models.CASCADE)
     type = models.CharField(max_length=12, choices=TYPE_CHOICES)
     total = models.PositiveSmallIntegerField(default=0)
     wood = models.PositiveSmallIntegerField(default=0)
@@ -187,7 +187,7 @@ class PlayerBuilt(models.Model):
     ]
     ANIMAL_CHOICES.append(('', ''))
 
-    player_mat = models.ForeignKey(PlayerMat)
+    player_mat = models.ForeignKey(PlayerMat, on_delete=models.CASCADE)
     card = models.CharField(max_length=52)
     count = models.PositiveSmallIntegerField(default=1)
     adds_animal = models.CharField(max_length=16, choices=ANIMAL_CHOICES)

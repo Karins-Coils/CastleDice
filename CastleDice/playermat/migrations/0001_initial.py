@@ -45,8 +45,8 @@ class Migration(migrations.Migration):
                 ('iron', models.PositiveSmallIntegerField(default=0)),
                 ('merchants', models.PositiveSmallIntegerField(default=0)),
                 ('farmers', models.PositiveSmallIntegerField(default=0)),
-                ('game', models.ForeignKey(to='game.Game')),
-                ('player', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('game', models.ForeignKey(to='game.Game', on_delete=models.CASCADE)),
+                ('player', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
         ),
         migrations.CreateModel(
@@ -60,12 +60,12 @@ class Migration(migrations.Migration):
                 ('gold', models.PositiveSmallIntegerField(default=0)),
                 ('land', models.PositiveSmallIntegerField(default=0)),
                 ('iron', models.PositiveSmallIntegerField(default=0)),
-                ('player_mat', models.ForeignKey(to='playermat.PlayerMat')),
+                ('player_mat', models.ForeignKey(to='playermat.PlayerMat', on_delete=models.CASCADE)),
             ],
         ),
         migrations.AddField(
             model_name='playerbuilt',
             name='player_mat',
-            field=models.ForeignKey(to='playermat.PlayerMat'),
+            field=models.ForeignKey(to='playermat.PlayerMat', on_delete=models.CASCADE),
         ),
     ]

@@ -33,6 +33,12 @@ This code is written and tested for use with **Python3**.
 
 If on Mac, install and start Postgres.app, and add `:/Applications/Postgres.app/Contents/Versions/latest/bin` to PATH
 
+Set the django settings env, so `manage.py` and other commands know which settings file to use.
+
+```bash
+export DJANGO_SETTINGS_MODULE=config.settings.local
+```
+
 I recommend virtualenv, especially utilized by [pyenv](https://github.com/pyenv/pyenv#homebrew-on-macos).
 
 Confirm you have the right version of python3 installed.

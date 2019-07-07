@@ -1,14 +1,14 @@
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.edit import FormView
 
-from game.forms import ChooseGameForm
-from game.models import Game
-from game.solo_ai import JoanAI
-from game.switcher import Switcher
-from playermat.models import PlayerMat, JoanPlayerMat
+from .forms import ChooseGameForm
+from .models import Game
+from .solo_ai import JoanAI
+from .switcher import Switcher
+from ..playermat.models import PlayerMat, JoanPlayerMat
 
 
 class HomeView(TemplateView):

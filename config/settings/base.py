@@ -16,7 +16,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 # assumes .django-env.json exists in the same folder as this settings file
 ENV_FILE = Path(__file__).ancestor(1).child('.django-env.json')
-BASE_DIR = Path(__file__).ancestor(3)
+BASE_DIR = Path(__file__).ancestor(3).child('CastleDice')
 
 
 def get_env_var(var, default=None):
@@ -73,12 +73,12 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
 
-    'die',
-    'game',
-    'playermat',
+    'CastleDice.die',
+    'CastleDice.game',
+    'CastleDice.playermat',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='JoanPlayerMat',
             fields=[
-                ('playermat_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='playermat.PlayerMat')),
+                ('playermat_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='playermat.PlayerMat', on_delete=models.CASCADE)),
                 ('primary_resource', models.CharField(blank=True, max_length=12, null=True, choices=[(b'Iron', b'Iron'), (b'Land', b'Land'), (b'Gold', b'Gold'), (b'Stone', b'Stone'), (b'Wood', b'Wood')])),
             ],
             bases=('playermat.playermat',),

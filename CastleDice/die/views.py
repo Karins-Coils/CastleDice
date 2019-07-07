@@ -1,14 +1,14 @@
-from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
-from common.globals import TURN
-from die.forms import ChooseDiceForm, GatherDiceForm
-from die.dieClass import Die
-from game.models import Game
-from game.switcher import Switcher
-from playermat.models import PlayerMat
+from ..common.globals import TURN
+from .forms import ChooseDiceForm, GatherDiceForm
+from .dieClass import Die
+from ..game.models import Game
+from ..game.switcher import Switcher
+from ..playermat.models import PlayerMat
 
 
 class ChooseDiceView(FormView):
