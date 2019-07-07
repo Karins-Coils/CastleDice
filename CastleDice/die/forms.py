@@ -15,10 +15,11 @@ from django.forms.utils import flatatt
 
 class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
 
-    def render(self, name, value, attrs=None, choices=()):
-        if value is None: value = []
+    def render(self, name, value, attrs=None, choices=(), **kwargs):
+        if value is None:
+            value = []
         has_id = attrs and 'id' in attrs
-        final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs = self.build_attrs(attrs, dict(name=name))
         output = []
         # Normalize to strings
         str_values = set([force_text(v) for v in value])
@@ -38,7 +39,7 @@ class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
                 check_test=lambda value: value in str_values
             )
             option_value = force_text(option_value)
-            rendered_cb = cb.render(name, option_value)
+            rendered_cb = cb.render(name, option_value, **kwargs)
             option_label = force_text(option_label)
             output.append(format_html(
                 '<label{0}>{1} <img class="die {2} mid"></label>',
@@ -49,11 +50,11 @@ class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
 
 
 class RadioImgWidget(widgets.RadioSelect):
-    def render(self, name, value, attrs=None, choices=()):
+    def render(self, name, value, attrs=None, choices=(), **kwargs):
         if value is None:
             value = []
         has_id = attrs and 'id' in attrs
-        final_attrs = self.build_attrs(attrs, name=name, type="radio")
+        final_attrs = self.build_attrs(attrs, dict(name=name, type="radio"))
 
         output = []
         for i, (option_value, option_label) in enumerate(chain(self.choices, choices)):
@@ -70,8 +71,8 @@ class RadioImgWidget(widgets.RadioSelect):
                             not option_value or value == ''):
                         # Only add the 'value' attribute if a value is non-empty.
                         final_attrs['value'] = force_text(
-                            unicode(str(option_value) + "_" + str(die_face[0])
-                            + "_" + str(die_face[1]), "utf-8")
+                            str(option_value) + "_" + str(die_face[0])
+                            + "_" + str(die_face[1])
                         )
                     die_face[0] = force_text(die_face[0])
                     output.append(format_html(
