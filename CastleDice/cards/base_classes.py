@@ -4,6 +4,29 @@ from ..common import DeckNames
 from ..common import Phases
 
 
+class ResourceCost(object):
+    _resource = None
+    _amount = None
+
+    def __init__(self, resource, amount):
+        self._resource = resource
+        self._amount = amount
+
+    @property
+    def resource(self):
+        """
+        :return constants.Resources:
+        """
+        return self._resource
+
+    @property
+    def amount(self):
+        """
+        :return int:
+        """
+        return self._amount
+
+
 class BaseCard(metaclass=abc.ABCMeta):
     # expects constants.VillagerCard, constants.CastleCard, constants.MarketCard, etc
     _constant = None
@@ -64,8 +87,8 @@ class BaseCard(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def build_cost(self):
         """
-        (optional)
         List of resources required to build this card
+        :return tuple(ResourceCost):
         """
 
     # --- public methods --- #
@@ -140,17 +163,23 @@ class VillagerDeckMixin:
         return DeckNames.VILLAGER
 
 
-class NormalDiscard:
+class NormalDiscardMixin:
     # TODO
     def discard(self):
         # remove this card from the player's hand, and put in discard pile
-        pass
+        raise NotImplementedError()
+
+
+class NoDescriptionMixin:
+    @property
+    def description(self):
+        return None
 
 
 class NoBuildMixin:
     @property
     def build_cost(self):
-        return []
+        return ()
 
 
 class NoScoreMixin:

@@ -1,17 +1,28 @@
 import unittest
 
 from .base_classes import BaseCard
+from .base_classes import ResourceCost
 from .base_classes import CastleDeckMixin
 from .base_classes import MarketDeckMixin
 from .base_classes import VillagerDeckMixin
-from .base_classes import NormalDiscard
+from .base_classes import NormalDiscardMixin
 from .base_classes import NoBuildMixin
-from .base_classes import NoScoreMixin
+from .base_classes import NoDescriptionMixin
 from .base_classes import NoOngoingMixin
+from .base_classes import NoScoreMixin
 from .base_classes import GatherPhaseMixin
 from .base_classes import BuildPhaseMixin
 from .base_classes import ChoosePhaseMixin
+from ..common import Resources
 from ..common import VillagerCards
+
+
+class ResourceCostTest(unittest.TestCase):
+    def test_success(self):
+        wood_cost = ResourceCost(Resources.WOOD, 3)
+
+        self.assertEqual(wood_cost.resource, Resources.WOOD)
+        self.assertEqual(wood_cost.amount, 3)
 
 
 class BaseCardTest(unittest.TestCase):
@@ -20,7 +31,7 @@ class BaseCardTest(unittest.TestCase):
             (GatherPhaseMixin, CastleDeckMixin, NoOngoingMixin, NoBuildMixin, NoScoreMixin),
             (BuildPhaseMixin, MarketDeckMixin, NoOngoingMixin, NoBuildMixin, NoScoreMixin),
             (ChoosePhaseMixin, VillagerDeckMixin, NoOngoingMixin, NoBuildMixin, NoScoreMixin),
-            (NoScoreMixin, NormalDiscard),
+            (NoScoreMixin, NormalDiscardMixin, NoDescriptionMixin),
         ]
 
         for parents in parents_tests:
@@ -34,9 +45,10 @@ class BaseCardTest(unittest.TestCase):
         class ImplementedCard(
             GatherPhaseMixin,
             MarketDeckMixin,
-            NoOngoingMixin,
-            NormalDiscard,
+            NormalDiscardMixin,
             NoBuildMixin,
+            NoDescriptionMixin,
+            NoOngoingMixin,
             NoScoreMixin,
             BaseCard
         ):
