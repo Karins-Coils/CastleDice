@@ -11,6 +11,7 @@ from .base_classes import NoOngoingMixin
 from .base_classes import GatherPhaseMixin
 from .base_classes import BuildPhaseMixin
 from .base_classes import ChoosePhaseMixin
+from ..common import VillagerCards
 
 
 class BaseCardTest(unittest.TestCase):
@@ -39,11 +40,7 @@ class BaseCardTest(unittest.TestCase):
             NoScoreMixin,
             BaseCard
         ):
-            def name(self):
-                return "This Card"
-
-            def card_id(self):
-                return 123
+            _constant = VillagerCards.WISE_GRANDFATHER
 
             def description(self):
                 return "Some description"
@@ -55,3 +52,7 @@ class BaseCardTest(unittest.TestCase):
                 return
 
         self.assertTrue(ImplementedCard())
+
+        card = ImplementedCard()
+        self.assertEqual(card.card_id, VillagerCards.WISE_GRANDFATHER)
+        self.assertEqual(card.name, "Wise Grandfather")

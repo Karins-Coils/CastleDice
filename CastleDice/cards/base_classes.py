@@ -5,16 +5,21 @@ from ..common import Phases
 
 
 class BaseCard(metaclass=abc.ABCMeta):
+    # expects constants.VillagerCard, constants.CastleCard, constants.MarketCard, etc
+    _constant = None
+
     # --- read only public class attributes --- #
     @property
-    @abc.abstractmethod
     def card_id(self):
         """Used for serialization purposes"""
+        return self._constant.value
 
     @property
-    @abc.abstractmethod
     def name(self):
         """Human readable name of card"""
+
+        # convert name from snake_case to spaces and title case
+        return self._constant.name.replace('_', ' ').title()
 
     # TODO
     # @property
