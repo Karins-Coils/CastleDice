@@ -1,5 +1,6 @@
 import unittest
 
+from .exceptions import InvalidVillagerCardTypeError
 from .villager_cards import Farmer
 from .villager_cards import Guard
 from .villager_cards import KingsMessenger
@@ -7,8 +8,10 @@ from .villager_cards import Merchant
 from .villager_cards import Soldier
 from .villager_cards import WiseGrandfather
 from .villager_cards import Worker
+from .villager_cards import VillagerCard
 
 from ..common import Phases
+from ..common import VillagerCards
 
 
 class CardTestBase(unittest.TestCase):
@@ -188,3 +191,14 @@ class WorkerTest(CardTestBase):
     @unittest.skip
     def test_is_playable_false(self):
         raise NotImplementedError()
+
+
+class VillagerCardTest(unittest.TestCase):
+    def test_lookup(self):
+        card = VillagerCard(VillagerCards.MERCHANT)
+
+        self.assertEqual(card.card_id, VillagerCards.MERCHANT)
+
+    def test_lookup_error(self):
+        with self.assertRaises(InvalidVillagerCardTypeError):
+            VillagerCard('abc')

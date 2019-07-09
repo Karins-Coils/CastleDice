@@ -1,5 +1,6 @@
 from .base_classes import BaseCard
 from .base_classes import BuildPhaseMixin
+from .base_classes import CardLookupBase
 from .base_classes import GatherPhaseMixin
 from .base_classes import NoBuildMixin
 from .base_classes import NoDescriptionMixin
@@ -8,6 +9,7 @@ from .base_classes import NoScoreMixin
 from .base_classes import NormalDiscardMixin
 from .base_classes import ResourceCost
 from .base_classes import VillagerDeckMixin
+from .exceptions import InvalidVillagerCardTypeError
 from ..common import Resources
 from ..common import VillagerCards
 
@@ -210,3 +212,16 @@ class Worker(
         # subtract build materials
         # add worker to player's set of villagers
         raise NotImplementedError()
+
+
+class VillagerCard(CardLookupBase):
+    card_map = {
+        VillagerCards.SOLDIER: Soldier,
+        VillagerCards.WORKER: Worker,
+        VillagerCards.FARMER: Farmer,
+        VillagerCards.GUARD: Guard,
+        VillagerCards.MERCHANT: Merchant,
+        VillagerCards.KINGS_MESSENGER: KingsMessenger,
+        VillagerCards.WISE_GRANDFATHER: WiseGrandfather,
+    }
+    card_lookup_error = InvalidVillagerCardTypeError
