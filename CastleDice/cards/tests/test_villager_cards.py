@@ -1,17 +1,16 @@
 import unittest
 
-from .exceptions import InvalidVillagerCardTypeError
-from .villager_cards import Farmer
-from .villager_cards import Guard
-from .villager_cards import KingsMessenger
-from .villager_cards import Merchant
-from .villager_cards import Soldier
-from .villager_cards import WiseGrandfather
-from .villager_cards import Worker
-from .villager_cards import VillagerCard
-
-from ..common import Phases
-from ..common import VillagerCards
+from ..exceptions import InvalidVillagerCardTypeError
+from ..villager_cards import Farmer
+from ..villager_cards import Guard
+from ..villager_cards import KingsMessenger
+from ..villager_cards import Merchant
+from ..villager_cards import Soldier
+from ..villager_cards import VillagerCard
+from ..villager_cards import WiseGrandfather
+from ..villager_cards import Worker
+from CastleDice.common import Phases
+from CastleDice.common import VillagerCards
 
 
 class CardTestBase(unittest.TestCase):

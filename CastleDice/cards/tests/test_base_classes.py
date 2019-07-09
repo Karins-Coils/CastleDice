@@ -1,21 +1,21 @@
 import unittest
 
-from .base_classes import BaseCard
-from .base_classes import ResourceCost
-from .base_classes import CastleDeckMixin
-from .base_classes import MarketDeckMixin
-from .base_classes import VillagerDeckMixin
-from .base_classes import NormalDiscardMixin
-from .base_classes import NoBuildMixin
-from .base_classes import NoDescriptionMixin
-from .base_classes import NoOngoingMixin
-from .base_classes import NoScoreMixin
-from .base_classes import GatherPhaseMixin
-from .base_classes import BuildPhaseMixin
-from .base_classes import ChoosePhaseMixin
-from .base_classes import CardLookupBase
-from ..common import Resources
-from ..common import VillagerCards
+from CastleDice.common import Resources
+from CastleDice.common import VillagerCards
+from ..base_classes import BaseCard
+from ..base_classes import BuildPhaseMixin
+from ..base_classes import CardLookupBase
+from ..base_classes import CastleDeckMixin
+from ..base_classes import ChoosePhaseMixin
+from ..base_classes import GatherPhaseMixin
+from ..base_classes import MarketDeckMixin
+from ..base_classes import NoBuildMixin
+from ..base_classes import NoDescriptionMixin
+from ..base_classes import NoOngoingMixin
+from ..base_classes import NoScoreMixin
+from ..base_classes import NormalDiscardMixin
+from ..base_classes import ResourceCost
+from ..base_classes import VillagerDeckMixin
 
 
 class ResourceCostTest(unittest.TestCase):
