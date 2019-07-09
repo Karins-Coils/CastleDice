@@ -12,62 +12,6 @@ from ..common import Resources
 from ..common import VillagerCards
 
 
-class Soldier(
-    GatherPhaseMixin,
-    NoBuildMixin,
-    NoOngoingMixin,
-    NormalDiscardMixin,
-    NoScoreMixin,
-    VillagerDeckMixin,
-    BaseCard
-):
-    _constant = VillagerCards.SOLDIER
-
-    @property
-    def description(self):
-        return "Play before you gather.  Reroll all your Barbarians into the world, keeping any " \
-               "that come up as Barbarians again."
-
-    def is_playable(self):
-        # if current phase is playable phase return True
-        raise NotImplementedError()
-
-    def play(self):
-        # confirm is_playable
-        # reroll player's barbarians
-        # keep any that were barbarians again
-        raise NotImplementedError()
-
-
-class Worker(
-    BuildPhaseMixin,
-    NoDescriptionMixin,
-    NoOngoingMixin,
-    NormalDiscardMixin,
-    NoScoreMixin,
-    VillagerDeckMixin,
-    BaseCard
-):
-    _constant = VillagerCards.WORKER
-
-    @property
-    def build_cost(self):
-        return (
-            ResourceCost(Resources.WOOD, 1),
-            ResourceCost(Resources.STONE, 2),
-        )
-
-    def is_playable(self):
-        # if current phase is playable phase return True
-        raise NotImplementedError()
-
-    def play(self):
-        # confirm is_playable
-        # subtract build materials
-        # add worker to player's set of villagers
-        raise NotImplementedError()
-
-
 class Farmer(
     BuildPhaseMixin,
     NoDescriptionMixin,
@@ -125,6 +69,34 @@ class Guard(
         raise NotImplementedError()
 
 
+class KingsMessenger(
+    GatherPhaseMixin,
+    NoBuildMixin,
+    NoOngoingMixin,
+    NormalDiscardMixin,
+    NoScoreMixin,
+    VillagerDeckMixin,
+    BaseCard
+):
+    _constant = VillagerCards.KINGS_MESSENGER
+
+    @property
+    def description(self):
+        return "Play instead of gathering. The next player chooses a Villager type that you " \
+               "have room for.  You get that one for free!"
+
+    def is_playable(self):
+        # if current phase is playable phase return True
+        raise NotImplementedError()
+
+    def play(self):
+        # confirm is_playable
+        # Skip gather phase this round
+        # v1, pick a villager at random and add to player's set of villagers.  (true for solo play)
+        # v2, setup player interaction
+        raise NotImplementedError()
+
+
 class Merchant(
     BuildPhaseMixin,
     NoBuildMixin,
@@ -154,7 +126,7 @@ class Merchant(
         raise NotImplementedError()
 
 
-class KingsMessenger(
+class Soldier(
     GatherPhaseMixin,
     NoBuildMixin,
     NoOngoingMixin,
@@ -163,12 +135,12 @@ class KingsMessenger(
     VillagerDeckMixin,
     BaseCard
 ):
-    _constant = VillagerCards.KINGS_MESSENGER
+    _constant = VillagerCards.SOLDIER
 
     @property
     def description(self):
-        return "Play instead of gathering. The next player chooses a Villager type that you " \
-               "have room for.  You get that one for free!"
+        return "Play before you gather.  Reroll all your Barbarians into the world, keeping any " \
+               "that come up as Barbarians again."
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -176,9 +148,8 @@ class KingsMessenger(
 
     def play(self):
         # confirm is_playable
-        # Skip gather phase this round
-        # v1, pick a villager at random and add to player's set of villagers.  (true for solo play)
-        # v2, setup player interaction
+        # reroll player's barbarians
+        # keep any that were barbarians again
         raise NotImplementedError()
 
 
@@ -209,4 +180,33 @@ class WiseGrandfather(
         # collect those resources
         # reroll the dice
         # add those die + resources back to world pool
+        raise NotImplementedError()
+
+
+class Worker(
+    BuildPhaseMixin,
+    NoDescriptionMixin,
+    NoOngoingMixin,
+    NormalDiscardMixin,
+    NoScoreMixin,
+    VillagerDeckMixin,
+    BaseCard
+):
+    _constant = VillagerCards.WORKER
+
+    @property
+    def build_cost(self):
+        return (
+            ResourceCost(Resources.WOOD, 1),
+            ResourceCost(Resources.STONE, 2),
+        )
+
+    def is_playable(self):
+        # if current phase is playable phase return True
+        raise NotImplementedError()
+
+    def play(self):
+        # confirm is_playable
+        # subtract build materials
+        # add worker to player's set of villagers
         raise NotImplementedError()

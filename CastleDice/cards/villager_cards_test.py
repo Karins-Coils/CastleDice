@@ -40,49 +40,6 @@ class CardTestBase(unittest.TestCase):
         self.assertTrue(self.card.name)
 
 
-class SoldierTest(CardTestBase):
-    _card = Soldier
-
-    def test_properties(self):
-        self._test_base_properties()
-        self.has_description()
-        self.has_no_build_cost()
-        self.has_playable_phase(Phases.GATHER)
-
-    @unittest.skip
-    def test_play(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_true(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_false(self):
-        raise NotImplementedError()
-
-
-class WorkerTest(CardTestBase):
-    _card = Worker
-
-    def test_properties(self):
-        self._test_base_properties()
-        self.has_no_description()
-        self.has_build_cost()
-
-    @unittest.skip
-    def test_play(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_true(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_false(self):
-        raise NotImplementedError()
-
-
 class FarmerTest(CardTestBase):
     _card = Farmer
 
@@ -125,6 +82,28 @@ class GuardTest(CardTestBase):
         raise NotImplementedError()
 
 
+class KingsMessengerTest(CardTestBase):
+    _card = KingsMessenger
+
+    def test_properties(self):
+        self._test_base_properties()
+        self.has_description()
+        self.has_no_build_cost()
+        self.has_playable_phase(Phases.GATHER)
+
+    @unittest.skip
+    def test_play(self):
+        raise NotImplementedError()
+
+    @unittest.skip
+    def test_is_playable_true(self):
+        raise NotImplementedError()
+
+    @unittest.skip
+    def test_is_playable_false(self):
+        raise NotImplementedError()
+
+
 class MerchantTest(CardTestBase):
     _card = Merchant
 
@@ -146,8 +125,8 @@ class MerchantTest(CardTestBase):
         raise NotImplementedError()
 
 
-class KingsMessengerTest(CardTestBase):
-    _card = KingsMessenger
+class SoldierTest(CardTestBase):
+    _card = Soldier
 
     def test_properties(self):
         self._test_base_properties()
@@ -176,6 +155,27 @@ class WiseGrandfatherTest(CardTestBase):
         self.has_description()
         self.has_no_build_cost()
         self.has_playable_phase(Phases.GATHER)
+
+    @unittest.skip
+    def test_play(self):
+        raise NotImplementedError()
+
+    @unittest.skip
+    def test_is_playable_true(self):
+        raise NotImplementedError()
+
+    @unittest.skip
+    def test_is_playable_false(self):
+        raise NotImplementedError()
+
+
+class WorkerTest(CardTestBase):
+    _card = Worker
+
+    def test_properties(self):
+        self._test_base_properties()
+        self.has_no_description()
+        self.has_build_cost()
 
     @unittest.skip
     def test_play(self):

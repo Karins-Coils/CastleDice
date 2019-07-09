@@ -116,13 +116,13 @@ class VillagerCards(Constants):
     These attributes do not stem from _Globals, as their explicit strings are needed for
     ordering, display and lookup
     """
-    SOLDIER = "V01"
-    WORKER = "V02"
-    FARMER = "V03"
-    GUARD = "V04"
-    MERCHANT = "V05"
-    KINGS_MESSENGER = "V06"
-    WISE_GRANDFATHER = "V07"
+    FARMER = "V01"
+    GUARD = "V02"
+    KINGS_MESSENGER = "V03"
+    MERCHANT = "V04"
+    SOLDIER = "V05"
+    WISE_GRANDFATHER = "V06"
+    WORKER = "V07"
 
 
 class Phases(Constants):
