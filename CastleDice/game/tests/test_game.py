@@ -1,12 +1,17 @@
-import mock
+from unittest import mock
 
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from game.solo_ai import JoanAI
-from common.globals import WOOD, STONE, GOLD, LAND, IRON, TURN
-from game.models import Game
-from playermat.models import PlayerMat
+from CastleDice.common.globals import GOLD
+from CastleDice.common.globals import IRON
+from CastleDice.common.globals import LAND
+from CastleDice.common.globals import STONE
+from CastleDice.common.globals import TURN
+from CastleDice.common.globals import WOOD
+from CastleDice.game.models import Game
+from CastleDice.game.solo_ai import JoanAI
+from CastleDice.playermat.models import PlayerMat
 
 
 class TestGameModel(TestCase):

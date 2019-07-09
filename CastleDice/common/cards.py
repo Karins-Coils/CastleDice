@@ -1,4 +1,4 @@
-from common.globals import WOOD, STONE, GOLD, LAND, \
+from .globals import WOOD, STONE, GOLD, LAND, \
     MERCHANT, WORKER, GUARD, FARMER
 
 # - Card Names - #

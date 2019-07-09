@@ -2,11 +2,19 @@ import unittest
 
 from django.contrib.auth.models import User
 
-from common.dice import DICE_COUNT
-from common.globals \
-    import HORSE, PIG, COW, CHICKEN, \
-    BARN, WOOD, STONE, GOLD, LAND, IRON, TURN
-from game.solo_ai import JoanAI
+from CastleDice.common.dice import DICE_COUNT
+from CastleDice.common.globals import BARN
+from CastleDice.common.globals import CHICKEN
+from CastleDice.common.globals import COW
+from CastleDice.common.globals import GOLD
+from CastleDice.common.globals import HORSE
+from CastleDice.common.globals import IRON
+from CastleDice.common.globals import LAND
+from CastleDice.common.globals import PIG
+from CastleDice.common.globals import STONE
+from CastleDice.common.globals import TURN
+from CastleDice.common.globals import WOOD
+from CastleDice.game.solo_ai import JoanAI
 
 
 # Create your tests here.

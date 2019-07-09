@@ -7,8 +7,8 @@ Replace this with more appropriate tests for your application.
 
 import unittest
 
-from common.globals import BARBARIAN, LAND
-from die.dieClass import Die
+from CastleDice.common.globals import BARBARIAN, LAND
+from CastleDice.die.dieClass import Die
 
 
 class TestDieClass(unittest.TestCase):

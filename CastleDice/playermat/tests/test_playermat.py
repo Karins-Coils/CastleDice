@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from common.globals import TURN
-from game.models import Game
-from playermat.models import PlayerMat
+from CastleDice.common.globals import TURN
+from CastleDice.game.models import Game
+from ..models import PlayerMat
 
 
 class TestPlayerMat(TestCase):
