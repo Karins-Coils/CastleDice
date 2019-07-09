@@ -1,7 +1,11 @@
 import abc
+from typing import Union
 
+from CastleDice.common import CastleCardType
 from CastleDice.common import DeckName
+from CastleDice.common import MarketCardType
 from CastleDice.common import PhaseType
+from CastleDice.common import VillagerCardType
 
 
 class ResourceCost(object):
@@ -169,13 +173,10 @@ class CardLookupBase(object):
     card_map = {}  # to be filled in by subclass
     card_lookup_error = None  # to be customized in each subclass
 
-    def __new__(cls, card_type, *args, **kwargs):
-        """
-        :param card_type:
-        :param args:
-        :param kwargs:
-        :return BaseCard:
-        """
+    def __new__(cls,
+                card_type: Union[MarketCardType, VillagerCardType, CastleCardType, str],
+                *args,
+                **kwargs) -> BaseCard:
         if not cls.card_map or not cls.card_lookup_error:
             raise NotImplementedError(
                 "Both card_map and card_lookup_error must be set on child class")
@@ -221,7 +222,7 @@ class NoDescriptionMixin:
 class NoBuildMixin:
     @property
     def build_cost(self):
-        return ()
+        return tuple()
 
 
 class NoScoreMixin:
