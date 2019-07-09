@@ -1,7 +1,7 @@
 import abc
 
-from CastleDice.common import DeckNames
-from CastleDice.common import Phases
+from CastleDice.common import DeckName
+from CastleDice.common import PhaseType
 
 
 class ResourceCost(object):
@@ -190,19 +190,19 @@ class CardLookupBase(object):
 class CastleDeckMixin:
     @property
     def deck_type(self):
-        return DeckNames.CASTLE
+        return DeckName.CASTLE
 
 
 class MarketDeckMixin:
     @property
     def deck_type(self):
-        return DeckNames.MARKET
+        return DeckName.MARKET
 
 
 class VillagerDeckMixin:
     @property
     def deck_type(self):
-        return DeckNames.VILLAGER
+        return DeckName.VILLAGER
 
 
 class NormalDiscardMixin:
@@ -254,16 +254,16 @@ class NoOngoingMixin:
 class GatherPhaseMixin:
     @property
     def playable_phase(self):
-        return Phases.GATHER
+        return PhaseType.GATHER
 
 
 class BuildPhaseMixin:
     @property
     def playable_phase(self):
-        return Phases.BUILD
+        return PhaseType.BUILD
 
 
 class ChoosePhaseMixin:
     @property
     def playable_phase(self):
-        return Phases.CHOOSE
+        return PhaseType.CHOOSE

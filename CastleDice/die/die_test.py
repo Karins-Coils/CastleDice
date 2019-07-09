@@ -11,20 +11,20 @@ from .die import StoneDie
 from .die import WoodDie
 from .die import _Die
 from .die import _DieSide
-from ..common import DieFaces
+from ..common import DieFace
 from ..common import JOAN
-from ..common import Resources
+from ..common import ResourceType
 
 
 class DieTest(unittest.TestCase):
     def test_die_lookup(self):
         die_types = [
             # (resource, die)
-            (Resources.WOOD, WoodDie),
-            (Resources.STONE, StoneDie),
-            (Resources.GOLD, GoldDie),
-            (Resources.LAND, LandDie),
-            (Resources.IRON, IronDie),
+            (ResourceType.WOOD, WoodDie),
+            (ResourceType.STONE, StoneDie),
+            (ResourceType.GOLD, GoldDie),
+            (ResourceType.LAND, LandDie),
+            (ResourceType.IRON, IronDie),
         ]
 
         for resource, die_type in die_types:
@@ -33,11 +33,11 @@ class DieTest(unittest.TestCase):
             self.assertEqual(die.type(), resource)
 
     def test_die_lookup_with_rolled_value(self):
-        die = Die(Resources.WOOD, DieFaces.BARBARIAN, 1)
+        die = Die(ResourceType.WOOD, DieFace.BARBARIAN, 1)
 
-        self.assertEqual(die.type(), Resources.WOOD)
+        self.assertEqual(die.type(), ResourceType.WOOD)
         self.assertIsNotNone(die.value)
-        self.assertEqual(die.value.resource, DieFaces.BARBARIAN)
+        self.assertEqual(die.value.resource, DieFace.BARBARIAN)
         self.assertEqual(die.value.amount, 1)
 
     def test_die_lookup_uknown_type(self):
@@ -45,7 +45,7 @@ class DieTest(unittest.TestCase):
             Die(JOAN)
 
     def test_die_lookup_has_die_functions(self):
-        wood_die = Die(DieFaces.WOOD)
+        wood_die = Die(DieFace.WOOD)
 
         roll = wood_die.roll()
         self.assertIn(roll, wood_die.sides())
@@ -70,13 +70,13 @@ class _DieTest(unittest.TestCase):
         self.assertNotEqual(wood_die.sides(), sides)
 
     def test_initialized_with_value(self):
-        land_die = LandDie(DieFaces.LAND, 1)
-        self.assertEqual(land_die.value.resource, DieFaces.LAND)
+        land_die = LandDie(DieFace.LAND, 1)
+        self.assertEqual(land_die.value.resource, DieFace.LAND)
         self.assertEqual(land_die.value.amount, 1)
 
     def test_initialized_with_bad_value(self):
         with self.assertRaises(InvalidDieSideError):
-            IronDie(DieFaces.STONE, 1)
+            IronDie(DieFace.STONE, 1)
 
     def test_roll(self):
         joan_die = JoanDie()
@@ -109,18 +109,18 @@ class _DieTest(unittest.TestCase):
 
 class _DieSideTest(unittest.TestCase):
     def test_basics(self):
-        side = _DieSide(DieFaces.WOOD, 3)
+        side = _DieSide(DieFace.WOOD, 3)
 
-        self.assertEqual(side.resource, DieFaces.WOOD)
+        self.assertEqual(side.resource, DieFace.WOOD)
         self.assertEqual(side.amount, 3)
-        self.assertEqual(side.value, (DieFaces.WOOD, 3))
+        self.assertEqual(side.value, (DieFace.WOOD, 3))
 
     def test_is_barbarian_true(self):
-        side = _DieSide(DieFaces.BARBARIAN, 1)
+        side = _DieSide(DieFace.BARBARIAN, 1)
 
         self.assertTrue(side.is_barbarian())
 
     def test_is_barbarian_false(self):
-        side = _DieSide(DieFaces.HORSE, 1)
+        side = _DieSide(DieFace.HORSE, 1)
 
         self.assertFalse(side.is_barbarian())

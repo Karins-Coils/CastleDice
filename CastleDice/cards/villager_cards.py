@@ -1,5 +1,5 @@
-from CastleDice.common import Resources
-from CastleDice.common import VillagerCards
+from CastleDice.common import ResourceType
+from CastleDice.common import VillagerCardType
 from .bases import BaseCard
 from .bases import BuildPhaseMixin
 from .bases import CardLookupBase
@@ -23,13 +23,13 @@ class Farmer(
     VillagerDeckMixin,
     BaseCard
 ):
-    _constant = VillagerCards.FARMER
+    _constant = VillagerCardType.FARMER
 
     @property
     def build_cost(self):
         return (
-            ResourceCost(Resources.WOOD, 2),
-            ResourceCost(Resources.LAND, 1),
+            ResourceCost(ResourceType.WOOD, 2),
+            ResourceCost(ResourceType.LAND, 1),
         )
 
     def is_playable(self):
@@ -52,12 +52,12 @@ class Guard(
     VillagerDeckMixin,
     BaseCard
 ):
-    _constant = VillagerCards.GUARD
+    _constant = VillagerCardType.GUARD
 
     @property
     def build_cost(self):
         return (
-            ResourceCost(Resources.WOOD, 2),
+            ResourceCost(ResourceType.WOOD, 2),
         )
 
     def is_playable(self):
@@ -80,7 +80,7 @@ class KingsMessenger(
     VillagerDeckMixin,
     BaseCard
 ):
-    _constant = VillagerCards.KINGS_MESSENGER
+    _constant = VillagerCardType.KINGS_MESSENGER
 
     @property
     def description(self):
@@ -109,12 +109,12 @@ class Merchant(
     VillagerDeckMixin,
     BaseCard
 ):
-    _constant = VillagerCards.MERCHANT
+    _constant = VillagerCardType.MERCHANT
 
     @property
     def build_cost(self):
         return (
-            ResourceCost(Resources.GOLD, 2),
+            ResourceCost(ResourceType.GOLD, 2),
         )
 
     def is_playable(self):
@@ -137,7 +137,7 @@ class Soldier(
     VillagerDeckMixin,
     BaseCard
 ):
-    _constant = VillagerCards.SOLDIER
+    _constant = VillagerCardType.SOLDIER
 
     @property
     def description(self):
@@ -164,7 +164,7 @@ class WiseGrandfather(
     VillagerDeckMixin,
     BaseCard
 ):
-    _constant = VillagerCards.WISE_GRANDFATHER
+    _constant = VillagerCardType.WISE_GRANDFATHER
 
     @property
     def description(self):
@@ -194,13 +194,13 @@ class Worker(
     VillagerDeckMixin,
     BaseCard
 ):
-    _constant = VillagerCards.WORKER
+    _constant = VillagerCardType.WORKER
 
     @property
     def build_cost(self):
         return (
-            ResourceCost(Resources.WOOD, 1),
-            ResourceCost(Resources.STONE, 2),
+            ResourceCost(ResourceType.WOOD, 1),
+            ResourceCost(ResourceType.STONE, 2),
         )
 
     def is_playable(self):
@@ -216,12 +216,12 @@ class Worker(
 
 class VillagerCard(CardLookupBase):
     card_map = {
-        VillagerCards.SOLDIER: Soldier,
-        VillagerCards.WORKER: Worker,
-        VillagerCards.FARMER: Farmer,
-        VillagerCards.GUARD: Guard,
-        VillagerCards.MERCHANT: Merchant,
-        VillagerCards.KINGS_MESSENGER: KingsMessenger,
-        VillagerCards.WISE_GRANDFATHER: WiseGrandfather,
+        VillagerCardType.SOLDIER: Soldier,
+        VillagerCardType.WORKER: Worker,
+        VillagerCardType.FARMER: Farmer,
+        VillagerCardType.GUARD: Guard,
+        VillagerCardType.MERCHANT: Merchant,
+        VillagerCardType.KINGS_MESSENGER: KingsMessenger,
+        VillagerCardType.WISE_GRANDFATHER: WiseGrandfather,
     }
     card_lookup_error = InvalidVillagerCardTypeError

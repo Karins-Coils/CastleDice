@@ -1,7 +1,7 @@
 import unittest
 
-from CastleDice.common import Resources
-from CastleDice.common import VillagerCards
+from CastleDice.common import ResourceType
+from CastleDice.common import VillagerCardType
 from ..bases import BaseCard
 from ..bases import BuildPhaseMixin
 from ..bases import CardLookupBase
@@ -20,9 +20,9 @@ from ..bases import VillagerDeckMixin
 
 class ResourceCostTest(unittest.TestCase):
     def test_success(self):
-        wood_cost = ResourceCost(Resources.WOOD, 3)
+        wood_cost = ResourceCost(ResourceType.WOOD, 3)
 
-        self.assertEqual(wood_cost.resource, Resources.WOOD)
+        self.assertEqual(wood_cost.resource, ResourceType.WOOD)
         self.assertEqual(wood_cost.amount, 3)
 
 
@@ -53,7 +53,7 @@ class BaseCardTest(unittest.TestCase):
             NoScoreMixin,
             BaseCard
         ):
-            _constant = VillagerCards.WISE_GRANDFATHER
+            _constant = VillagerCardType.WISE_GRANDFATHER
 
             def description(self):
                 return "Some description"
@@ -67,7 +67,7 @@ class BaseCardTest(unittest.TestCase):
         self.assertTrue(ImplementedCard())
 
         card = ImplementedCard()
-        self.assertEqual(card.card_id, VillagerCards.WISE_GRANDFATHER)
+        self.assertEqual(card.card_id, VillagerCardType.WISE_GRANDFATHER)
         self.assertEqual(card.name, "Wise Grandfather")
 
 

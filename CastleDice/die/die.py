@@ -1,9 +1,9 @@
 import random
 
-from ..common import DieFaces
+from ..common import DieFace
 from ..common import JOAN
-from ..common import JoanDieFaces
-from ..common import Resources
+from ..common import JoanDieFace
+from ..common import ResourceType
 
 __all__ = [
     'Die',
@@ -60,7 +60,7 @@ class _DieSide(object):
         return self._resource, self._amount
 
     def is_barbarian(self):
-        return self._resource == DieFaces.BARBARIAN
+        return self._resource == DieFace.BARBARIAN
 
 
 class _Die(object):
@@ -149,74 +149,74 @@ class _Die(object):
 
 
 class WoodDie(_Die):
-    _type = Resources.WOOD
+    _type = ResourceType.WOOD
     _sides = (
-        _DieSide(DieFaces.WOOD, 1),
-        _DieSide(DieFaces.WOOD, 1),
-        _DieSide(DieFaces.WOOD, 2),
-        _DieSide(DieFaces.WOOD, 3),
-        _DieSide(DieFaces.COW, 1),
-        _DieSide(DieFaces.BARBARIAN, 1),
+        _DieSide(DieFace.WOOD, 1),
+        _DieSide(DieFace.WOOD, 1),
+        _DieSide(DieFace.WOOD, 2),
+        _DieSide(DieFace.WOOD, 3),
+        _DieSide(DieFace.COW, 1),
+        _DieSide(DieFace.BARBARIAN, 1),
     )
 
 
 class StoneDie(_Die):
-    _type = Resources.STONE
+    _type = ResourceType.STONE
     _sides = (
-        _DieSide(DieFaces.STONE, 1),
-        _DieSide(DieFaces.STONE, 1),
-        _DieSide(DieFaces.STONE, 2),
-        _DieSide(DieFaces.STONE, 2),
-        _DieSide(DieFaces.CHICKEN, 1),
-        _DieSide(DieFaces.BARBARIAN, 1),
+        _DieSide(DieFace.STONE, 1),
+        _DieSide(DieFace.STONE, 1),
+        _DieSide(DieFace.STONE, 2),
+        _DieSide(DieFace.STONE, 2),
+        _DieSide(DieFace.CHICKEN, 1),
+        _DieSide(DieFace.BARBARIAN, 1),
     )
 
 
 class GoldDie(_Die):
-    _type = Resources.GOLD
+    _type = ResourceType.GOLD
     _sides = (
-        _DieSide(DieFaces.GOLD, 1),
-        _DieSide(DieFaces.GOLD, 1),
-        _DieSide(DieFaces.GOLD, 1),
-        _DieSide(DieFaces.GOLD, 2),
-        _DieSide(DieFaces.HORSE, 1),
-        _DieSide(DieFaces.BARBARIAN, 1),
+        _DieSide(DieFace.GOLD, 1),
+        _DieSide(DieFace.GOLD, 1),
+        _DieSide(DieFace.GOLD, 1),
+        _DieSide(DieFace.GOLD, 2),
+        _DieSide(DieFace.HORSE, 1),
+        _DieSide(DieFace.BARBARIAN, 1),
     )
 
 
 class LandDie(_Die):
-    _type = Resources.LAND
+    _type = ResourceType.LAND
     _sides = (
-        _DieSide(DieFaces.LAND, 1),
-        _DieSide(DieFaces.LAND, 1),
-        _DieSide(DieFaces.LAND, 2),
-        _DieSide(DieFaces.PIG, 1),
-        _DieSide(DieFaces.PIG, 1),
-        _DieSide(DieFaces.BARBARIAN, 1),
+        _DieSide(DieFace.LAND, 1),
+        _DieSide(DieFace.LAND, 1),
+        _DieSide(DieFace.LAND, 2),
+        _DieSide(DieFace.PIG, 1),
+        _DieSide(DieFace.PIG, 1),
+        _DieSide(DieFace.BARBARIAN, 1),
     )
 
 
 class IronDie(_Die):
-    _type = Resources.IRON
+    _type = ResourceType.IRON
     _sides = (
-        _DieSide(DieFaces.IRON, 1),
-        _DieSide(DieFaces.IRON, 2),
-        _DieSide(DieFaces.CHICKEN, 1),
-        _DieSide(DieFaces.HORSE, 1),
-        _DieSide(DieFaces.PIG, 1),
-        _DieSide(DieFaces.BARBARIAN, 1),
+        _DieSide(DieFace.IRON, 1),
+        _DieSide(DieFace.IRON, 2),
+        _DieSide(DieFace.CHICKEN, 1),
+        _DieSide(DieFace.HORSE, 1),
+        _DieSide(DieFace.PIG, 1),
+        _DieSide(DieFace.BARBARIAN, 1),
     )
 
 
 class JoanDie(_Die):
     _type = JOAN
     _sides = (
-        _DieSide(JoanDieFaces.WOOD, 1),
-        _DieSide(JoanDieFaces.STONE, 1),
-        _DieSide(JoanDieFaces.GOLD, 1),
-        _DieSide(JoanDieFaces.LAND, 1),
-        _DieSide(JoanDieFaces.IRON, 1),
-        _DieSide(JoanDieFaces.BARN, 1),
+        _DieSide(JoanDieFace.WOOD, 1),
+        _DieSide(JoanDieFace.STONE, 1),
+        _DieSide(JoanDieFace.GOLD, 1),
+        _DieSide(JoanDieFace.LAND, 1),
+        _DieSide(JoanDieFace.IRON, 1),
+        _DieSide(JoanDieFace.BARN, 1),
     )
 
 
@@ -224,11 +224,11 @@ class Die(object):
     """Convenience class for getting a Die by type, if type unknown at lookup"""
 
     die_map = {
-        DieFaces.WOOD: WoodDie,
-        DieFaces.STONE: StoneDie,
-        DieFaces.GOLD: GoldDie,
-        DieFaces.LAND: LandDie,
-        DieFaces.IRON: IronDie,
+        DieFace.WOOD: WoodDie,
+        DieFace.STONE: StoneDie,
+        DieFace.GOLD: GoldDie,
+        DieFace.LAND: LandDie,
+        DieFace.IRON: IronDie,
     }
 
     def __new__(self, die_type, resource=None, amount=None):

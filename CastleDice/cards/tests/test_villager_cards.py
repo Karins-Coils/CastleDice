@@ -9,8 +9,8 @@ from ..villager_cards import Soldier
 from ..villager_cards import VillagerCard
 from ..villager_cards import WiseGrandfather
 from ..villager_cards import Worker
-from CastleDice.common import Phases
-from CastleDice.common import VillagerCards
+from CastleDice.common import PhaseType
+from CastleDice.common import VillagerCardType
 
 
 class CardTestBase(unittest.TestCase):
@@ -27,7 +27,7 @@ class CardTestBase(unittest.TestCase):
 
     def has_build_cost(self):
         self.assertTrue(self.card.build_cost)
-        self.has_playable_phase(Phases.BUILD)
+        self.has_playable_phase(PhaseType.BUILD)
 
     def has_no_build_cost(self):
         self.assertFalse(self.card.build_cost)
@@ -91,7 +91,7 @@ class KingsMessengerTest(CardTestBase):
         self._test_base_properties()
         self.has_description()
         self.has_no_build_cost()
-        self.has_playable_phase(Phases.GATHER)
+        self.has_playable_phase(PhaseType.GATHER)
 
     @unittest.skip
     def test_play(self):
@@ -134,7 +134,7 @@ class SoldierTest(CardTestBase):
         self._test_base_properties()
         self.has_description()
         self.has_no_build_cost()
-        self.has_playable_phase(Phases.GATHER)
+        self.has_playable_phase(PhaseType.GATHER)
 
     @unittest.skip
     def test_play(self):
@@ -156,7 +156,7 @@ class WiseGrandfatherTest(CardTestBase):
         self._test_base_properties()
         self.has_description()
         self.has_no_build_cost()
-        self.has_playable_phase(Phases.GATHER)
+        self.has_playable_phase(PhaseType.GATHER)
 
     @unittest.skip
     def test_play(self):
@@ -194,9 +194,9 @@ class WorkerTest(CardTestBase):
 
 class VillagerCardTest(unittest.TestCase):
     def test_lookup(self):
-        card = VillagerCard(VillagerCards.MERCHANT)
+        card = VillagerCard(VillagerCardType.MERCHANT)
 
-        self.assertEqual(card.card_id, VillagerCards.MERCHANT)
+        self.assertEqual(card.card_id, VillagerCardType.MERCHANT)
 
     def test_lookup_error(self):
         with self.assertRaises(InvalidVillagerCardTypeError):

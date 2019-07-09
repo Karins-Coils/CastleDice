@@ -4,15 +4,17 @@ from enum import unique
 from .named_constants import Constants
 
 __all__ = [
-    'Animals',
-    'DeckNames',
-    'DieFaces',
-    'JoanDieFaces',
-    'Phases',
-    'Resources',
-    'Turns',
-    'VillagerCards',
-    'Villagers',
+    'AnimalType',
+    'CastleCardType',
+    'DeckName',
+    'DieFace',
+    'JoanDieFace',
+    'MarketCardType',
+    'PhaseType',
+    'ResourceType',
+    'TurnType',
+    'VillagerCardType',
+    'VillagerType',
     'JOAN',
     'JOAN_GATHER_PREFERENCE',
     'PHASE',
@@ -57,7 +59,7 @@ class _Globals(IntEnum):
 # -- importable classes, used for many things -- #
 
 # Sorted by Resource Preference Gathering - especially Joan
-class Resources(Constants):
+class ResourceType(Constants):
     WOOD = _Globals.WOOD.value
     STONE = _Globals.STONE.value
     GOLD = _Globals.GOLD.value
@@ -66,21 +68,21 @@ class Resources(Constants):
 
 
 # Sorted by Animal Preference Gathering - especially Joan
-class Animals(Constants):
+class AnimalType(Constants):
     PIG = _Globals.PIG.value
     HORSE = _Globals.HORSE.value
     CHICKEN = _Globals.CHICKEN.value
     COW = _Globals.COW.value
 
 
-class Villagers(Constants):
+class VillagerType(Constants):
     WORKER = _Globals.WORKER.value
     GUARD = _Globals.GUARD.value
     FARMER = _Globals.FARMER.value
     MERCHANT = _Globals.MERCHANT.value
 
 
-class DieFaces(Constants):
+class DieFace(Constants):
     WOOD = _Globals.WOOD.value
     STONE = _Globals.STONE.value
     GOLD = _Globals.GOLD.value
@@ -95,7 +97,7 @@ class DieFaces(Constants):
     BARBARIAN = _Globals.BARBARIAN.value
 
 
-class JoanDieFaces(Constants):
+class JoanDieFace(Constants):
     WOOD = _Globals.WOOD.value
     STONE = _Globals.STONE.value
     GOLD = _Globals.GOLD.value
@@ -105,13 +107,13 @@ class JoanDieFaces(Constants):
     BARN = _Globals.BARN.value
 
 
-class DeckNames(Constants):
+class DeckName(Constants):
     CASTLE = _Globals.CASTLE.value
     MARKET = _Globals.MARKET.value
     VILLAGER = _Globals.VILLAGER.value
 
 
-class VillagerCards(Constants):
+class VillagerCardType(Constants):
     """
     These attributes do not stem from _Globals, as their explicit strings are needed for
     ordering, display and lookup
@@ -125,7 +127,7 @@ class VillagerCards(Constants):
     WORKER = "V07"
 
 
-class Phases(Constants):
+class PhaseType(Constants):
     """
     These attributes do not stem from _Globals, as their explicit numbers are needed for
     ordering and display
@@ -142,7 +144,7 @@ class Phases(Constants):
     BARBARIANS = 10
 
 
-class Turns(Constants):
+class TurnType(Constants):
     """
     These attributes do not stem from _Globals, as their explicit numbers are needed for
     ordering and display
@@ -161,7 +163,7 @@ class Turns(Constants):
 JOAN = 'joan'
 
 # Joan's Preferences, with first element being her first choice
-JOAN_GATHER_PREFERENCE = Resources.values() + Animals.values()
+JOAN_GATHER_PREFERENCE = ResourceType.values() + AnimalType.values()
 
 
 # -- Game Data -- #
