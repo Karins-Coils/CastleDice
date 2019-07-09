@@ -1,7 +1,7 @@
 import abc
 
-from ..common import DeckNames
-from ..common import Phases
+from CastleDice.common import DeckNames
+from CastleDice.common import Phases
 
 
 class ResourceCost(object):
