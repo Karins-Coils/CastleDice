@@ -165,6 +165,27 @@ class BaseCard(metaclass=abc.ABCMeta):
         """
 
 
+class CardLookupBase(object):
+    card_map = {}  # to be filled in by subclass
+    card_lookup_error = None  # to be customized in each subclass
+
+    def __new__(cls, card_type, *args, **kwargs):
+        """
+        :param card_type:
+        :param args:
+        :param kwargs:
+        :return BaseCard:
+        """
+        if not cls.card_map or not cls.card_lookup_error:
+            raise NotImplementedError(
+                "Both card_map and card_lookup_error must be set on child class")
+
+        if card_type in cls.card_map:
+            return cls.card_map[card_type](*args, **kwargs)
+
+        raise cls.card_lookup_error()
+
+
 # -- Mixins -- #
 class CastleDeckMixin:
     @property
