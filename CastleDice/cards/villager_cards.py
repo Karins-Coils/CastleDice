@@ -25,12 +25,10 @@ class Farmer(
 ):
     _constant = VillagerCardType.FARMER
 
-    @property
-    def build_cost(self):
-        return (
-            ResourceCost(ResourceType.WOOD, 2),
-            ResourceCost(ResourceType.LAND, 1),
-        )
+    build_cost = (
+        ResourceCost(ResourceType.WOOD, 2),
+        ResourceCost(ResourceType.LAND, 1),
+    )
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -54,11 +52,9 @@ class Guard(
 ):
     _constant = VillagerCardType.GUARD
 
-    @property
-    def build_cost(self):
-        return (
-            ResourceCost(ResourceType.WOOD, 2),
-        )
+    build_cost = (
+        ResourceCost(ResourceType.WOOD, 2),
+    )
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -82,10 +78,8 @@ class KingsMessenger(
 ):
     _constant = VillagerCardType.KINGS_MESSENGER
 
-    @property
-    def description(self):
-        return "Play instead of gathering. The next player chooses a Villager type that you " \
-               "have room for.  You get that one for free!"
+    description = "Play instead of gathering. The next player chooses a Villager type that you " \
+                  "have room for.  You get that one for free!"
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -111,11 +105,9 @@ class Merchant(
 ):
     _constant = VillagerCardType.MERCHANT
 
-    @property
-    def build_cost(self):
-        return (
-            ResourceCost(ResourceType.GOLD, 2),
-        )
+    build_cost = (
+        ResourceCost(ResourceType.GOLD, 2),
+    )
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -139,10 +131,8 @@ class Soldier(
 ):
     _constant = VillagerCardType.SOLDIER
 
-    @property
-    def description(self):
-        return "Play before you gather.  Reroll all your Barbarians into the world, keeping any " \
-               "that come up as Barbarians again."
+    description = "Play before you gather.  Reroll all your Barbarians into the world, keeping " \
+                  "any that come up as Barbarians again."
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -166,11 +156,9 @@ class WiseGrandfather(
 ):
     _constant = VillagerCardType.WISE_GRANDFATHER
 
-    @property
-    def description(self):
-        return "Play before you gather.  Gather one extra time this round. After you've " \
-               "collected resources from both of your gatherings, roll those two dice back " \
-               "into the world pool."
+    description = "Play before you gather.  Gather one extra time this round. After you've " \
+                  "collected resources from both of your gatherings, roll those two dice back " \
+                  "into the world pool."
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -196,12 +184,10 @@ class Worker(
 ):
     _constant = VillagerCardType.WORKER
 
-    @property
-    def build_cost(self):
-        return (
-            ResourceCost(ResourceType.WOOD, 1),
-            ResourceCost(ResourceType.STONE, 2),
-        )
+    build_cost = (
+        ResourceCost(ResourceType.WOOD, 1),
+        ResourceCost(ResourceType.STONE, 2),
+    )
 
     def is_playable(self):
         # if current phase is playable phase return True
