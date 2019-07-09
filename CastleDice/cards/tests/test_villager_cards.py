@@ -1,5 +1,9 @@
 import unittest
 
+from CastleDice.common import DeckName
+from CastleDice.common import PhaseType
+from CastleDice.common import VillagerCardType
+from .utils import CardTestBase
 from ..exceptions import InvalidVillagerCardTypeError
 from ..villager_cards import Farmer
 from ..villager_cards import Guard
@@ -9,187 +13,59 @@ from ..villager_cards import Soldier
 from ..villager_cards import VillagerCard
 from ..villager_cards import WiseGrandfather
 from ..villager_cards import Worker
-from CastleDice.common import PhaseType
-from CastleDice.common import VillagerCardType
 
 
-class CardTestBase(unittest.TestCase):
-    _card = None
-
-    def setUp(self):
-        self.card = self._card()
-
-    def has_description(self):
-        self.assertTrue(self.card.description)
-
-    def has_no_description(self):
-        self.assertFalse(self.card.description)
-
-    def has_build_cost(self):
-        self.assertTrue(self.card.build_cost)
-        self.has_playable_phase(PhaseType.BUILD)
-
-    def has_no_build_cost(self):
-        self.assertFalse(self.card.build_cost)
-        self.assertEqual(len(self.card.build_cost), 0)
-
-    def has_playable_phase(self, phase):
-        self.assertEqual(self.card.playable_phase, phase)
-
-    def _test_base_properties(self):
-        self.assertTrue(self.card)
-        self.assertTrue(self.card.card_id)
-        self.assertTrue(self.card.name)
+class VillagerCardTestBase(CardTestBase):
+    deck_name = DeckName.VILLAGER
 
 
-class FarmerTest(CardTestBase):
-    _card = Farmer
-
-    def test_properties(self):
-        self._test_base_properties()
-        self.has_no_description()
-        self.has_build_cost()
-
-    @unittest.skip
-    def test_play(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_true(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_false(self):
-        raise NotImplementedError()
+class FarmerTest(VillagerCardTestBase):
+    card_class = Farmer
+    playable_phase_type = PhaseType.BUILD
+    has_description = False
+    has_build_cost = True
 
 
-class GuardTest(CardTestBase):
-    _card = Guard
-
-    def test_properties(self):
-        self._test_base_properties()
-        self.has_no_description()
-        self.has_build_cost()
-
-    @unittest.skip
-    def test_play(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_true(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_false(self):
-        raise NotImplementedError()
+class GuardTest(VillagerCardTestBase):
+    card_class = Guard
+    playable_phase_type = PhaseType.BUILD
+    has_description = False
+    has_build_cost = True
 
 
-class KingsMessengerTest(CardTestBase):
-    _card = KingsMessenger
-
-    def test_properties(self):
-        self._test_base_properties()
-        self.has_description()
-        self.has_no_build_cost()
-        self.has_playable_phase(PhaseType.GATHER)
-
-    @unittest.skip
-    def test_play(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_true(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_false(self):
-        raise NotImplementedError()
+class KingsMessengerTest(VillagerCardTestBase):
+    card_class = KingsMessenger
+    playable_phase_type = PhaseType.GATHER
+    has_build_cost = False
+    has_description = True
 
 
-class MerchantTest(CardTestBase):
-    _card = Merchant
-
-    def test_properties(self):
-        self._test_base_properties()
-        self.has_no_description()
-        self.has_build_cost()
-
-    @unittest.skip
-    def test_play(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_true(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_false(self):
-        raise NotImplementedError()
+class MerchantTest(VillagerCardTestBase):
+    card_class = Merchant
+    playable_phase_type = PhaseType.BUILD
+    has_build_cost = True
+    has_description = False
 
 
-class SoldierTest(CardTestBase):
-    _card = Soldier
-
-    def test_properties(self):
-        self._test_base_properties()
-        self.has_description()
-        self.has_no_build_cost()
-        self.has_playable_phase(PhaseType.GATHER)
-
-    @unittest.skip
-    def test_play(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_true(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_false(self):
-        raise NotImplementedError()
+class SoldierTest(VillagerCardTestBase):
+    card_class = Soldier
+    playable_phase_type = PhaseType.GATHER
+    has_build_cost = False
+    has_description = True
 
 
-class WiseGrandfatherTest(CardTestBase):
-    _card = WiseGrandfather
-
-    def test_properties(self):
-        self._test_base_properties()
-        self.has_description()
-        self.has_no_build_cost()
-        self.has_playable_phase(PhaseType.GATHER)
-
-    @unittest.skip
-    def test_play(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_true(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_false(self):
-        raise NotImplementedError()
+class WiseGrandfatherTest(VillagerCardTestBase):
+    card_class = WiseGrandfather
+    playable_phase_type = PhaseType.GATHER
+    has_build_cost = False
+    has_description = True
 
 
-class WorkerTest(CardTestBase):
-    _card = Worker
-
-    def test_properties(self):
-        self._test_base_properties()
-        self.has_no_description()
-        self.has_build_cost()
-
-    @unittest.skip
-    def test_play(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_true(self):
-        raise NotImplementedError()
-
-    @unittest.skip
-    def test_is_playable_false(self):
-        raise NotImplementedError()
+class WorkerTest(VillagerCardTestBase):
+    card_class = Worker
+    playable_phase_type = PhaseType.BUILD
+    has_description = False
+    has_build_cost = True
 
 
 class VillagerCardTest(unittest.TestCase):
