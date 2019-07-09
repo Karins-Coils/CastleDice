@@ -189,21 +189,15 @@ class CardLookupBase(object):
 
 # -- Mixins -- #
 class CastleDeckMixin:
-    @property
-    def deck_type(self):
-        return DeckName.CASTLE
+    deck_type = DeckName.CASTLE
 
 
 class MarketDeckMixin:
-    @property
-    def deck_type(self):
-        return DeckName.MARKET
+    deck_type = DeckName.MARKET
 
 
 class VillagerDeckMixin:
-    @property
-    def deck_type(self):
-        return DeckName.VILLAGER
+    deck_type = DeckName.VILLAGER
 
 
 class NormalDiscardMixin:
@@ -214,30 +208,22 @@ class NormalDiscardMixin:
 
 
 class NoDescriptionMixin:
-    @property
-    def description(self):
-        return None
+    description = None
 
 
 class NoBuildMixin:
-    @property
-    def build_cost(self):
-        return tuple()
+    build_cost = tuple()
 
 
 class NoScoreMixin:
-    @property
-    def victory_points(self):
-        return 0
+    victory_points = 0
 
     def score(self):
         return
 
 
 class NoOngoingMixin:
-    @property
-    def ongoing_phase(self):
-        return None
+    ongoing_phase = None
 
     def use_ongoing(self):
         return
@@ -253,18 +239,12 @@ class NoOngoingMixin:
 
 
 class GatherPhaseMixin:
-    @property
-    def playable_phase(self):
-        return PhaseType.GATHER
+    playable_phase = PhaseType.GATHER
 
 
 class BuildPhaseMixin:
-    @property
-    def playable_phase(self):
-        return PhaseType.BUILD
+    playable_phase = PhaseType.BUILD
 
 
 class ChoosePhaseMixin:
-    @property
-    def playable_phase(self):
-        return PhaseType.CHOOSE
+    playable_phase = PhaseType.CHOOSE
