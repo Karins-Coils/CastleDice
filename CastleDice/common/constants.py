@@ -12,6 +12,7 @@ __all__ = [
     'MarketCardType',
     'PhaseType',
     'ResourceType',
+    'SpecialPhaseType',
     'TurnType',
     'VillagerCardType',
     'VillagerType',
@@ -113,6 +114,34 @@ class DeckName(Constants):
     VILLAGER = _Globals.VILLAGER.value
 
 
+class CastleCardType(Constants):
+    ADVISOR = "C01"
+    ALCHEMIST = "C02"
+    DAUGHTER = "C03"
+    DEEP_MOAT = "C04"
+    GATE_HOUSE = "C05"
+    GREAT_HALL = "C06"
+    LOYAL_BROTHER = "C07"
+    ROYAL_CHAMBERS = "C08"
+    SQUIRE = "C09"
+    STRONG_TOWER = "C10"
+    TALL_KEEP = "C11"
+    WALL_ANIMAL = "C12"
+    WALL_FARMER = "C13"
+    WALL_GUARD = "C14"
+    WALL_MERCHANT = "C15"
+    WALL_WORKER = "C16"
+
+
+class MarketCardType(Constants):
+    BARD = "M01"
+    HUNGRY_BARBARIANS = "M02"
+    JESTER = "M03"
+    MAIDEN = "M04"
+    SHEPHERD = "M05"
+    VOLUNTEER = "M06"
+
+
 class VillagerCardType(Constants):
     """
     These attributes do not stem from _Globals, as their explicit strings are needed for
@@ -142,6 +171,12 @@ class PhaseType(Constants):
     MERCHANTS = 8
     BUILD = 9
     BARBARIANS = 10
+
+
+class SpecialPhaseType(Constants):
+    FIRST_GATHER = 40
+    ANY = 100
+    END_GAME = 200
 
 
 class TurnType(Constants):
