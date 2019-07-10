@@ -53,6 +53,7 @@ def skip_if_not_implemented(func_name: str) -> Callable:
 
 class CardTestBase(unittest.TestCase):
     card_class = None
+    card_type = None
     deck_name = None
     playable_phase_type = None
     ongoing_phase_type = None
@@ -71,7 +72,7 @@ class CardTestBase(unittest.TestCase):
     @skip_test_if_base_class
     def test_base_properties(self):
         self.assertTrue(self.card)
-        self.assertTrue(self.card.card_id)
+        self.assertEqual(self.card.card_id, self.card_type.value)
         self.assertTrue(self.card.name)
 
     @skip_test_if_base_class

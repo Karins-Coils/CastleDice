@@ -21,6 +21,7 @@ class VillagerCardTestBase(CardTestBase):
 
 class FarmerTest(VillagerCardTestBase):
     card_class = Farmer
+    card_type = VillagerCardType.FARMER
     playable_phase_type = PhaseType.BUILD
     has_description = False
     has_build_cost = True
@@ -28,6 +29,7 @@ class FarmerTest(VillagerCardTestBase):
 
 class GuardTest(VillagerCardTestBase):
     card_class = Guard
+    card_type = VillagerCardType.GUARD
     playable_phase_type = PhaseType.BUILD
     has_description = False
     has_build_cost = True
@@ -35,6 +37,7 @@ class GuardTest(VillagerCardTestBase):
 
 class KingsMessengerTest(VillagerCardTestBase):
     card_class = KingsMessenger
+    card_type = VillagerCardType.KINGS_MESSENGER
     playable_phase_type = PhaseType.GATHER
     has_build_cost = False
     has_description = True
@@ -42,6 +45,7 @@ class KingsMessengerTest(VillagerCardTestBase):
 
 class MerchantTest(VillagerCardTestBase):
     card_class = Merchant
+    card_type = VillagerCardType.MERCHANT
     playable_phase_type = PhaseType.BUILD
     has_build_cost = True
     has_description = False
@@ -49,6 +53,7 @@ class MerchantTest(VillagerCardTestBase):
 
 class SoldierTest(VillagerCardTestBase):
     card_class = Soldier
+    card_type = VillagerCardType.SOLDIER
     playable_phase_type = PhaseType.GATHER
     has_build_cost = False
     has_description = True
@@ -56,6 +61,7 @@ class SoldierTest(VillagerCardTestBase):
 
 class WiseGrandfatherTest(VillagerCardTestBase):
     card_class = WiseGrandfather
+    card_type = VillagerCardType.WISE_GRANDFATHER
     playable_phase_type = PhaseType.GATHER
     has_build_cost = False
     has_description = True
@@ -63,6 +69,7 @@ class WiseGrandfatherTest(VillagerCardTestBase):
 
 class WorkerTest(VillagerCardTestBase):
     card_class = Worker
+    card_type = VillagerCardType.WORKER
     playable_phase_type = PhaseType.BUILD
     has_description = False
     has_build_cost = True
