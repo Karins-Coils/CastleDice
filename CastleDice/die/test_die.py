@@ -40,7 +40,7 @@ class DieTest(unittest.TestCase):
         self.assertEqual(die.value.resource, DieFace.BARBARIAN)
         self.assertEqual(die.value.amount, 1)
 
-    def test_die_lookup_uknown_type(self):
+    def test_die_lookup_unknown_type(self):
         with self.assertRaises(TypeError):
             Die(JOAN)
 
