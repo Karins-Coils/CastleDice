@@ -1,10 +1,9 @@
 import unittest
 
-from CastleDice.cards.exceptions import InvalidVillagerCardTypeError
-from CastleDice.common import CastleCardType
-from CastleDice.common import DeckName
-from CastleDice.common import PhaseType
-from CastleDice.common import SpecialPhaseType
+from CastleDice.common.constants import CastleCardType
+from CastleDice.common.constants import DeckName
+from CastleDice.common.constants import PhaseType
+from CastleDice.common.constants import SpecialPhaseType
 from .utils import CardTestBase
 from ..castle_cards import Advisor
 from ..castle_cards import Alchemist

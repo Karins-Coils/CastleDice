@@ -1,9 +1,11 @@
 import random
+from typing import Iterator
+from typing import Union
 
-from ..common import DieFace
-from ..common import JOAN
-from ..common import JoanDieFace
-from ..common import ResourceType
+from ..common.constants import DieFace
+from ..common.constants import JoanDieFace
+from ..common.constants import ResourceType
+from ..common.setup import JOAN
 
 __all__ = [
     'Die',

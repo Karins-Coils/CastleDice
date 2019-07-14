@@ -11,9 +11,9 @@ from .die import StoneDie
 from .die import WoodDie
 from .die import _Die
 from .die import _DieSide
-from ..common import DieFace
-from ..common import JOAN
-from ..common import ResourceType
+from ..common.constants import DieFace
+from ..common.constants import ResourceType
+from ..common.setup import JOAN
 
 
 class DieTest(unittest.TestCase):

@@ -1,11 +1,11 @@
 import abc
 from typing import Union
 
-from CastleDice.common import CastleCardType
-from CastleDice.common import DeckName
-from CastleDice.common import MarketCardType
-from CastleDice.common import PhaseType
-from CastleDice.common import VillagerCardType
+from CastleDice.common.constants import CastleCardType
+from CastleDice.common.constants import DeckName
+from CastleDice.common.constants import MarketCardType
+from CastleDice.common.constants import PhaseType
+from CastleDice.common.constants import VillagerCardType
 
 
 class ResourceCost(object):

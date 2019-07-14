@@ -1,7 +1,7 @@
 import unittest
 from typing import Callable
 
-from CastleDice.common import PhaseType
+from CastleDice.common.constants import PhaseType
 
 __all__ = [
     'skip_if_not_implemented',
