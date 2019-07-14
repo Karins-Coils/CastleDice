@@ -2,6 +2,7 @@ from .constants import AnimalType
 from .constants import ResourceType
 
 __all__ = [
+    'DICE_COUNT',
     'JOAN',
     'JOAN_GATHER_PREFERENCE',
     'PHASE',
@@ -15,6 +16,17 @@ JOAN = 'joan'
 JOAN_GATHER_PREFERENCE = ResourceType.values() + AnimalType.values()
 
 # -- Game Data -- #
+
+# Count of each type in the WorldPool
+DICE_COUNT = {
+    ResourceType.WOOD:  14,
+    ResourceType.STONE: 14,
+    ResourceType.GOLD:  13,
+    ResourceType.LAND:  11,
+    ResourceType.IRON:  11
+}
+
+
 PHASE = (
     # skip zero index for ease of calculation
     (),
