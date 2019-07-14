@@ -84,3 +84,7 @@ class VillagerCardTest(unittest.TestCase):
     def test_lookup_error(self):
         with self.assertRaises(InvalidVillagerCardTypeError):
             VillagerCard('abc')
+
+    def test_all_cards_in_map(self):
+        self.assertCountEqual(list(VillagerCardType.values()),
+                              list(VillagerCard.card_map.keys()))

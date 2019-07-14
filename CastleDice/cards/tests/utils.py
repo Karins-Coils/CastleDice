@@ -105,7 +105,6 @@ class CardTestBase(unittest.TestCase):
             self.assertEqual(self.card.playable_phase, PhaseType.BUILD)
         else:
             self.assertEqual(self.card.build_cost, ())
-            self.assertNotEqual(self.card.playable_phase, PhaseType.BUILD)
 
     # -- Test card functions -- #
     @skip_test_if_base_class
