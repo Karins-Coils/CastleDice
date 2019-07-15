@@ -14,3 +14,9 @@ class InvalidVillagerCardTypeError(Exception):
     """
     Raised when trying to instantiate a villager card but the type is not valid
     """
+
+
+class InvalidDeckCardTypeError(Exception):
+    """
+    Raised when trying to instantiate a card, and can not identify which deck it belongs
+    """
