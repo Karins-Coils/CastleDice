@@ -18,6 +18,7 @@ __all__ = [
     'LandDie',
     'StoneDie',
     'WoodDie',
+    'roll_dice',
 ]
 
 
@@ -251,3 +252,26 @@ class Die(object):
             return self.die_map[die_type](die_face, amount)
 
         raise TypeError("Unknown resource type, could not find die")
+
+
+_die_list = Iterator[Union[WoodDie, StoneDie, GoldDie, LandDie, IronDie, JoanDie]]
+
+
+def roll_dice(dice: _die_list, re_roll: bool = False) -> _die_list:
+    """Roll a list of dice.  Only re-rolls a dice if specified.
+
+    :param dice: list of _Die to roll
+    :type: Iterator[Union[WoodDie, StoneDie, GoldDie, LandDie, IronDie, JoanDie]]
+    :param re_roll: if True, will reroll all die values.
+        If False, will raise error if any have previous roll
+    :type: bool
+    :return: same list of die, with their values rolled
+    :rtype: Iterator[Union[WoodDie, StoneDie, GoldDie, LandDie, IronDie, JoanDie]]
+    """
+
+    for die in dice:
+        if re_roll:
+            die.reroll()
+        else:
+            die.roll()
+    return dice

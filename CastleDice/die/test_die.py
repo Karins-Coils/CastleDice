@@ -11,6 +11,7 @@ from .die import StoneDie
 from .die import WoodDie
 from .die import _Die
 from .die import _DieSide
+from .die import roll_dice
 from ..common.constants import DieFace
 from ..common.constants import ResourceType
 from ..common.setup import JOAN
@@ -124,3 +125,27 @@ class _DieSideTest(unittest.TestCase):
         side = _DieSide(DieFace.HORSE, 1)
 
         self.assertFalse(side.is_barbarian())
+
+
+class RollDiceTest(unittest.TestCase):
+    def test_rolls_dice(self):
+        dice = [Die(ResourceType.WOOD), Die(ResourceType.STONE)]
+        rolled_dice = roll_dice(dice)
+
+        for die in rolled_dice:
+            self.assertTrue(die.value)
+
+    def test_rolls_dice_once(self):
+        dice = [Die(ResourceType.WOOD), Die(ResourceType.STONE)]
+        rolled_dice =roll_dice(dice)
+
+        # next roll will error
+        with self.assertRaises(DieAlreadyRolledError):
+            roll_dice(rolled_dice)
+
+    def test_re_rolls_dice(self):
+        dice = [Die(ResourceType.WOOD), Die(ResourceType.STONE)]
+        rolled_dice = roll_dice(dice)
+
+        # re-roll the dice
+        roll_dice(rolled_dice, re_roll=True)
