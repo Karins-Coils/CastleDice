@@ -5,6 +5,7 @@ from typing import Optional
 from typing import Sequence
 from typing import Type
 from typing import Union
+from random import shuffle
 
 from CastleDice.common.constants import CastleCardType
 from CastleDice.common.constants import DeckName
@@ -43,8 +44,9 @@ class _Deck(object):
             self,
             draw_pile: Optional[_card_list_type] = None,
             discard_pile: Optional[_card_list_type] = None):
-        self._draw_pile = draw_pile or []
-        self._discard_pile = discard_pile or []
+        # copy the list into the class
+        self._draw_pile = draw_pile[:] if draw_pile else []
+        self._discard_pile = discard_pile[:] if discard_pile else []
 
         self._confirm_card_types_in_pile(self._draw_pile)
         self._confirm_card_types_in_pile(self._discard_pile)
@@ -66,6 +68,30 @@ class _Deck(object):
     @property
     def type(self) -> DeckName:
         return self._deck_type
+
+    def create_and_shuffle_draw_pile(self) -> NoReturn:
+        """On first creation, the draw pile will need to be setup"""
+        draw_pile = []
+        for card_type, count in self._deck_makeup.items():
+            draw_pile.extend([card_type] * count)
+
+        self._draw_pile = draw_pile
+        self.shuffle_draw_cards()
+
+    def shuffle_draw_cards(self) -> NoReturn:
+        """Shuffles the draw pile"""
+        shuffle(self._draw_pile)
+
+    def shuffle_discard_cards(self) -> NoReturn:
+        """Shuffles the discard pile"""
+        shuffle(self._discard_pile)
+
+    def reshuffle_discard_into_draw(self) -> NoReturn:
+        """Shuffles the discard pile onto the bottom of the draw pile."""
+
+        self.shuffle_discard_cards()
+        self._draw_pile.extend(self._discard_pile)
+        self._discard_pile = []
 
 
 class CastleDeck(_Deck):
