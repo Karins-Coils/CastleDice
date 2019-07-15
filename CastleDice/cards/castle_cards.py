@@ -495,6 +495,7 @@ class WallWorker(
         # deduct build materials and place on mat
         raise NotImplementedError()
 
+
 class CastleCard(CardLookupBase):
     card_map = {
         CastleCardType.ADVISOR: Advisor,

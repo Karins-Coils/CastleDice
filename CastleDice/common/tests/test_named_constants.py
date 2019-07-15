@@ -1,7 +1,7 @@
 import unittest
 
-from .named_constants import Constants
-from .named_constants import _named_types
+from ..named_constants import Constants
+from ..named_constants import _named_types
 
 
 class MyConstants(Constants):

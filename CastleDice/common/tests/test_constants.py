@@ -1,14 +1,14 @@
 import unittest
 
-from .constants import AnimalType
-from .constants import DeckName
-from .constants import DieFace
-from .constants import JoanDieFace
-from .constants import ResourceType
-from .constants import VillagerType
-from .constants import JOAN
-from .constants import JOAN_GATHER_PREFERENCE
-from .constants import PHASE
+from ..constants import AnimalType
+from ..constants import DeckName
+from ..constants import DieFace
+from ..constants import JoanDieFace
+from ..constants import ResourceType
+from ..constants import VillagerType
+from ..setup import JOAN
+from ..setup import JOAN_GATHER_PREFERENCE
+from ..setup import PHASE
 
 
 class TestConstants(unittest.TestCase):
