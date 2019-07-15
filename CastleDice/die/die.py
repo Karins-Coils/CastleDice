@@ -1,6 +1,7 @@
 import random
-from typing import Iterator
 from typing import Optional
+from typing import Sequence
+from typing import Tuple
 from typing import Union
 
 from ..common.constants import DieFace
@@ -112,7 +113,7 @@ class _Die(object):
         return None
 
     @classmethod
-    def sides(cls) -> Iterator[_DieSide]:
+    def sides(cls) -> Tuple[_DieSide]:
         """Returns a copy of the tuple of sides.
         :rtype: tuple[_DieSide]
         """
@@ -254,19 +255,19 @@ class Die(object):
         raise TypeError("Unknown resource type, could not find die")
 
 
-_die_list = Iterator[Union[WoodDie, StoneDie, GoldDie, LandDie, IronDie, JoanDie]]
+_die_list = Sequence[Union[WoodDie, StoneDie, GoldDie, LandDie, IronDie, JoanDie]]
 
 
 def roll_dice(dice: _die_list, re_roll: bool = False) -> _die_list:
     """Roll a list of dice.  Only re-rolls a dice if specified.
 
     :param dice: list of _Die to roll
-    :type: Iterator[Union[WoodDie, StoneDie, GoldDie, LandDie, IronDie, JoanDie]]
+    :type: Sequence[Union[WoodDie, StoneDie, GoldDie, LandDie, IronDie, JoanDie]]
     :param re_roll: if True, will reroll all die values.
         If False, will raise error if any have previous roll
     :type: bool
     :return: same list of die, with their values rolled
-    :rtype: Iterator[Union[WoodDie, StoneDie, GoldDie, LandDie, IronDie, JoanDie]]
+    :rtype: Sequence[Union[WoodDie, StoneDie, GoldDie, LandDie, IronDie, JoanDie]]
     """
 
     for die in dice:
