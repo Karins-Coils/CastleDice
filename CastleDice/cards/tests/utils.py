@@ -2,53 +2,16 @@ import unittest
 from typing import Callable
 
 from CastleDice.common.constants import PhaseType
+from CastleDice.common.tests.utils import create_skip_if_not_implemented_decorator
+from CastleDice.common.tests.utils import create_skip_test_if_base_class_decorator
 
 __all__ = [
-    'skip_if_not_implemented',
-    'skip_test_if_base_class',
     'CardTestBase',
 ]
 
 
-def skip_test_if_base_class(f: Callable) -> Callable:
-    """
-    Handy decorator that when added to a test, will check if the test is on the base class
-    or on the child class. Child classes are expected to have set their card_class and should
-    be able to run all tests
-    """
-    def wrapper(self, *args, **kwargs):
-        # check here is primitive.  We assume all children are setting which card they are using
-        if self.card_class is not None:
-            f(self, *args, **kwargs)
-        else:
-            # self.skipTest("Skipping on base parent class")
-            # silently skip these tests, since they SHOULD pass and be happy on any bases classes
-            pass
-    return wrapper
-
-
-def skip_if_not_implemented(func_name: str) -> Callable:
-    """
-    Helpful decorator in the interim while I get functions routed together.  Does not explicitly
-    fail tests that raise a NotImplementedError
-
-    Should ALWAYS be paired with @skip_test_if_base_class within a base class
-    """
-    def deco(f: Callable) -> Callable:
-        def wrapper(self, *args, **kwargs):
-            # confirm the function is written and not throwing a NotImplementedError
-            try:
-                method = getattr(self.card, func_name)
-                method()
-            except NotImplementedError:
-                # leaving this as a skip, since it SHOULD show and be something I fix down the line
-                self.skipTest("Method has not been implemented yet, but should be")
-            except Exception:
-                # catching all other generic exceptions, since we expect it likely to complain
-                # without state/args/etc
-                f(self, *args, **kwargs)
-        return wrapper
-    return deco
+skip_test_if_base_class = create_skip_test_if_base_class_decorator('card_class')
+skip_if_not_implemented = create_skip_if_not_implemented_decorator('card')
 
 
 class CardTestBase(unittest.TestCase):
