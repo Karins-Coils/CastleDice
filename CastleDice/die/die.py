@@ -1,5 +1,6 @@
 import random
 from typing import Iterator
+from typing import Optional
 from typing import Union
 
 from ..common.constants import DieFace
@@ -71,13 +72,16 @@ class _Die(object):
     _sides = ()
     _rolled_side = None
 
-    def __init__(self, resource=None, amount=None):
+    def __init__(self, die_face: Optional[DieFace] = None, amount: Optional[int] = None):
         """
-        :param value (_DieSide):
+        :param die_face:
+        :type: DieFace
+        :param amount:
+        :type: int
         """
         value = None
-        if resource and amount:
-            value = self._find_side(resource, amount)
+        if die_face and amount:
+            value = self._find_side(die_face, amount)
 
             if not value:
                 raise InvalidDieSideError()
@@ -85,29 +89,31 @@ class _Die(object):
         self._rolled_side = value
 
     @classmethod
-    def type(cls):
+    def type(cls) -> ResourceType:
         """
-        :return (common.Resources):
+        :rtype: ResourceType
         """
         return cls._type
 
-    def _find_side(self, resource, amount):
+    def _find_side(self, die_face: DieFace, amount: int) -> Optional[_DieSide]:
         """Locates the first side in Die's _sides that matches parameters
 
-        :param resource (DieFaces):
-        :param amount (int):
-        :return Optional[_DieSide]:
+        :param die_face:
+        :type: DieFaces
+        :param amount:
+        :type: int
+        :rtype: Optional[_DieSide]
         """
         for side in self._sides:
-            if side.resource == resource and side.amount == amount:
+            if side.resource == die_face and side.amount == amount:
                 return side
 
         return None
 
     @classmethod
-    def sides(cls):
-        """
-        :return tuple:
+    def sides(cls) -> Iterator[_DieSide]:
+        """Returns a copy of the tuple of sides.
+        :rtype: tuple[_DieSide]
         """
         if not len(cls._sides):
             raise NotImplementedError()
@@ -115,15 +121,20 @@ class _Die(object):
         # return copy of sides, just in case.  prevents editing
         return cls._sides[:]
 
-    def _select_random_side(self):
+    def _select_random_side(self) -> _DieSide:
+        """Choose a random number based on the total number of sides and
+        return the side at that index
+
+        :rtype: _DieSide
+        """
         roll = random.randint(0, len(self._sides) - 1)
         return self._sides[roll]
 
-    def roll(self):
+    def roll(self) -> _DieSide:
         """Randomly chooses one of the sides.  Sets that value on this die.
         Will raise an error if this die has already been rolled
 
-        :return _DieSide:
+        :rtype:_DieSide
         :raises DieAlreadyRolledError: if die has already been rolled
         """
         if self._rolled_side:
@@ -131,21 +142,20 @@ class _Die(object):
 
         return self.reroll()
 
-    def reroll(self):
+    def reroll(self) -> _DieSide:
         """Randomly chooses one of the sides.  Sets that value on this die.
         Will overwrite existing rolled value.
 
-        :return:
+        :rtype: _DieSide
         """
         self._rolled_side = self._select_random_side()
         return self.value
 
     @property
-    def value(self):
-        """
-        If, rolled, returns rolled value
+    def value(self) -> Optional[_DieSide]:
+        """ If, rolled, returns rolled value
 
-        :return _DieSide:
+        :rtype: Optional[_DieSide]
         """
         return self._rolled_side
 
@@ -233,8 +243,11 @@ class Die(object):
         DieFace.IRON: IronDie,
     }
 
-    def __new__(self, die_type, resource=None, amount=None):
+    def __new__(self,
+                die_type: ResourceType,
+                die_face: Optional[DieFace] = None,
+                amount: Optional[int] = None):
         if die_type in self.die_map:
-            return self.die_map[die_type](resource, amount)
+            return self.die_map[die_type](die_face, amount)
 
         raise TypeError("Unknown resource type, could not find die")
