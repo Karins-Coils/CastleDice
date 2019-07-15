@@ -1,15 +1,15 @@
 from CastleDice.common.constants import MarketCardType
 from CastleDice.common.constants import PhaseType
 from CastleDice.common.constants import SpecialPhaseType
-from .bases import BaseCard
-from .bases import BuildPhaseMixin
-from .bases import CardLookupBase
-from .bases import GatherPhaseMixin
-from .bases import MarketDeckMixin
-from .bases import NoBuildMixin
-from .bases import NoOngoingMixin
-from .bases import NoScoreMixin
-from .bases import NormalDiscardMixin
+from .card_bases import BaseCard
+from .card_bases import BuildPhaseMixin
+from .card_bases import CardLookupBase
+from .card_bases import GatherPhaseMixin
+from .card_bases import MarketDeckMixin
+from .card_bases import NoBuildMixin
+from .card_bases import NoOngoingMixin
+from .card_bases import NoScoreMixin
+from .card_bases import NormalDiscardMixin
 from .exceptions import InvalidMarketCardTypeError
 
 
