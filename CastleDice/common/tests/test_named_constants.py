@@ -2,6 +2,7 @@ import unittest
 
 from ..named_constants import Constants
 from ..named_constants import _named_types
+from ..named_constants import StrCase
 
 
 class MyConstants(Constants):
@@ -49,10 +50,9 @@ class Tests(unittest.TestCase):
         :param assertions list(tuple): tuples - (expected, actual)
         """
         for idx, assertion in enumerate(assertions):
-            actual, expected = assertion
-            self.assertEqual(expected,
-                             actual,
-                             msg=f"assertion #{idx} failed")
+            with self.subTest(i=idx):
+                actual, expected = assertion
+                self.assertEqual(expected, actual)
 
     def test_assignment_error(self):
         with self.assertRaises(TypeError):
@@ -194,3 +194,95 @@ class Tests(unittest.TestCase):
         for cls, arg in tests:
             with self.assertRaises(ValueError):
                 cls(arg)
+
+
+class TestDjangoChoices(unittest.TestCase):
+    def test_default_returns_first_capitalized(self):
+        my_constants_choices = [
+            (3.141592653589793, 'Pi'),
+            (2.718281828459045, 'E'),
+            (42, 'Answer'),
+            ("This code comes with no warranty.", 'Boilerplate'),
+            (u'\u20ac', 'Euro symbol'),  # this is an odd case we want to test against
+        ]
+
+        colors_choices = [
+            (0, 'Red'),
+            (1, 'Yellow'),
+            (2, 'Green'),
+            (3, 'Blue'),
+            (4, 'White'),
+        ]
+
+        string_constant_choices = [
+            ('apple', 'A'),
+            ('banana', 'B'),
+            ('carrot', 'C'),
+        ]
+
+        self.assertCountEqual(my_constants_choices, MyConstants.django_choices())
+        self.assertEqual(colors_choices, Colors.django_choices())
+        self.assertEqual(string_constant_choices, StringConstant.django_choices())
+
+        # look at this specific odd case
+        self.assertIn((6, 'Compoundbegin'), ObjectType.django_choices())
+
+    def test_upper(self):
+        my_constants_choices = [
+            (3.141592653589793, 'PI'),
+            (2.718281828459045, 'E'),
+            (42, 'ANSWER'),
+            ("This code comes with no warranty.", 'BOILERPLATE'),
+            (u'\u20ac', 'EURO SYMBOL'),  # this is an odd case we want to test against
+        ]
+
+        colors_choices = [
+            (0, 'RED'),
+            (1, 'YELLOW'),
+            (2, 'GREEN'),
+            (3, 'BLUE'),
+            (4, 'WHITE'),
+        ]
+
+        string_constant_choices = [
+            ('apple', 'A'),
+            ('banana', 'B'),
+            ('carrot', 'C'),
+        ]
+
+        self.assertCountEqual(my_constants_choices, MyConstants.django_choices(StrCase.UPPER))
+        self.assertEqual(colors_choices, Colors.django_choices(StrCase.UPPER))
+        self.assertEqual(string_constant_choices, StringConstant.django_choices(StrCase.UPPER))
+
+        # look at this specific odd case
+        self.assertIn((6, 'COMPOUNDBEGIN'), ObjectType.django_choices(StrCase.UPPER))
+
+    def test_lower(self):
+        my_constants_choices = [
+            (3.141592653589793, 'pi'),
+            (2.718281828459045, 'e'),
+            (42, 'answer'),
+            ("This code comes with no warranty.", 'boilerplate'),
+            (u'\u20ac', 'euro symbol'),  # this is an odd case we want to test against
+        ]
+
+        colors_choices = [
+            (0, 'red'),
+            (1, 'yellow'),
+            (2, 'green'),
+            (3, 'blue'),
+            (4, 'white'),
+        ]
+
+        string_constant_choices = [
+            ('apple', 'a'),
+            ('banana', 'b'),
+            ('carrot', 'c'),
+        ]
+
+        self.assertCountEqual(my_constants_choices, MyConstants.django_choices(StrCase.LOWER))
+        self.assertEqual(colors_choices, Colors.django_choices(StrCase.LOWER))
+        self.assertEqual(string_constant_choices, StringConstant.django_choices(StrCase.LOWER))
+
+        # look at this specific odd case
+        self.assertIn((6, 'compoundbegin'), ObjectType.django_choices(StrCase.LOWER))
