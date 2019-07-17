@@ -1,8 +1,9 @@
 import unittest
 
 from ..named_constants import Constants
-from ..named_constants import _named_types
 from ..named_constants import StrCase
+from ..named_types import NamedFloat
+from ..named_types import NamedInt
 
 
 class MyConstants(Constants):
@@ -105,7 +106,7 @@ class TestConstants(unittest.TestCase):
     def test_MyConstants(self):
         assertions = [
             # (actual, expected)
-            (str(type(MyConstants.pi)), "<class 'common.named_constants.NamedFloat'>"),
+            (type(MyConstants.pi), NamedFloat),
             (type(MyConstants.pi.value), float),
             (MyConstants.pi, 3.141592653589793),
             (MyConstants.pi / 2, 1.5707963267948966),
@@ -125,12 +126,11 @@ class TestConstants(unittest.TestCase):
         self._confirm_assertions(assertions)
 
     def test_methods(self):
-        named_int = _named_types.get(int)
         assertions = [
             # (actual, expected)
-            (isinstance(Colors.values()[0], named_int), True),
+            (isinstance(Colors.values()[0], NamedInt), True),
             (isinstance(Colors.values()[0], int), True),  # NamedInt is a subtype of int
-            (isinstance(Colors.bare_values()[0], named_int), False),
+            (isinstance(Colors.bare_values()[0], NamedInt), False),
             (isinstance(Colors.bare_values()[0], int), True),
 
             # key in the tuple - str
@@ -138,10 +138,10 @@ class TestConstants(unittest.TestCase):
             (isinstance(Colors.bare_items()[0][0], str), True),
 
             # value in the tuple - int
-            (isinstance(Colors.items()[0][1], named_int), True),
+            (isinstance(Colors.items()[0][1], NamedInt), True),
             (isinstance(Colors.items()[0][1], int), True),  # NamedInt is a subtype of int
 
-            (isinstance(Colors.bare_items()[0][1], named_int), False),
+            (isinstance(Colors.bare_items()[0][1], NamedInt), False),
             (isinstance(Colors.bare_items()[0][1], int), True),
         ]
 
