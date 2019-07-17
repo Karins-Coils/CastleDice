@@ -1,4 +1,4 @@
-
+from typing import Type
 
 __all__ = [
     'named_type',
@@ -10,11 +10,14 @@ __all__ = [
 # TODO: build in comparison dunders to handle classes with values that are str + int mixed?
 
 
-def _named_value_initial(typ):
-    """Returns a 'NamedTyp' class derived from the given 'typ'."""
+class _NamedType(type):
+    """Convenience class that stores the name and value of a previously unnamed type."""
+    __doc__ = "Named type.  Retains most of parent type's properties, with extras for storing a " \
+              "name and ability to compare across different NamedType instances. "
 
     def __new__(mcs, name, val):
-        res = typ.__new__(mcs, val)
+        res = type(val).__new__(mcs, val)
+        res._type = type(val)
         res._name = name
         res._value = val
         res._namespace = None
@@ -38,28 +41,23 @@ def _named_value_initial(typ):
                                    self._namespace.__name__)
         return "%s.%s" % (namespace, self._name)
 
-    dct = dict(
-        __doc__="""
-Named, typed constant (subclassed from original type, cf. `Constants`
-class).  Sole purpose is pretty-printing, i.e. __repr__ returns the
-constant's name instead of the original string representations.
-The name is also available via a `name()` method.""".lstrip(),
-        __new__=__new__,
-        name=name,
-        value=value,
-        __repr__=__repr__
-    )
 
-    typ_name = typ.__name__
-    new_type_name = 'Named' + typ_name[0].upper() + typ_name[1:]
-    const = type(new_type_name, (typ, ), dct)
+def _create_named_type(value_type: type):
+    """Given a typed object, convert it to a NamedTyp instance
 
-    return const
+    Example:
+        'a' --> NamedStr('a')
+    """
+
+    new_name = 'Named' + value_type.__name__.capitalize()
+    # create a new type, using the original type as a base, and adding in the methods of _NamedType
+    return type(new_name, (value_type, ), dict(_NamedType.__dict__))
 
 
-NamedInt = _named_value_initial(int)
-NamedStr = _named_value_initial(str)
-NamedFloat = _named_value_initial(float)
+# Explicitly create most commonly used named types
+NamedInt = _create_named_type(int)
+NamedStr = _create_named_type(str)
+NamedFloat = _create_named_type(float)
 
 _named_types = {
     int: NamedInt,
@@ -68,7 +66,7 @@ _named_types = {
 }
 
 
-def named_type(typ):
+def named_type(typ: type) -> Type[_NamedType]:
     """
     Returns a 'NamedTyp' class derived from the given 'typ'.
     The results are cached, i.e. given the same type, the same
@@ -77,7 +75,7 @@ def named_type(typ):
     const = _named_types.get(typ, None)
 
     if const is None:
-        const = _named_value_initial(typ)
+        const = _create_named_type(typ)
         _named_types[typ] = const
 
     return const
