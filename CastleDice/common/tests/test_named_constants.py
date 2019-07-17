@@ -44,7 +44,7 @@ class StringConstant(Constants):
     C = 'carrot'
 
 
-class Tests(unittest.TestCase):
+class TestConstants(unittest.TestCase):
     def _confirm_assertions(self, assertions):
         """
         :param assertions list(tuple): tuples - (expected, actual)
