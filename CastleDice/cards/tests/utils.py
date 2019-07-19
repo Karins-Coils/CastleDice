@@ -71,6 +71,10 @@ class CardTestBase(unittest.TestCase):
 
     # -- Test card functions -- #
     @skip_test_if_base_class
+    def test_serialize(self):
+        self.assertEqual(self.card.serialize(), self.card.card_id)
+
+    @skip_test_if_base_class
     @skip_if_not_implemented('is_playable')
     def test_is_playable(self):
         self.fail("Must implement this feature and its test")

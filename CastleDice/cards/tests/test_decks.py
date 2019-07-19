@@ -140,6 +140,28 @@ class CastleDeckTest(DeckBaseTest):
         # first two cards should be on top, always
         self.assertListEqual(deck._draw_pile[0:2], draw_pile)
 
+    def test_serialize_draw_pile(self):
+        draw_pile = [CastleCard(CastleCardType.ADVISOR), CastleCard(CastleCardType.SQUIRE)]
+        discard_pile = []
+        deck = CastleDeck(draw_pile, discard_pile)
+
+        self.assertEqual(deck.serialize_draw_pile(),
+                         [CastleCardType.ADVISOR.value, CastleCardType.SQUIRE.value])
+
+    def test_serialize_discard_pile(self):
+        draw_pile = []
+        discard_pile = [CastleCard(CastleCardType.DEEP_MOAT),
+                        CastleCard(CastleCardType.DAUGHTER)]
+        deck = CastleDeck(draw_pile, discard_pile)
+
+        self.assertEqual(deck.serialize_discard_pile(),
+                         [CastleCardType.DEEP_MOAT.value, CastleCardType.DAUGHTER.value])
+
+    def test_serialize_empty_deck(self):
+        deck = CastleDeck([], [])
+        self.assertEqual(deck.serialize_draw_pile(), [])
+        self.assertEqual(deck.serialize_discard_pile(), [])
+
 
 class MarketDeckTest(DeckBaseTest):
     deck_class = MarketDeck

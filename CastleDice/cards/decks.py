@@ -1,5 +1,6 @@
 from typing import ClassVar
 from typing import Dict
+from typing import List
 from typing import NoReturn
 from typing import Optional
 from typing import Sequence
@@ -92,6 +93,18 @@ class _Deck(object):
         self.shuffle_discard_cards()
         self._draw_pile.extend(self._discard_pile)
         self._discard_pile = []
+
+    def serialize_draw_pile(self) -> List[str]:
+        return [
+            card.serialize()
+            for card in self._draw_pile
+        ]
+
+    def serialize_discard_pile(self) -> List[str]:
+        return [
+            card.serialize()
+            for card in self._discard_pile
+        ]
 
 
 class CastleDeck(_Deck):

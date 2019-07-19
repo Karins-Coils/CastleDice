@@ -117,6 +117,9 @@ class BaseCard(metaclass=abc.ABCMeta):
         """
 
     # --- public methods --- #
+    def serialize(self) -> str:
+        return self.card_id
+
     @abc.abstractmethod
     def is_playable(self):
         """
