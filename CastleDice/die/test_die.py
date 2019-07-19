@@ -51,6 +51,17 @@ class DieTest(unittest.TestCase):
         roll = wood_die.roll()
         self.assertIn(roll, wood_die.sides())
 
+    def test_serialize_and_deserialize(self):
+        die = WoodDie()
+        result = die.roll()
+        serialized = die.serialize()
+        self.assertEqual(serialized,
+                         (ResourceType.WOOD, result.resource, result.amount))
+        # deserialize
+        new_die = Die(*serialized)
+        self.assertEqual(die._type, new_die._type)
+        self.assertEqual(die.value, new_die.value)
+
 
 class _DieTest(unittest.TestCase):
     def test_sides_required(self):

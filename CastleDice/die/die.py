@@ -35,36 +35,23 @@ class _DieSide(object):
     _resource = None
     _amount = None
 
-    def __init__(self, resource, amount):
-        """
-        :param resource (DieFaces):
-        :param amount (int):
-        """
+    def __init__(self, resource: DieFace, amount: int):
         self._resource = resource
         self._amount = amount
 
     @property
-    def resource(self):
-        """
-        :return DieFaces:
-        """
+    def resource(self) -> DieFace:
         return self._resource
 
     @property
-    def amount(self):
-        """
-        :return int:
-        """
+    def amount(self) -> int:
         return self._amount
 
     @property
-    def value(self):
-        """
-        :return (DieFaces, int):
-        """
+    def value(self) -> Tuple[DieFace, int]:
         return self._resource, self._amount
 
-    def is_barbarian(self):
+    def is_barbarian(self) -> bool:
         return self._resource == DieFace.BARBARIAN
 
 
@@ -136,7 +123,6 @@ class _Die(object):
         """Randomly chooses one of the sides.  Sets that value on this die.
         Will raise an error if this die has already been rolled
 
-        :rtype:_DieSide
         :raises DieAlreadyRolledError: if die has already been rolled
         """
         if self._rolled_side:
@@ -147,19 +133,17 @@ class _Die(object):
     def reroll(self) -> _DieSide:
         """Randomly chooses one of the sides.  Sets that value on this die.
         Will overwrite existing rolled value.
-
-        :rtype: _DieSide
         """
         self._rolled_side = self._select_random_side()
         return self.value
 
     @property
     def value(self) -> Optional[_DieSide]:
-        """ If, rolled, returns rolled value
-
-        :rtype: Optional[_DieSide]
-        """
+        """ If already, rolled, returns rolled value"""
         return self._rolled_side
+
+    def serialize(self) -> Tuple[ResourceType, DieFace, int]:
+        return self._type, self._rolled_side.resource, self._rolled_side.amount
 
 
 class WoodDie(_Die):
