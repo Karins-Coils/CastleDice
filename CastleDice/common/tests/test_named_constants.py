@@ -45,16 +45,18 @@ class StringConstant(Constants):
     C = 'carrot'
 
 
-class TestConstants(unittest.TestCase):
+class BaseTest(unittest.TestCase):
     def _confirm_assertions(self, assertions):
         """
-        :param assertions list(tuple): tuples - (expected, actual)
+        :param assertions list(tuple): tuples - (actual, expected)
         """
         for idx, assertion in enumerate(assertions):
             with self.subTest(i=idx):
                 actual, expected = assertion
                 self.assertEqual(expected, actual)
 
+
+class TestConstants(BaseTest):
     def test_assignment_error(self):
         with self.assertRaises(TypeError):
             Colors.black = None
@@ -286,3 +288,66 @@ class TestDjangoChoices(unittest.TestCase):
 
         # look at this specific odd case
         self.assertIn((6, 'compoundbegin'), ObjectType.django_choices(StrCase.LOWER))
+
+
+class TestOrdering(BaseTest):
+    def test_order_of_keys_and_values_respected(self):
+        assertions = [
+            # (actual, expected)
+            (MyConstants.keys(), [
+                MyConstants.pi.name,
+                MyConstants.e.name,
+                MyConstants.answer.name,
+                MyConstants.BOILERPLATE.name,
+                MyConstants.EURO_SYMBOL.name,
+            ]),
+            (MyConstants.values(), [
+                MyConstants.pi.value,
+                MyConstants.e.value,
+                MyConstants.answer.value,
+                MyConstants.BOILERPLATE.value,
+                MyConstants.EURO_SYMBOL.value,
+            ]),
+            (MyConstants.items(),
+             [
+                 (MyConstants.pi.name, MyConstants.pi.value),
+                 (MyConstants.e.name, MyConstants.e.value),
+                 (MyConstants.answer.name, MyConstants.answer.value),
+                 (MyConstants.BOILERPLATE.name, MyConstants.BOILERPLATE.value),
+                 (MyConstants.EURO_SYMBOL.name, MyConstants.EURO_SYMBOL.value),
+             ]),
+
+            # the object should NOT have its keys + values sorted by default
+            (MyConstants.values() == sorted(MyConstants.values()), False),
+            (MyConstants.keys() == sorted(MyConstants.keys()), False),
+            (MyConstants.items() == sorted(MyConstants.items()), False),
+        ]
+        self._confirm_assertions(assertions)
+
+    def test_sorted(self):
+        assertions = [
+            (sorted(MyConstants.keys()), [
+                MyConstants.BOILERPLATE.name,
+                MyConstants.EURO_SYMBOL.name,
+                MyConstants.answer.name,
+                MyConstants.e.name,
+                MyConstants.pi.name,
+            ]),
+            (sorted(MyConstants.values()), [
+                MyConstants.e.value,
+                MyConstants.pi.value,
+                MyConstants.answer.value,
+                MyConstants.BOILERPLATE.value,
+                MyConstants.EURO_SYMBOL.value,
+            ]),
+            (sorted(Colors.keys()), [
+                Colors.blue.name,
+                Colors.green.name,
+                Colors.red.name,
+                Colors.white.name,
+                Colors.yellow.name,
+            ]),
+            (sorted(Colors.values()), list(range(5))),
+        ]
+
+        self._confirm_assertions(assertions)

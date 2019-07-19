@@ -9,14 +9,14 @@ from enum import IntEnum
 from typing import Iterator
 from typing import List
 from typing import Sequence
-from typing import TypeVar
 from typing import Tuple
+from typing import TypeVar
 from typing import Union
 
-from .named_types import named_type
 from .named_types import NamedFloat
 from .named_types import NamedInt
 from .named_types import NamedStr
+from .named_types import named_type
 
 __all__ = [
     'Constants',
@@ -24,8 +24,7 @@ __all__ = [
 ]
 
 
-supported_constants_values = Union[NamedFloat, NamedInt, NamedStr]
-NamedType = TypeVar('NamedType', NamedFloat, NamedInt, NamedStr)
+NamedTypeTyping = TypeVar('NamedTypeTyping', NamedFloat, NamedInt, NamedStr)
 
 
 class StrCase(IntEnum):
@@ -53,9 +52,7 @@ class _ConstantsMeta(type):
             dct[member] = c
 
         dct['__constants__'] = constants
-        dct['__values_dict__'] = dict((value, value) for value in constants.values())
-
-        dct['__sorted__'] = sorted(constants.values(), key=lambda x: (id(type(x)), x))
+        dct['__values_dict__'] = dict((value.value, value) for value in constants.values())
 
         result = type.__new__(mcs, name, bases, dct)
 
@@ -65,47 +62,51 @@ class _ConstantsMeta(type):
 
         return result
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.__constants__)
 
-    def __iter__(self):
-        return iter(self.__sorted__)
+    def __iter__(self) -> Iterator[NamedTypeTyping]:
+        return iter(self.__constants__.values())
 
     def __setattr__(self, _name, _value):
         raise TypeError('Constants are not supposed to be changed ex post')
 
-    def __contains__(self, x):
+    def __contains__(self, x: Union[str, NamedTypeTyping]) -> bool:
         return self.has_k(x) or self.has_v(x)
 
-    def has_k(self, key):
+    def has_k(self, key: str) -> bool:
         """
         Renamed from has_key, to not be confused for python builtin which is being deprecated
         """
         return key in self.__constants__
 
-    def has_v(self, value):
-        return value in self.__values_dict__
+    def has_v(self, value: NamedTypeTyping) -> bool:
+        return value in self.__constants__.values()
 
-    def keys(self):
-        return [c.name for c in self.__sorted__]
+    def keys(self) -> List[str]:
+        return list(self.__constants__.keys())
 
-    def values(self):
-        return self.__sorted__
+    def names(self) -> List[str]:
+        """Shortcut function to use self.keys(), since the keys are names, and its a shorthand"""
+        return self.keys()
 
-    def bare_values(self):
+    def values(self) -> List[NamedTypeTyping]:
+        return list(self.__constants__.values())
+
+    def bare_values(self) -> List[Union[float, int, str]]:
         """Useful when storing in a db, etc"""
-        return [c.value for c in self.__sorted__]
+        return [c.value for c in self.__constants__.values()]
 
-    def items(self):
-        return [(c.name, c) for c in self.__sorted__]
+    def items(self) -> List[Tuple[str, NamedTypeTyping]]:
+        return list(self.__constants__.items())
 
-    def bare_items(self):
-        return [(c.name, c.value) for c in self.__sorted__]
+    def bare_items(self) -> List[Tuple[str, Union[float, int, str]]]:
+        return [(name, c.value) for name, c in self.__constants__.items()]
 
     def django_choices(
         self,
         case: StrCase = StrCase.FIRST_CAPITALIZED
-    ) -> Sequence[Tuple[supported_constants_values, str]]:
+    ) -> Sequence[Tuple[Union[float, int, str], str]]:
         """Converts a Constants into a django model choices compatible tuple.
 
         Example:
@@ -130,7 +131,7 @@ class _ConstantsMeta(type):
         See test cases for more in-depth examples
 
         :return: List of tuples to be used in a model choices
-        :rtype: Sequence[Tuple[Union[str, int], str]]
+        :rtype: Sequence[Tuple[Union[float, int, str], str]]
         """
         choices = []
         for name, value in self.bare_items():
