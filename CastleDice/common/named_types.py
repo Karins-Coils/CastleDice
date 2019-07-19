@@ -13,13 +13,13 @@ __all__ = [
 NamedTypeTyping = TypeVar('NamedTypeTyping', 'NamedFloat', 'NamedInt', 'NamedStr')
 
 
-class _NamedType(type):
+class _NamedType(object):
     """Convenience class that stores the name and value of a previously unnamed type."""
     __doc__ = "Named type.  Retains most of parent type's properties, with extras for storing a " \
               "name and ability to compare across different NamedType instances. "
 
-    def __new__(mcs, name, val):
-        res = type(val).__new__(mcs, val)
+    def __new__(cls, name, val):
+        res = type(val).__new__(cls, val)
         res._type = type(val)
         res._name = name
         res._value = val
@@ -48,7 +48,9 @@ class _NamedType(type):
         return hash(self.value)
 
     @staticmethod
-    def __named_type_comparator(arg: Union[NamedTypeTyping, float, int, str]) -> Tuple[int, NamedTypeTyping]:
+    def __named_type_comparator(
+            arg: Union[NamedTypeTyping, float, int, str]
+    ) -> Tuple[int, NamedTypeTyping]:
         """In order to better compare two NamedTypes, convert to a tuple of their type id
         and their value
         Example:
