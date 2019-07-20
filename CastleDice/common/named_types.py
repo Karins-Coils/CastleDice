@@ -10,8 +10,6 @@ __all__ = [
     'NamedStr',
 ]
 
-NamedTypeTyping = TypeVar('NamedTypeTyping', 'NamedFloat', 'NamedInt', 'NamedStr')
-
 
 class NamedType(object):
     """
@@ -52,8 +50,8 @@ class NamedType(object):
 
     @staticmethod
     def __named_type_comparator(
-            arg: Union[NamedTypeTyping, float, int, str]
-    ) -> Tuple[int, NamedTypeTyping]:
+            arg: Union['NamedType', float, int, str]
+    ) -> Tuple[int, 'NamedType']:
         """In order to better compare two NamedTypes, convert to a tuple of their type id
         and their value
         Example:
@@ -95,7 +93,7 @@ class NamedType(object):
         return self_cmp <= other_cmp
 
 
-def _create_named_type(value_type: type):
+def _create_named_type(value_type: Type) -> Union[type, Type[NamedType]]:
     """Given a typed object, convert it to a NamedTyp instance
 
     Example:
@@ -119,7 +117,7 @@ _named_types = {
 }
 
 
-def create_named_type(typ: type) -> Type[NamedType]:
+def create_named_type(typ: Type) -> Type[NamedType]:
     """
     Returns a 'NamedType' class derived from the given 'typ'.
     The results are cached, i.e. given the same type, the same
