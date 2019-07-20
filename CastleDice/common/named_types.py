@@ -4,7 +4,7 @@ from typing import TypeVar
 from typing import Union
 
 __all__ = [
-    'named_type',
+    'create_named_type',
     'NamedFloat',
     'NamedInt',
     'NamedStr',
@@ -13,10 +13,13 @@ __all__ = [
 NamedTypeTyping = TypeVar('NamedTypeTyping', 'NamedFloat', 'NamedInt', 'NamedStr')
 
 
-class _NamedType(object):
-    """Convenience class that stores the name and value of a previously unnamed type."""
+class NamedType(object):
+    """
+    Convenience class that stores the name and value of a previously unnamed type.
+    Should ONLY be used imported as type hinting, or created using create_named_type
+    """
     __doc__ = "Named type.  Retains most of parent type's properties, with extras for storing a " \
-              "name and ability to compare across different NamedType instances. "
+              "name and ability to compare across different NamedType instances."
 
     def __new__(cls, name, val):
         res = type(val).__new__(cls, val)
@@ -101,7 +104,7 @@ def _create_named_type(value_type: type):
 
     new_name = 'Named' + value_type.__name__.capitalize()
     # create a new type, using the original type as a base, and adding in the methods of _NamedType
-    return type(new_name, (value_type, ), dict(_NamedType.__dict__))
+    return type(new_name, (value_type, NamedType), dict(NamedType.__dict__))
 
 
 # Explicitly create most commonly used named types
@@ -116,11 +119,14 @@ _named_types = {
 }
 
 
-def named_type(typ: type) -> Type[NamedTypeTyping]:
+def create_named_type(typ: type) -> Type[NamedType]:
     """
-    Returns a 'NamedTyp' class derived from the given 'typ'.
+    Returns a 'NamedType' class derived from the given 'typ'.
     The results are cached, i.e. given the same type, the same
     class will be returned in subsequent calls.
+
+    Should ALWAYS be used to create a new type from NamedType, rather than creating an
+    instance of NamedType itself
     """
     const = _named_types.get(typ, None)
 

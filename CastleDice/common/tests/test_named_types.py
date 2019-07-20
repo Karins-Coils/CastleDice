@@ -3,8 +3,9 @@ import unittest
 from ..named_types import NamedFloat
 from ..named_types import NamedInt
 from ..named_types import NamedStr
+from ..named_types import NamedType
 from ..named_types import _named_types
-from ..named_types import named_type
+from ..named_types import create_named_type
 
 
 class BaseTest(unittest.TestCase):
@@ -14,11 +15,53 @@ class BaseTest(unittest.TestCase):
         """
         for idx, assertion in enumerate(assertions):
             with self.subTest(i=idx):
-                actual, expected = assertion
+                expected, actual = assertion
                 self.assertEqual(expected, actual)
 
 
-class TestNamedTypes(BaseTest):
+class TestNamedTypesInstanceOf(BaseTest):
+    def test_instance_of_builtin(self):
+        assertions = [
+            # (expected, actual)
+            (True, isinstance(NamedStr('x', 'a'), str)),
+            (True, isinstance(NamedFloat('x', 1.3), float)),
+            (True, isinstance(NamedInt('x', 5), int)),
+        ]
+
+        self._confirm_assertions(assertions)
+
+    def test_instance_of_NamedType(self):
+        assertions = [
+            # (actual, expected)
+            (isinstance(NamedStr('x', 'a'), NamedType), True),
+            (isinstance(NamedFloat('x', 1.3), NamedType), True),
+            (isinstance(NamedInt('x', 5), NamedType), True),
+        ]
+
+        self._confirm_assertions(assertions)
+
+    def test_instance_of_self(self):
+        assertions = [
+            # (actual, expected)
+            (isinstance(NamedStr('x', 'a'), NamedStr), True),
+            (isinstance(NamedFloat('x', 1.3), NamedFloat), True),
+            (isinstance(NamedInt('x', 5), NamedInt), True),
+        ]
+
+        self._confirm_assertions(assertions)
+
+    def test_not_instances_of_other_types(self):
+        assertions = [
+            # (actual, expected)
+            (isinstance(NamedStr('x', 'a'), int), False),
+            (isinstance(NamedFloat('x', 1.3), int), False),
+            (isinstance(NamedInt('x', 5), str), False),
+        ]
+
+        self._confirm_assertions(assertions)
+
+
+class TestNamedTypesComparisons(BaseTest):
     def test_compare_equals(self):
         x = 'some_name'
         assertions = [
@@ -102,14 +145,14 @@ class TestNamedTypeCreation(BaseTest):
     def test_get_existing_named_types(self):
         assertions = [
             # (actual, expected)
-            (named_type(float), NamedFloat),
-            (named_type(int), NamedInt),
-            (named_type(str), NamedStr),
+            (create_named_type(float), NamedFloat),
+            (create_named_type(int), NamedInt),
+            (create_named_type(str), NamedStr),
         ]
         self._confirm_assertions(assertions)
 
     def test_new_type_added_to_map(self):
-        named_complex = named_type(complex)
+        named_complex = create_named_type(complex)
 
-        self.assertEqual(named_complex, named_type(complex))
+        self.assertEqual(named_complex, create_named_type(complex))
         self.assertIn(complex, _named_types)

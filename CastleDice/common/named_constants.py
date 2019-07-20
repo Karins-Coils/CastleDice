@@ -16,7 +16,7 @@ from typing import Union
 from .named_types import NamedFloat
 from .named_types import NamedInt
 from .named_types import NamedStr
-from .named_types import named_type
+from .named_types import create_named_type
 
 __all__ = [
     'Constants',
@@ -46,7 +46,7 @@ class _ConstantsMeta(type):
                 inspect.ismethoddescriptor(value)
             ):
                 continue
-            const_cls = named_type(type(value))
+            const_cls = create_named_type(type(value))
             c = const_cls(member, value)
             constants[member] = c
             dct[member] = c
