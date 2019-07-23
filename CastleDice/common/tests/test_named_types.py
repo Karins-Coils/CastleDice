@@ -1,4 +1,5 @@
 import unittest
+from decimal import Decimal
 from typing import Any
 from typing import Iterable
 from typing import Tuple
@@ -62,6 +63,15 @@ class TestNamedTypesInstanceOf(BaseTest):
         ]
 
         self._confirm_assertions(assertions)
+
+    def test_new_named_type(self):
+        named_decimal_type = create_named_type(Decimal)
+        named_decimal = named_decimal_type('some_name', Decimal(1.0))
+
+        self.assertEqual('NamedDecimal', named_decimal_type.__name__)
+        self.assertEqual(named_decimal, 1.0)
+        self.assertEqual(named_decimal, NamedFloat('x', 1.0))
+        self.assertEqual(named_decimal, Decimal(1.0))
 
 
 class TestNamedTypesComparisons(BaseTest):

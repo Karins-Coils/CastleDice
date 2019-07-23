@@ -1,6 +1,6 @@
+import functools
 from typing import Tuple
 from typing import Type
-from typing import TypeVar
 from typing import Union
 
 __all__ = [
@@ -11,6 +11,7 @@ __all__ = [
 ]
 
 
+@functools.total_ordering
 class NamedType(object):
     """
     Convenience class that stores the name and value of a previously unnamed type.
@@ -59,38 +60,21 @@ class NamedType(object):
         """
         return id(type(arg.value)), getattr(arg, 'value', arg)
 
-    def __get_comparators(self, other) -> Tuple:
-        """Given an other value (possibly a NamedType, possibly a bare type [str, float, int]),
-        returns two values that can be compared"""
-        try:
-            # we don't check against specific types or instances, in order to preserve
-            # builtin cross-type comparisons (like int v float)
-            # if the values are not comparable, will trigger TypeError
-            self.value <= getattr(other, 'value', other)
-
-            # same base type (int/str/float), but may not both be NamedFloat, etc
-            # use other.value if its a NamedType, else use other's value itself
-            return self.value, getattr(other, 'value', other)
-        except TypeError:
-            pass
-
-        # return instead a tuple with (type_id, val) for self + other to allow ordering
-        return self.__named_type_comparator(self), self.__named_type_comparator(other)
-
     def __eq__(self, other) -> bool:
         try:
+            # first try native type comparison, like int v float
             return self.value == getattr(other, 'value', other)
         except TypeError:
-            self_cmp, other_cmp = self.__get_comparators(other)
-            return self_cmp == other_cmp
+            # if not natively comparable, use custom comparator
+            return self.__named_type_comparator(self) == self.__named_type_comparator(other)
 
     def __lt__(self, other) -> bool:
-        self_cmp, other_cmp = self.__get_comparators(other)
-        return self_cmp < other_cmp
-
-    def __le__(self, other) -> bool:
-        self_cmp, other_cmp = self.__get_comparators(other)
-        return self_cmp <= other_cmp
+        try:
+            # first try native type comparison, like int v float
+            return self.value < getattr(other, 'value', other)
+        except TypeError:
+            # if not natively comparable, use custom comparator
+            return self.__named_type_comparator(self) < self.__named_type_comparator(other)
 
 
 def _create_named_type(value_type: Type) -> Union[type, Type[NamedType]]:
