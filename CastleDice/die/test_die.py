@@ -60,7 +60,7 @@ class DieTest(unittest.TestCase):
         # deserialize
         new_die = Die(*serialized)
         self.assertEqual(die._type, new_die._type)
-        self.assertEqual(die.value, new_die.value)
+        self.assertEqual(die.value.value, new_die.value.value)
 
 
 class _DieTest(unittest.TestCase):

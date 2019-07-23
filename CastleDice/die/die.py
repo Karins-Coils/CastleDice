@@ -69,7 +69,7 @@ class _Die(object):
         :type: int
         """
         value = None
-        if die_face and amount:
+        if die_face is not None and amount is not None:
             value = self._find_side(die_face, amount)
 
             if not value:
