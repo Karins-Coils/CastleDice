@@ -23,12 +23,14 @@ class Advisor(
     NoOngoingMixin,
     NoScoreMixin,
     NormalDiscardMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = CastleCardType.ADVISOR
 
     playable_phase = SpecialPhaseType.FIRST_GATHER
-    description = "Play before your first gather. Gather one extra time for each Wall you have."
+    description = (
+        "Play before your first gather. Gather one extra time for each Wall you have."
+    )
 
     def is_playable(self):
         raise NotImplementedError()
@@ -44,13 +46,15 @@ class Alchemist(
     NoOngoingMixin,
     NormalDiscardMixin,
     NoScoreMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = CastleCardType.ALCHEMIST
 
-    description = "Play during the Build phase. Roll one of each die. Lower the cost of any one " \
-                  "card you want to build this turn by the results. (Animals and Barbarians you " \
-                  "roll have not effect"
+    description = (
+        "Play during the Build phase. Roll one of each die. Lower the cost of any one "
+        "card you want to build this turn by the results. (Animals and Barbarians you "
+        "roll have not effect"
+    )
 
     def is_playable(self):
         raise NotImplementedError()
@@ -66,12 +70,14 @@ class Daughter(
     NoOngoingMixin,
     NormalDiscardMixin,
     NoScoreMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = CastleCardType.DAUGHTER
 
-    description = "Play before you gather.  Choose one: either your gather this round counts as " \
-                  "a PorkChop, or perform the Villager Choice ability."
+    description = (
+        "Play before you gather.  Choose one: either your gather this round counts as "
+        "a PorkChop, or perform the Villager Choice ability."
+    )
 
     def is_playable(self):
         raise NotImplementedError()
@@ -80,16 +86,13 @@ class Daughter(
         raise NotImplementedError()
 
 
-class DeepMoat(
-    CastleDeckMixin,
-    BuildPhaseMixin,
-    NormalDiscardMixin,
-    BaseCard
-):
+class DeepMoat(CastleDeckMixin, BuildPhaseMixin, NormalDiscardMixin, BaseCard):
     _constant = CastleCardType.DEEP_MOAT
 
-    description = "Once per turn, when you gather an Animal, you may choose to get ONE of that " \
-                  "die's resource instead."
+    description = (
+        "Once per turn, when you gather an Animal, you may choose to get ONE of that "
+        "die's resource instead."
+    )
     ongoing_phase = PhaseType.GATHER
     victory_points = 2
     build_cost = (
@@ -135,7 +138,7 @@ class GateHouse(
     NoDescriptionMixin,
     NoOngoingMixin,
     NormalDiscardMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = CastleCardType.GATE_HOUSE
 
@@ -165,7 +168,7 @@ class GreatHall(
     NoDescriptionMixin,
     NoOngoingMixin,
     NormalDiscardMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = CastleCardType.GREAT_HALL
 
@@ -197,12 +200,14 @@ class LoyalBrother(
     NoOngoingMixin,
     NormalDiscardMixin,
     NoScoreMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = CastleCardType.LOYAL_BROTHER
 
-    description = "Play before you pick your Choice dice. Add 5 to the number of Choice dice you" \
-                  " get to pick this turn instead of rolling the fixed dice on the Turn Tracker."
+    description = (
+        "Play before you pick your Choice dice. Add 5 to the number of Choice dice you"
+        " get to pick this turn instead of rolling the fixed dice on the Turn Tracker."
+    )
 
     def is_playable(self):
         raise NotImplementedError()
@@ -211,12 +216,7 @@ class LoyalBrother(
         raise NotImplementedError()
 
 
-class RoyalChambers(
-    CastleDeckMixin,
-    BuildPhaseMixin,
-    NormalDiscardMixin,
-    BaseCard
-):
+class RoyalChambers(CastleDeckMixin, BuildPhaseMixin, NormalDiscardMixin, BaseCard):
     _constant = CastleCardType.ROYAL_CHAMBERS
 
     victory_points = 1
@@ -265,11 +265,13 @@ class Squire(
     NoOngoingMixin,
     NormalDiscardMixin,
     NoScoreMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = CastleCardType.SQUIRE
 
-    description = "Play instead of gathering. Gain 1 of each resource where you have a guard."
+    description = (
+        "Play instead of gathering. Gain 1 of each resource where you have a guard."
+    )
 
     def is_playable(self):
         # if build phase, then playable
@@ -281,16 +283,14 @@ class Squire(
 
 
 class StrongTower(
-    CastleDeckMixin,
-    BuildPhaseMixin,
-    NormalDiscardMixin,
-    NoOngoingMixin,
-    BaseCard
+    CastleDeckMixin, BuildPhaseMixin, NormalDiscardMixin, NoOngoingMixin, BaseCard
 ):
     _constant = CastleCardType.STRONG_TOWER
 
     victory_points = 3
-    description = "Strong Tower costs 1 less Wood, Stone and Gold for each wall you have."
+    description = (
+        "Strong Tower costs 1 less Wood, Stone and Gold for each wall you have."
+    )
     build_cost = (
         ResourceCost(ResourceType.WOOD, 5),
         ResourceCost(ResourceType.STONE, 5),
@@ -312,11 +312,7 @@ class StrongTower(
 
 
 class TallKeep(
-    CastleDeckMixin,
-    BuildPhaseMixin,
-    NoOngoingMixin,
-    NormalDiscardMixin,
-    BaseCard
+    CastleDeckMixin, BuildPhaseMixin, NoOngoingMixin, NormalDiscardMixin, BaseCard
 ):
     _constant = CastleCardType.TALL_KEEP
 
@@ -344,17 +340,15 @@ class TallKeep(
 
 
 class WallAnimal(
-    CastleDeckMixin,
-    BuildPhaseMixin,
-    NormalDiscardMixin,
-    NoOngoingMixin,
-    BaseCard
+    CastleDeckMixin, BuildPhaseMixin, NormalDiscardMixin, NoOngoingMixin, BaseCard
 ):
     _constant = CastleCardType.WALL_ANIMAL
 
     victory_points = 0
-    description = "When you build this card, choose an animal type. This card gives you +1 when " \
-                  "deciding who has the most of that animal type."
+    description = (
+        "When you build this card, choose an animal type. This card gives you +1 when "
+        "deciding who has the most of that animal type."
+    )
     build_cost = (
         ResourceCost(ResourceType.WOOD, 1),
         ResourceCost(ResourceType.STONE, 3),
@@ -377,11 +371,7 @@ class WallAnimal(
 
 
 class WallFarmer(
-    CastleDeckMixin,
-    BuildPhaseMixin,
-    NormalDiscardMixin,
-    NoOngoingMixin,
-    BaseCard
+    CastleDeckMixin, BuildPhaseMixin, NormalDiscardMixin, NoOngoingMixin, BaseCard
 ):
     _constant = CastleCardType.WALL_FARMER
 
@@ -407,11 +397,7 @@ class WallFarmer(
 
 
 class WallGuard(
-    CastleDeckMixin,
-    BuildPhaseMixin,
-    NormalDiscardMixin,
-    NoOngoingMixin,
-    BaseCard
+    CastleDeckMixin, BuildPhaseMixin, NormalDiscardMixin, NoOngoingMixin, BaseCard
 ):
     _constant = CastleCardType.WALL_GUARD
 
@@ -437,16 +423,14 @@ class WallGuard(
 
 
 class WallMerchant(
-    CastleDeckMixin,
-    BuildPhaseMixin,
-    NormalDiscardMixin,
-    NoOngoingMixin,
-    BaseCard
+    CastleDeckMixin, BuildPhaseMixin, NormalDiscardMixin, NoOngoingMixin, BaseCard
 ):
     _constant = CastleCardType.WALL_MERCHANT
 
     victory_points = 0
-    description = "If you have 3 Merchants at the end of the game, gain 1 Victory Point."
+    description = (
+        "If you have 3 Merchants at the end of the game, gain 1 Victory Point."
+    )
     build_cost = (
         ResourceCost(ResourceType.WOOD, 1),
         ResourceCost(ResourceType.STONE, 3),
@@ -467,11 +451,7 @@ class WallMerchant(
 
 
 class WallWorker(
-    CastleDeckMixin,
-    BuildPhaseMixin,
-    NormalDiscardMixin,
-    NoOngoingMixin,
-    BaseCard
+    CastleDeckMixin, BuildPhaseMixin, NormalDiscardMixin, NoOngoingMixin, BaseCard
 ):
     _constant = CastleCardType.WALL_WORKER
 

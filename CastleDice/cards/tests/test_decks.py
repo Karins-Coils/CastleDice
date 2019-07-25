@@ -16,7 +16,7 @@ from ..decks import CastleDeck
 from ..decks import _Deck
 
 
-skip_test_if_base_class = create_skip_test_if_base_class_decorator('deck_class')
+skip_test_if_base_class = create_skip_test_if_base_class_decorator("deck_class")
 
 
 class DeckBaseTest(unittest.TestCase):
@@ -33,8 +33,9 @@ class DeckBaseTest(unittest.TestCase):
 
     @skip_test_if_base_class
     def test_makeup_has_all_cards(self):
-        self.assertCountEqual(self.deck_class._deck_makeup.keys(),
-                              self.card_type.values())
+        self.assertCountEqual(
+            self.deck_class._deck_makeup.keys(), self.card_type.values()
+        )
 
     @skip_test_if_base_class
     def test_create_draw_pile(self):
@@ -69,9 +70,14 @@ class CastleDeckTest(DeckBaseTest):
     # -- These tests are testing base functionality,
     # -- but are easier when a deck has been properly set
     def test_initialized_with_piles(self):
-        draw_pile = [CastleCard(CastleCardType.ADVISOR), CastleCard(CastleCardType.SQUIRE)]
-        discard_pile = [CastleCard(CastleCardType.DEEP_MOAT),
-                        CastleCard(CastleCardType.DAUGHTER)]
+        draw_pile = [
+            CastleCard(CastleCardType.ADVISOR),
+            CastleCard(CastleCardType.SQUIRE),
+        ]
+        discard_pile = [
+            CastleCard(CastleCardType.DEEP_MOAT),
+            CastleCard(CastleCardType.DAUGHTER),
+        ]
         deck = CastleDeck(draw_pile, discard_pile)
         self.assertEqual(deck._draw_pile, draw_pile)
         self.assertEqual(deck._discard_pile, discard_pile)
@@ -83,19 +89,28 @@ class CastleDeckTest(DeckBaseTest):
         self.assertNotEqual(deck._discard_pile, discard_pile)
 
     def test_initialized_with_bad_draw_pile(self):
-        draw_pile = [VillagerCard(VillagerCardType.WORKER), CastleCard(CastleCardType.SQUIRE)]
+        draw_pile = [
+            VillagerCard(VillagerCardType.WORKER),
+            CastleCard(CastleCardType.SQUIRE),
+        ]
         discard_pile = []
         with self.assertRaises(CastleDeck._card_type_error):
             CastleDeck(draw_pile, discard_pile)
 
     def test_initialized_with_bad_discard_pile(self):
         draw_pile = []
-        discard_pile = [VillagerCard(VillagerCardType.WORKER), CastleCard(CastleCardType.SQUIRE)]
+        discard_pile = [
+            VillagerCard(VillagerCardType.WORKER),
+            CastleCard(CastleCardType.SQUIRE),
+        ]
         with self.assertRaises(CastleDeck._card_type_error):
             CastleDeck(draw_pile, discard_pile)
 
     def test_shuffle_draw_cards(self):
-        draw_pile = [CastleCard(CastleCardType.ADVISOR), CastleCard(CastleCardType.SQUIRE)]
+        draw_pile = [
+            CastleCard(CastleCardType.ADVISOR),
+            CastleCard(CastleCardType.SQUIRE),
+        ]
         discard_pile = [
             CastleCard(CastleCardType.DEEP_MOAT),
             CastleCard(CastleCardType.DAUGHTER),
@@ -109,7 +124,10 @@ class CastleDeckTest(DeckBaseTest):
         self.assertEqual(len(draw_pile), len(deck._draw_pile))
 
     def test_shuffle_discard_pile(self):
-        draw_pile = [CastleCard(CastleCardType.ADVISOR), CastleCard(CastleCardType.SQUIRE)]
+        draw_pile = [
+            CastleCard(CastleCardType.ADVISOR),
+            CastleCard(CastleCardType.SQUIRE),
+        ]
         discard_pile = [
             CastleCard(CastleCardType.DEEP_MOAT),
             CastleCard(CastleCardType.DAUGHTER),
@@ -123,7 +141,10 @@ class CastleDeckTest(DeckBaseTest):
         self.assertEqual(len(discard_pile), len(deck._discard_pile))
 
     def test_reshuffle_discard_into_draw_pile(self):
-        draw_pile = [CastleCard(CastleCardType.ADVISOR), CastleCard(CastleCardType.SQUIRE)]
+        draw_pile = [
+            CastleCard(CastleCardType.ADVISOR),
+            CastleCard(CastleCardType.SQUIRE),
+        ]
         discard_pile = [
             CastleCard(CastleCardType.DEEP_MOAT),
             CastleCard(CastleCardType.DAUGHTER),
@@ -141,21 +162,30 @@ class CastleDeckTest(DeckBaseTest):
         self.assertListEqual(deck._draw_pile[0:2], draw_pile)
 
     def test_serialize_draw_pile(self):
-        draw_pile = [CastleCard(CastleCardType.ADVISOR), CastleCard(CastleCardType.SQUIRE)]
+        draw_pile = [
+            CastleCard(CastleCardType.ADVISOR),
+            CastleCard(CastleCardType.SQUIRE),
+        ]
         discard_pile = []
         deck = CastleDeck(draw_pile, discard_pile)
 
-        self.assertEqual(deck.serialize_draw_pile(),
-                         [CastleCardType.ADVISOR.value, CastleCardType.SQUIRE.value])
+        self.assertEqual(
+            deck.serialize_draw_pile(),
+            [CastleCardType.ADVISOR.value, CastleCardType.SQUIRE.value],
+        )
 
     def test_serialize_discard_pile(self):
         draw_pile = []
-        discard_pile = [CastleCard(CastleCardType.DEEP_MOAT),
-                        CastleCard(CastleCardType.DAUGHTER)]
+        discard_pile = [
+            CastleCard(CastleCardType.DEEP_MOAT),
+            CastleCard(CastleCardType.DAUGHTER),
+        ]
         deck = CastleDeck(draw_pile, discard_pile)
 
-        self.assertEqual(deck.serialize_discard_pile(),
-                         [CastleCardType.DEEP_MOAT.value, CastleCardType.DAUGHTER.value])
+        self.assertEqual(
+            deck.serialize_discard_pile(),
+            [CastleCardType.DEEP_MOAT.value, CastleCardType.DAUGHTER.value],
+        )
 
     def test_serialize_empty_deck(self):
         deck = CastleDeck([], [])

@@ -27,30 +27,51 @@ class TestJoanAI(unittest.TestCase):
 
         self.pool1 = {
             # no Gold
-            WOOD: [(WOOD, 3), (WOOD, 1), (COW, 1), (WOOD, 2), (WOOD, 2),
-                   (WOOD, 1), (WOOD, 1)],
+            WOOD: [
+                (WOOD, 3),
+                (WOOD, 1),
+                (COW, 1),
+                (WOOD, 2),
+                (WOOD, 2),
+                (WOOD, 1),
+                (WOOD, 1),
+            ],
             STONE: [(STONE, 1), (CHICKEN, 1), (STONE, 2)],
             GOLD: [(HORSE, 1)],
             LAND: [(PIG, 1), (LAND, 2), (LAND, 1), (LAND, 1), (PIG, 1)],
-            IRON: [(CHICKEN, 1), (IRON, 1), (PIG, 1), (HORSE, 1), (IRON, 2)]
+            IRON: [(CHICKEN, 1), (IRON, 1), (PIG, 1), (HORSE, 1), (IRON, 2)],
         }
         self.pool2 = {
             # no Iron
-            WOOD: [(WOOD, 3), (WOOD, 1), (COW, 1), (WOOD, 2), (WOOD, 2),
-                   (WOOD, 1), (WOOD, 1)],
+            WOOD: [
+                (WOOD, 3),
+                (WOOD, 1),
+                (COW, 1),
+                (WOOD, 2),
+                (WOOD, 2),
+                (WOOD, 1),
+                (WOOD, 1),
+            ],
             STONE: [(STONE, 1), (CHICKEN, 1), (STONE, 2)],
             GOLD: [(GOLD, 2), (HORSE, 1), (GOLD, 2), (GOLD, 1)],
             LAND: [(PIG, 1), (LAND, 2), (LAND, 1), (LAND, 1), (PIG, 1)],
-            IRON: [(CHICKEN, 1)]
+            IRON: [(CHICKEN, 1)],
         }
         self.pool3 = {
             # no Pig
-            WOOD: [(WOOD, 3), (WOOD, 1), (COW, 1), (WOOD, 2), (WOOD, 2),
-                   (WOOD, 1), (WOOD, 1)],
+            WOOD: [
+                (WOOD, 3),
+                (WOOD, 1),
+                (COW, 1),
+                (WOOD, 2),
+                (WOOD, 2),
+                (WOOD, 1),
+                (WOOD, 1),
+            ],
             STONE: [(STONE, 1), (CHICKEN, 1), (STONE, 2)],
             GOLD: [(GOLD, 2), (HORSE, 1), (GOLD, 2), (GOLD, 1)],
             LAND: [(LAND, 1)],
-            IRON: [(CHICKEN, 1), (IRON, 1), (HORSE, 1), (IRON, 2)]
+            IRON: [(CHICKEN, 1), (IRON, 1), (HORSE, 1), (IRON, 2)],
         }
 
     def test_determine_primary_resource(self):
@@ -70,12 +91,11 @@ class TestJoanAI(unittest.TestCase):
         self.assertNotEqual(JoanAI.gather_die(WOOD, self.pool1, GOLD)[0], GOLD)
 
     def test_choose_dice(self):
-        self.assertEqual(len(JoanAI.choose_dice(1, DICE_COUNT)),
-                         TURN[1]['no_choices'])
+        self.assertEqual(len(JoanAI.choose_dice(1, DICE_COUNT)), TURN[1]["no_choices"])
 
     def test_get_user_joan(self):
         # Creates new user named Joan
-        u = User.objects.order_by('-id')[0]
+        u = User.objects.order_by("-id")[0]
         joan_created = JoanAI.get_user_joan()
         self.assertEqual(User.objects.get(id=joan_created.id), joan_created)
         self.assertEqual(u.id + 1, joan_created.id)
@@ -84,5 +104,5 @@ class TestJoanAI(unittest.TestCase):
         joan_retrieved = JoanAI.get_user_joan()
         self.assertEqual(joan_created, joan_retrieved)
 
-        last_user = User.objects.order_by('-id')[0]
+        last_user = User.objects.order_by("-id")[0]
         self.assertEqual(joan_created.id, last_user.id)

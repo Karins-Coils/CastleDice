@@ -15,8 +15,8 @@ from unipath import Path
 from django.core.exceptions import ImproperlyConfigured
 
 # assumes .django-env.json exists in the same folder as this settings file
-ENV_FILE = Path(__file__).ancestor(1).child('.django-env.json')
-BASE_DIR = Path(__file__).ancestor(3).child('CastleDice')
+ENV_FILE = Path(__file__).ancestor(1).child(".django-env.json")
+BASE_DIR = Path(__file__).ancestor(3).child("CastleDice")
 
 
 def get_env_var(var, default=None):
@@ -41,8 +41,10 @@ def get_env_var(var, default=None):
 
     # still no value, and no default value
     if env_value is None and default is None:
-        error_msg = "The environment variable {} was not found in the " \
-                    "environment, nor in {}.".format(var, ENV_FILE)
+        error_msg = (
+            "The environment variable {} was not found in the "
+            "environment, nor in {}.".format(var, ENV_FILE)
+        )
         raise ImproperlyConfigured(error_msg)
     return env_value if env_value is not None else default
 
@@ -50,7 +52,7 @@ def get_env_var(var, default=None):
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-SECRET_KEY = get_env_var('DJANGO_SECRET_KEY')
+SECRET_KEY = get_env_var("DJANGO_SECRET_KEY")
 
 ALLOWED_HOSTS = []
 
@@ -59,45 +61,43 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
     # django-annoying - https://github.com/skorokithakis/django-annoying
-    'annoying',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "annoying",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # The Django sites framework is required
-    'django.contrib.sites',
-
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-
-    'CastleDice.die',
-    'CastleDice.game',
-    'CastleDice.playermat',
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "CastleDice.die",
+    "CastleDice.game",
+    "CastleDice.playermat",
 )
 
 MIDDLEWARE = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = "config.urls"
 
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -107,58 +107,54 @@ USE_TZ = True
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
+    "django.template.loaders.filesystem.Loader",
+    "django.template.loaders.app_directories.Loader",
     #     'django.template.loaders.eggs.Loader',
-
 )
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
             # insert your TEMPLATE_DIRS here
-            BASE_DIR.child('templates')
+            BASE_DIR.child("templates")
         ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
                 # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
                 # list if you haven't customized them:
-                'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.debug',
-                'django.template.context_processors.i18n',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
-                'django.template.context_processors.tz',
-                'django.contrib.messages.context_processors.messages',
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages",
                 # `allauth` needs this from django
-                'django.template.context_processors.request',
+                "django.template.context_processors.request",
             ],
-            'debug': True
+            "debug": True,
         },
-    },
+    }
 ]
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-
+    "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 # Static asset configuration
-STATIC_ROOT = BASE_DIR.child('staticfiles')
-STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR.child("staticfiles")
+STATIC_URL = "/static/"
 
-STATICFILES_DIRS = (
-    BASE_DIR.child('static'),
-)
+STATICFILES_DIRS = (BASE_DIR.child("static"),)
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 SITE_ID = 1

@@ -27,9 +27,9 @@ class TestNamedTypesInstanceOf(BaseTest):
     def test_instance_of_builtin(self):
         assertions = [
             # (expected, actual)
-            (True, isinstance(NamedStr('x', 'a'), str)),
-            (True, isinstance(NamedFloat('x', 1.3), float)),
-            (True, isinstance(NamedInt('x', 5), int)),
+            (True, isinstance(NamedStr("x", "a"), str)),
+            (True, isinstance(NamedFloat("x", 1.3), float)),
+            (True, isinstance(NamedInt("x", 5), int)),
         ]
 
         self._confirm_assertions(assertions)
@@ -37,9 +37,9 @@ class TestNamedTypesInstanceOf(BaseTest):
     def test_instance_of_NamedType(self):
         assertions = [
             # (expected, actual)
-            (True, isinstance(NamedStr('x', 'a'), NamedType)),
-            (True, isinstance(NamedFloat('x', 1.3), NamedType)),
-            (True, isinstance(NamedInt('x', 5), NamedType)),
+            (True, isinstance(NamedStr("x", "a"), NamedType)),
+            (True, isinstance(NamedFloat("x", 1.3), NamedType)),
+            (True, isinstance(NamedInt("x", 5), NamedType)),
         ]
 
         self._confirm_assertions(assertions)
@@ -47,9 +47,9 @@ class TestNamedTypesInstanceOf(BaseTest):
     def test_instance_of_self(self):
         assertions = [
             # (expected, actual)
-            (True, isinstance(NamedStr('x', 'a'), NamedStr)),
-            (True, isinstance(NamedFloat('x', 1.3), NamedFloat)),
-            (True, isinstance(NamedInt('x', 5), NamedInt)),
+            (True, isinstance(NamedStr("x", "a"), NamedStr)),
+            (True, isinstance(NamedFloat("x", 1.3), NamedFloat)),
+            (True, isinstance(NamedInt("x", 5), NamedInt)),
         ]
 
         self._confirm_assertions(assertions)
@@ -57,31 +57,31 @@ class TestNamedTypesInstanceOf(BaseTest):
     def test_not_instances_of_other_types(self):
         assertions = [
             # (expected, actual)
-            (False, isinstance(NamedStr('x', 'a'), int)),
-            (False, isinstance(NamedFloat('x', 1.3), int)),
-            (False, isinstance(NamedInt('x', 5), str)),
+            (False, isinstance(NamedStr("x", "a"), int)),
+            (False, isinstance(NamedFloat("x", 1.3), int)),
+            (False, isinstance(NamedInt("x", 5), str)),
         ]
 
         self._confirm_assertions(assertions)
 
     def test_new_named_type(self):
         named_decimal_type = create_named_type(Decimal)
-        named_decimal = named_decimal_type('some_name', Decimal(1.0))
+        named_decimal = named_decimal_type("some_name", Decimal(1.0))
 
-        self.assertEqual('NamedDecimal', named_decimal_type.__name__)
+        self.assertEqual("NamedDecimal", named_decimal_type.__name__)
         self.assertEqual(named_decimal, 1.0)
-        self.assertEqual(named_decimal, NamedFloat('x', 1.0))
+        self.assertEqual(named_decimal, NamedFloat("x", 1.0))
         self.assertEqual(named_decimal, Decimal(1.0))
 
 
 class TestNamedTypesComparisons(BaseTest):
     def test_compare_equals(self):
-        x = 'some_name'
+        x = "some_name"
         assertions = [
             # (expected, actual)
-            (True, NamedStr(x, 'a') == NamedStr(x, 'a')),
-            (False, NamedStr(x, 'a') == NamedStr(x, 'apple')),
-            (True, NamedStr(x, 'a') != NamedStr(x, 'apple')),
+            (True, NamedStr(x, "a") == NamedStr(x, "a")),
+            (False, NamedStr(x, "a") == NamedStr(x, "apple")),
+            (True, NamedStr(x, "a") != NamedStr(x, "apple")),
             (True, NamedInt(x, 1) == NamedInt(x, 1)),
             (False, NamedInt(x, 12) == NamedInt(x, 1)),
             (True, NamedInt(x, 12) != NamedInt(x, 1)),
@@ -92,12 +92,12 @@ class TestNamedTypesComparisons(BaseTest):
         self._confirm_assertions(assertions)
 
     def test_compare_greater_less_than(self):
-        x = 'some_name'
+        x = "some_name"
         assertions = [
             # (expected, actual)
-            (False, NamedStr(x, 'a') < NamedStr(x, 'a')),
-            (True, NamedStr(x, 'a') < NamedStr(x, 'apple')),
-            (False, NamedStr(x, 'a') > NamedStr(x, 'apple')),
+            (False, NamedStr(x, "a") < NamedStr(x, "a")),
+            (True, NamedStr(x, "a") < NamedStr(x, "apple")),
+            (False, NamedStr(x, "a") > NamedStr(x, "apple")),
             (False, NamedInt(x, 1) < NamedInt(x, 1)),
             (False, NamedInt(x, 12) < NamedInt(x, 1)),
             (True, NamedInt(x, 12) > NamedInt(x, 1)),
@@ -108,12 +108,12 @@ class TestNamedTypesComparisons(BaseTest):
         self._confirm_assertions(assertions)
 
     def test_compare_greater_less_than_or_equal(self):
-        x = 'some_name'
+        x = "some_name"
         assertions = [
             # (expected, actual)
-            (True, NamedStr(x, 'a') <= NamedStr(x, 'a')),
-            (True, NamedStr(x, 'a') <= NamedStr(x, 'apple')),
-            (False, NamedStr(x, 'a') >= NamedStr(x, 'apple')),
+            (True, NamedStr(x, "a") <= NamedStr(x, "a")),
+            (True, NamedStr(x, "a") <= NamedStr(x, "apple")),
+            (False, NamedStr(x, "a") >= NamedStr(x, "apple")),
             (True, NamedInt(x, 1) <= NamedInt(x, 1)),
             (False, NamedInt(x, 12) <= NamedInt(x, 1)),
             (True, NamedInt(x, 12) >= NamedInt(x, 1)),
@@ -125,15 +125,15 @@ class TestNamedTypesComparisons(BaseTest):
 
     def test_compare_across_types(self):
         # id(float) < (id(int)) < id(str)
-        x = 'some_name'
+        x = "some_name"
         assertions = [
             # (expected, actual)
-            (False, NamedStr(x, 'a') <= NamedInt(x, 1)),
-            (True, NamedStr(x, 'a') > NamedInt(x, 1)),
-            (False, NamedStr(x, 'a') == NamedInt(x, 1)),
-            (False, NamedStr(x, 'a') <= NamedFloat(x, 1.5)),
-            (True, NamedStr(x, 'a') >= NamedFloat(x, 1.5)),
-            (True, NamedStr(x, 'a') != NamedFloat(x, 1.5)),
+            (False, NamedStr(x, "a") <= NamedInt(x, 1)),
+            (True, NamedStr(x, "a") > NamedInt(x, 1)),
+            (False, NamedStr(x, "a") == NamedInt(x, 1)),
+            (False, NamedStr(x, "a") <= NamedFloat(x, 1.5)),
+            (True, NamedStr(x, "a") >= NamedFloat(x, 1.5)),
+            (True, NamedStr(x, "a") != NamedFloat(x, 1.5)),
             (True, NamedInt(x, 1) <= NamedFloat(x, 1.5)),
             (False, NamedInt(x, 1) > NamedFloat(x, 1.5)),
             (False, NamedInt(x, 1) == NamedFloat(x, 1.5)),
@@ -141,7 +141,7 @@ class TestNamedTypesComparisons(BaseTest):
         self._confirm_assertions(assertions)
 
     def test_keep_float_int_comparisons(self):
-        x = 'some_name'
+        x = "some_name"
         assertions = [
             # (expected, actual)
             (True, NamedFloat(x, 1.0) == NamedInt(x, 1)),

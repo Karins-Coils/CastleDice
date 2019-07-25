@@ -29,13 +29,32 @@ class ResourceCostTest(unittest.TestCase):
 class BaseCardTest(unittest.TestCase):
     def test_abstract_requires_all_the_things(self):
         parents_tests = [
-            (GatherPhaseMixin, CastleDeckMixin, NoOngoingMixin, NoBuildMixin, NoScoreMixin),
-            (BuildPhaseMixin, MarketDeckMixin, NoOngoingMixin, NoBuildMixin, NoScoreMixin),
-            (ChoosePhaseMixin, VillagerDeckMixin, NoOngoingMixin, NoBuildMixin, NoScoreMixin),
+            (
+                GatherPhaseMixin,
+                CastleDeckMixin,
+                NoOngoingMixin,
+                NoBuildMixin,
+                NoScoreMixin,
+            ),
+            (
+                BuildPhaseMixin,
+                MarketDeckMixin,
+                NoOngoingMixin,
+                NoBuildMixin,
+                NoScoreMixin,
+            ),
+            (
+                ChoosePhaseMixin,
+                VillagerDeckMixin,
+                NoOngoingMixin,
+                NoBuildMixin,
+                NoScoreMixin,
+            ),
             (NoScoreMixin, NormalDiscardMixin, NoDescriptionMixin),
         ]
 
         for parents in parents_tests:
+
             class ImplementedCard(*parents, BaseCard):
                 pass
 
@@ -51,7 +70,7 @@ class BaseCardTest(unittest.TestCase):
             NoDescriptionMixin,
             NoOngoingMixin,
             NoScoreMixin,
-            BaseCard
+            BaseCard,
         ):
             _constant = VillagerCardType.WISE_GRANDFATHER
 
@@ -80,9 +99,7 @@ class CardLookupBaseTest(unittest.TestCase):
             pass
 
         class SomeLookup(CardLookupBase):
-            card_map = {
-                'SomeCard': SomeCard
-            }
+            card_map = {"SomeCard": SomeCard}
             card_lookup_error = SomeError
 
         self.SomeCard = SomeCard
@@ -90,24 +107,24 @@ class CardLookupBaseTest(unittest.TestCase):
         self.SomeError = SomeError
 
     def test_success(self):
-        result = self.SomeLookup('SomeCard')
+        result = self.SomeLookup("SomeCard")
         self.assertIsInstance(result, self.SomeCard)
         self.assertEqual(result.A, self.SomeCard.A)
 
     def test_failure(self):
         with self.assertRaises(self.SomeError):
-            self.SomeLookup('NotReal')
+            self.SomeLookup("NotReal")
 
     def test_child_must_implement(self):
         class NoMap(CardLookupBase):
             card_lookup_error = self.SomeError
 
         class NoError(CardLookupBase):
-            card_map = {'SomeCard': self.SomeCard}
+            card_map = {"SomeCard": self.SomeCard}
 
         class NothingAdded(CardLookupBase):
             pass
 
         for cls in [NoMap, NoError, NothingAdded]:
             with self.assertRaises(NotImplementedError):
-                cls('SomeCard')
+                cls("SomeCard")

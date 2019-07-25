@@ -1,16 +1,11 @@
 from .constants import AnimalType
 from .constants import ResourceType
 
-__all__ = [
-    'DICE_COUNT',
-    'JOAN',
-    'JOAN_GATHER_PREFERENCE',
-    'PHASE',
-]
+__all__ = ["DICE_COUNT", "JOAN", "JOAN_GATHER_PREFERENCE", "PHASE"]
 
 # -- SOLO Play constants -- #
 # not really a groupable type.  Joan is just... Joan...
-JOAN = 'joan'
+JOAN = "joan"
 
 # Joan's Preferences, with first element being her first choice
 JOAN_GATHER_PREFERENCE = ResourceType.values() + AnimalType.values()
@@ -19,11 +14,11 @@ JOAN_GATHER_PREFERENCE = ResourceType.values() + AnimalType.values()
 
 # Count of each type in the WorldPool
 DICE_COUNT = {
-    ResourceType.WOOD:  14,
+    ResourceType.WOOD: 14,
     ResourceType.STONE: 14,
-    ResourceType.GOLD:  13,
-    ResourceType.LAND:  11,
-    ResourceType.IRON:  11
+    ResourceType.GOLD: 13,
+    ResourceType.LAND: 11,
+    ResourceType.IRON: 11,
 }
 
 

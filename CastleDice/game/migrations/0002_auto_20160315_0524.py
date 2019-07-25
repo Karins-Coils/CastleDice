@@ -6,21 +6,14 @@ from django.db import models, migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('game', '0001_initial'),
-    ]
+    dependencies = [("game", "0001_initial")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='gamedeck',
-            name='game',
-        ),
+        migrations.RemoveField(model_name="gamedeck", name="game"),
         migrations.AddField(
-            model_name='game',
-            name='is_solo_game',
+            model_name="game",
+            name="is_solo_game",
             field=models.BooleanField(default=False),
         ),
-        migrations.DeleteModel(
-            name='GameDeck',
-        ),
+        migrations.DeleteModel(name="GameDeck"),
     ]

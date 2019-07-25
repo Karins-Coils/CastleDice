@@ -13,13 +13,7 @@ from .card_bases import NormalDiscardMixin
 from .exceptions import InvalidMarketCardTypeError
 
 
-class Bard(
-    NoBuildMixin,
-    NoOngoingMixin,
-    NormalDiscardMixin,
-    MarketDeckMixin,
-    BaseCard
-):
+class Bard(NoBuildMixin, NoOngoingMixin, NormalDiscardMixin, MarketDeckMixin, BaseCard):
     _constant = MarketCardType.BARD
 
     playable_phase = SpecialPhaseType.END_GAME
@@ -46,13 +40,15 @@ class HungryBarbarians(
     NormalDiscardMixin,
     NoScoreMixin,
     MarketDeckMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = MarketCardType.HUNGRY_BARBARIANS
 
     playable_phase = SpecialPhaseType.FIRST_GATHER
-    description = "Play before your first gather. Choose two types of Animals.  All players " \
-                  "must discard all those two types of Animals."
+    description = (
+        "Play before your first gather. Choose two types of Animals.  All players "
+        "must discard all those two types of Animals."
+    )
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -73,12 +69,14 @@ class Jester(
     NormalDiscardMixin,
     NoScoreMixin,
     MarketDeckMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = MarketCardType.JESTER
 
-    description = "Play before you gather. All players re-roll their Barbarians. You may give " \
-                  "any barbarians you roll to another player."
+    description = (
+        "Play before you gather. All players re-roll their Barbarians. You may give "
+        "any barbarians you roll to another player."
+    )
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -101,12 +99,14 @@ class Maiden(
     NormalDiscardMixin,
     NoScoreMixin,
     MarketDeckMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = MarketCardType.MAIDEN
 
-    description = "Play before you gather. Discard any number of Castle and/or Village cards to " \
-                  "draw the same number from either deck(s)."
+    description = (
+        "Play before you gather. Discard any number of Castle and/or Village cards to "
+        "draw the same number from either deck(s)."
+    )
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -125,13 +125,15 @@ class Shepherd(
     NormalDiscardMixin,
     NoScoreMixin,
     MarketDeckMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = MarketCardType.SHEPHERD
 
     playable_phase = SpecialPhaseType.FIRST_GATHER
-    description = "Play before your first gather. Choose one type of Animal. All other players " \
-                  "give you all of that Animal type they have."
+    description = (
+        "Play before your first gather. Choose one type of Animal. All other players "
+        "give you all of that Animal type they have."
+    )
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -151,13 +153,15 @@ class Volunteer(
     NormalDiscardMixin,
     NoScoreMixin,
     MarketDeckMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = MarketCardType.VOLUNTEER
 
     ongoing_phase = SpecialPhaseType.ANY
-    description = "Play during your Build phase. This card stays in play and counts as an extra " \
-                  "Wall when other cards reference the number of Walls you have"
+    description = (
+        "Play during your Build phase. This card stays in play and counts as an extra "
+        "Wall when other cards reference the number of Walls you have"
+    )
 
     def is_playable(self):
         # if current phase is playable phase return True

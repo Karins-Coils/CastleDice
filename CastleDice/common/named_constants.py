@@ -18,13 +18,10 @@ from .named_types import NamedInt
 from .named_types import NamedStr
 from .named_types import create_named_type
 
-__all__ = [
-    'Constants',
-    'StrCase',
-]
+__all__ = ["Constants", "StrCase"]
 
 
-NamedTypeTyping = TypeVar('NamedTypeTyping', NamedFloat, NamedInt, NamedStr)
+NamedTypeTyping = TypeVar("NamedTypeTyping", NamedFloat, NamedInt, NamedStr)
 
 
 class StrCase(IntEnum):
@@ -41,9 +38,9 @@ class _ConstantsMeta(type):
         for member in dct:
             value = dct[member]
             if (
-                member.startswith('_') or
-                inspect.isfunction(value) or
-                inspect.ismethoddescriptor(value)
+                member.startswith("_")
+                or inspect.isfunction(value)
+                or inspect.ismethoddescriptor(value)
             ):
                 continue
             const_cls = create_named_type(type(value))
@@ -51,8 +48,10 @@ class _ConstantsMeta(type):
             constants[member] = c
             dct[member] = c
 
-        dct['__constants__'] = constants
-        dct['__values_dict__'] = dict((value.value, value) for value in constants.values())
+        dct["__constants__"] = constants
+        dct["__values_dict__"] = dict(
+            (value.value, value) for value in constants.values()
+        )
 
         result = type.__new__(mcs, name, bases, dct)
 
@@ -69,7 +68,7 @@ class _ConstantsMeta(type):
         return iter(self.__constants__.values())
 
     def __setattr__(self, _name, _value):
-        raise TypeError('Constants are not supposed to be changed ex post')
+        raise TypeError("Constants are not supposed to be changed ex post")
 
     def __contains__(self, x: Union[str, NamedTypeTyping]) -> bool:
         return self.has_k(x) or self.has_v(x)
@@ -104,8 +103,7 @@ class _ConstantsMeta(type):
         return [(name, c.value) for name, c in self.__constants__.items()]
 
     def django_choices(
-        self,
-        case: StrCase = StrCase.FIRST_CAPITALIZED
+        self, case: StrCase = StrCase.FIRST_CAPITALIZED
     ) -> Sequence[Tuple[Union[float, int, str], str]]:
         """Converts a Constants into a django model choices compatible tuple.
 
@@ -136,7 +134,7 @@ class _ConstantsMeta(type):
         choices = []
         for name, value in self.bare_items():
             # first replace any underscores with spaces
-            word_name = name.replace('_', ' ')
+            word_name = name.replace("_", " ")
 
             if case == StrCase.FIRST_CAPITALIZED:
                 case_name = word_name.capitalize()
@@ -154,10 +152,11 @@ class _ConstantsMeta(type):
 
 class Constants(metaclass=_ConstantsMeta):
     """Base class for constant namespaces."""
+
     # __slots__ = ()
 
     def __new__(cls, x, case_sensitive=True):
-        values_to_check = (x, )
+        values_to_check = (x,)
         if not case_sensitive and isinstance(x, str):
             # will check for 3 other cases in values: lower, UPPER, Title
             # this allows for variations in casing ONLY
@@ -168,4 +167,4 @@ class Constants(metaclass=_ConstantsMeta):
                 return cls.__values_dict__[v]
             if cls.has_k(v):
                 return cls.__constants__[v]
-        raise ValueError('%s has no key or value %r' % (cls.__name__, x))
+        raise ValueError("%s has no key or value %r" % (cls.__name__, x))

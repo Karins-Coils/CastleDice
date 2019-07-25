@@ -21,7 +21,7 @@ class HomeView(TemplateView):
 
 class ChooseGameView(FormView):
     # have form that self submits, redirects to /game_<>/turn_<>
-    template_name = 'choosegame.html'
+    template_name = "choosegame.html"
     form_class = ChooseGameForm
     game_obj = None
     game_type = None
@@ -29,7 +29,7 @@ class ChooseGameView(FormView):
     def form_valid(self, form):
         data = form.cleaned_data
 
-        if data['game_choice'] == "id":
+        if data["game_choice"] == "id":
             old_game = Game.objects.get(pk=int(data["game_id"]))
             if old_game:
                 self.game_obj = old_game
@@ -46,15 +46,16 @@ class ChooseGameView(FormView):
 
         if not self.game_obj:
             new_game = Game()
-            if data['game_choice'] == "solo":
+            if data["game_choice"] == "solo":
                 new_game.is_solo_game = True
             new_game.save()
             new_player_mat = PlayerMat(player=self.request.user, game=new_game)
             new_player_mat.save()
 
             if new_game.is_solo_game:
-                joan_playermat = JoanPlayerMat(player=JoanAI.get_user_joan(),
-                                           game=new_game)
+                joan_playermat = JoanPlayerMat(
+                    player=JoanAI.get_user_joan(), game=new_game
+                )
                 joan_playermat.save()
 
             self.game_obj = new_game
@@ -65,9 +66,9 @@ class ChooseGameView(FormView):
     def get_success_url(self):
         # get current turn from db or '1'
         if self.game_type is "new":
-            return reverse('new_game', kwargs={'game_id': self.game_obj.id})
+            return reverse("new_game", kwargs={"game_id": self.game_obj.id})
         else:
-            return reverse('continue_game', kwargs={'game_id': self.game_obj.id})
+            return reverse("continue_game", kwargs={"game_id": self.game_obj.id})
 
         # return reverse('choose_dice', kwargs={'turn_no': 1})
 
@@ -76,7 +77,7 @@ class NewGameView(TemplateView):
     template_name = "start.html"
 
     def dispatch(self, request, *args, **kwargs):
-        game = Game.objects.get(id=kwargs['game_id'])
+        game = Game.objects.get(id=kwargs["game_id"])
 
         # if GET, setup choice dice for the first time, if empty
         if request.method is "GET":
@@ -99,7 +100,7 @@ class ContinueGameView(TemplateView):
     template_name = "start.html"
 
     def dispatch(self, request, *args, **kwargs):
-        game = Game.objects.get(id=kwargs['game_id'])
+        game = Game.objects.get(id=kwargs["game_id"])
 
         # if GET, setup choice dice for the first time, if empty
         if request.method is "GET":
@@ -122,13 +123,13 @@ class WaitingView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
         game = Game.objects.get(id=kwargs["game_id"])
         if not Switcher.is_player_waiting(game, self.request.user):
-            return redirect('home', permanent=False)
+            return redirect("home", permanent=False)
         return super(WaitingView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
 
         context = super(WaitingView, self).get_context_data(**kwargs)
-        context['game_id'] = kwargs['game_id']
+        context["game_id"] = kwargs["game_id"]
         return context
 
 
@@ -138,19 +139,20 @@ class PlayOrderView(TemplateView):
     # else, call game.determine_player_order + display for round
 
     def get_context_data(self, **kwargs):
-        game = Game.objects.get(id=kwargs['game_id'])
+        game = Game.objects.get(id=kwargs["game_id"])
 
         # confirm we are in phase 1 still
         if game.current_phase == 1:
             game.determine_player_order()
             Switcher.initiate_next_phase(game)
 
-        playermats = game.playermat_set.all().order_by('player_order')
+        playermats = game.playermat_set.all().order_by("player_order")
 
         context = super(PlayOrderView, self).get_context_data(**kwargs)
-        context['game_id'] = kwargs['game_id']
-        context['players'] = [User.objects.get(id=playermat.player_id)
-                              for playermat in playermats]
+        context["game_id"] = kwargs["game_id"]
+        context["players"] = [
+            User.objects.get(id=playermat.player_id) for playermat in playermats
+        ]
         return context
 
 
@@ -158,11 +160,12 @@ class PassPhaseView(RedirectView):
     """
     A temporary view to allow the phases to be advanced when some don't exist
     """
+
     permanent = False
     pattern_name = "waiting"
 
     def get_redirect_url(self, *args, **kwargs):
-        game = Game.objects.get(id=kwargs['game_id'])
+        game = Game.objects.get(id=kwargs["game_id"])
         if Switcher.is_unbuilt_phase(game):
             Switcher.initiate_next_phase(game)
 

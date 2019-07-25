@@ -21,7 +21,7 @@ class Farmer(
     NormalDiscardMixin,
     NoScoreMixin,
     VillagerDeckMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = VillagerCardType.FARMER
 
@@ -48,13 +48,11 @@ class Guard(
     NormalDiscardMixin,
     NoScoreMixin,
     VillagerDeckMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = VillagerCardType.GUARD
 
-    build_cost = (
-        ResourceCost(ResourceType.WOOD, 2),
-    )
+    build_cost = (ResourceCost(ResourceType.WOOD, 2),)
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -74,12 +72,14 @@ class KingsMessenger(
     NormalDiscardMixin,
     NoScoreMixin,
     VillagerDeckMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = VillagerCardType.KINGS_MESSENGER
 
-    description = "Play instead of gathering. The next player chooses a Villager type that you " \
-                  "have room for.  You get that one for free!"
+    description = (
+        "Play instead of gathering. The next player chooses a Villager type that you "
+        "have room for.  You get that one for free!"
+    )
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -101,13 +101,11 @@ class Merchant(
     NormalDiscardMixin,
     NoScoreMixin,
     VillagerDeckMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = VillagerCardType.MERCHANT
 
-    build_cost = (
-        ResourceCost(ResourceType.GOLD, 2),
-    )
+    build_cost = (ResourceCost(ResourceType.GOLD, 2),)
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -127,12 +125,14 @@ class Soldier(
     NormalDiscardMixin,
     NoScoreMixin,
     VillagerDeckMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = VillagerCardType.SOLDIER
 
-    description = "Play before you gather.  Reroll all your Barbarians into the world, keeping " \
-                  "any that come up as Barbarians again."
+    description = (
+        "Play before you gather.  Reroll all your Barbarians into the world, keeping "
+        "any that come up as Barbarians again."
+    )
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -152,13 +152,15 @@ class WiseGrandfather(
     NormalDiscardMixin,
     NoScoreMixin,
     VillagerDeckMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = VillagerCardType.WISE_GRANDFATHER
 
-    description = "Play before you gather.  Gather one extra time this round. After you've " \
-                  "collected resources from both of your gatherings, roll those two dice back " \
-                  "into the world pool."
+    description = (
+        "Play before you gather.  Gather one extra time this round. After you've "
+        "collected resources from both of your gatherings, roll those two dice back "
+        "into the world pool."
+    )
 
     def is_playable(self):
         # if current phase is playable phase return True
@@ -180,7 +182,7 @@ class Worker(
     NormalDiscardMixin,
     NoScoreMixin,
     VillagerDeckMixin,
-    BaseCard
+    BaseCard,
 ):
     _constant = VillagerCardType.WORKER
 

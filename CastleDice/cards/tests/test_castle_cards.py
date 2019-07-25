@@ -175,8 +175,9 @@ class CastleCardTest(unittest.TestCase):
 
     def test_lookup_error(self):
         with self.assertRaises(InvalidCastleCardTypeError):
-            CastleCard('abcdef')
+            CastleCard("abcdef")
 
     def test_all_cards_in_map(self):
-        self.assertCountEqual(list(CastleCardType.values()),
-                              list(CastleCard.card_map.keys()))
+        self.assertCountEqual(
+            list(CastleCardType.values()), list(CastleCard.card_map.keys())
+        )

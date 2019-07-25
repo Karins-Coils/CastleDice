@@ -78,8 +78,9 @@ class VillagerCardTest(unittest.TestCase):
 
     def test_lookup_error(self):
         with self.assertRaises(InvalidMarketCardTypeError):
-            MarketCard('abc')
+            MarketCard("abc")
 
     def test_all_cards_in_map(self):
-        self.assertCountEqual(list(MarketCardType.values()),
-                              list(MarketCard.card_map.keys()))
+        self.assertCountEqual(
+            list(MarketCardType.values()), list(MarketCard.card_map.keys())
+        )

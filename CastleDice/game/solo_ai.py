@@ -1,7 +1,13 @@
 from django.contrib.auth.models import User
 
-from ..common.globals import BARN, JOAN, TURN, \
-    RESOURCE_PREFERENCE, ANIMAL_PREFERENCE, GATHER_PREFERENCE
+from ..common.globals import (
+    BARN,
+    JOAN,
+    TURN,
+    RESOURCE_PREFERENCE,
+    ANIMAL_PREFERENCE,
+    GATHER_PREFERENCE,
+)
 from ..die.dieClass import Die
 from ..playermat.models import JoanPlayerMat
 
@@ -18,7 +24,6 @@ which die to roll into the world pool.  And gathers with a very specific logic:
 
 
 class JoanAI(object):
-
     def __init__(self, **kwargs):
         self.animals = kwargs["animals"] if "animals" in kwargs else None
         self.resource = kwargs["resource"] if "resource" in kwargs else None
@@ -60,11 +65,11 @@ class JoanAI(object):
             else:
                 # append the NEXT die twice...
                 append_count += 1
-            if len(choice_dice) >= TURN[turn_no]['no_choices']:
+            if len(choice_dice) >= TURN[turn_no]["no_choices"]:
                 break
 
         # return list splice, just in case I rolled a bunch of barns in a row
-        return choice_dice[0:TURN[turn_no]['no_choices']]
+        return choice_dice[0 : TURN[turn_no]["no_choices"]]
 
     @staticmethod
     def gather_die(primary_resource, world_pool_dict, die_choice=None):
@@ -94,25 +99,24 @@ class JoanAI(object):
 
         # flatten dict values, then make set
         world_pool_set = sorted(
-            [tup for val_list in world_pool_dict.values()
-             for tup in set(val_list)],
-            key=lambda t: (GATHER_PREFERENCE.index(t[0]), -t[1])
+            [tup for val_list in world_pool_dict.values() for tup in set(val_list)],
+            key=lambda t: (GATHER_PREFERENCE.index(t[0]), -t[1]),
         )
 
         while True:
             # first chooses of her resource, if available
             if resource is not BARN and world_pool_dict[resource]:
 
-                primary_choices = [x for x in world_pool_set
-                                   if x[0] is resource]
+                primary_choices = [x for x in world_pool_set if x[0] is resource]
                 if primary_choices:
                     return primary_choices[0]
 
             # rolled a barn
             elif resource is BARN:
                 # gather highest animal
-                primary_choices = [x for x in world_pool_set
-                                   if x[0] in ANIMAL_PREFERENCE]
+                primary_choices = [
+                    x for x in world_pool_set if x[0] in ANIMAL_PREFERENCE
+                ]
                 if primary_choices:
                     return primary_choices[0]
 
@@ -121,8 +125,9 @@ class JoanAI(object):
                 die_choice = Die(JOAN).roll_die()[0]
             else:
                 # rolled it once already, return the rarest+highest resource
-                primary_choices = [x for x in world_pool_set
-                                   if x[0] in RESOURCE_PREFERENCE]
+                primary_choices = [
+                    x for x in world_pool_set if x[0] in RESOURCE_PREFERENCE
+                ]
                 if primary_choices:
                     return primary_choices[0]
 
@@ -150,7 +155,7 @@ class JoanAI(object):
             # this creates a generator for one tuple, rather than a full list
             # memory saving.  Thanks erich!
             dice_dict.items(),
-            key=lambda t: (t[1], -RESOURCE_PREFERENCE.index(t[0]))
+            key=lambda t: (t[1], -RESOURCE_PREFERENCE.index(t[0])),
         )[0]
 
     @staticmethod
@@ -160,14 +165,12 @@ class JoanAI(object):
         :return: Joan user object
         :rtype: User
         """
-        u = User.objects.get_or_create(username="JOAN_AI",
-                                       email="joan@karinscoils.com")
+        u = User.objects.get_or_create(username="JOAN_AI", email="joan@karinscoils.com")
         # 'u' is a tuple, User object is index 0
         return u[0]
 
 
 class JoanActions(object):
-
     @classmethod
     def execute(cls, game_obj):
         """
@@ -187,22 +190,24 @@ class JoanActions(object):
     # choose dice
     @staticmethod
     def phase_three(game_obj, joan_playermat):
-        new_choices = JoanAI.choose_dice(game_obj.current_turn,
-                                         game_obj.choice_dice)
+        new_choices = JoanAI.choose_dice(game_obj.current_turn, game_obj.choice_dice)
 
         for choice in new_choices:
-            joan_playermat.choice_dice[choice] = \
+            joan_playermat.choice_dice[choice] = (
                 joan_playermat.choice_dice.get(choice, 0) + 1
+            )
 
-        joan_playermat.primary_resource = \
-            JoanAI.determine_primary_resource(joan_playermat.choice_dice)
+        joan_playermat.primary_resource = JoanAI.determine_primary_resource(
+            joan_playermat.choice_dice
+        )
         joan_playermat.save()
 
     # gather dice
     @staticmethod
     def phase_five(game_obj, joan_playermat):
-        resource_tuple = JoanAI.gather_die(joan_playermat.primary_resource,
-                                           game_obj.gather_dice)
+        resource_tuple = JoanAI.gather_die(
+            joan_playermat.primary_resource, game_obj.gather_dice
+        )
         joan_playermat.add_resource(resource_tuple)
 
     # go to market

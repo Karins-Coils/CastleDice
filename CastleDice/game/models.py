@@ -12,11 +12,9 @@ from ..common.globals import TURN
 
 class Game(models.Model):
     is_solo_game = models.BooleanField(default=False)
-    current_player = models.ForeignKey(User,
-                                       on_delete=models.CASCADE,
-                                       related_name='+',
-                                       blank=True,
-                                       null=True)
+    current_player = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="+", blank=True, null=True
+    )
     current_turn = models.PositiveSmallIntegerField(default=1)
     current_phase = models.PositiveSmallIntegerField(default=1)
     choice_dice = JSONField(blank=True, null=True, default=[])
@@ -25,7 +23,7 @@ class Game(models.Model):
 
     def setup_choice_dice_for_turn(self):
         player_count = self.playermat_set.count()
-        given_dice = TURN[self.current_turn]['given_dice']
+        given_dice = TURN[self.current_turn]["given_dice"]
 
         # setup base choice die for all players
         for playermat in self.playermat_set.all():
@@ -71,7 +69,8 @@ class Game(models.Model):
         """
         # get the current player's order
         current_player_order = self.playermat_set.get(
-            player=self.current_player).player_order
+            player=self.current_player
+        ).player_order
 
         # if the player_order is equal to the total number of players,
         # go back to the first player
@@ -81,15 +80,17 @@ class Game(models.Model):
         # else get the player with the next highest player_order
         else:
             self.current_player = self.playermat_set.get(
-                player_order=current_player_order + 1).player
+                player_order=current_player_order + 1
+            ).player
 
         self.save()
 
     def determine_player_order(self):
-        playermats = self.playermat_set.all().order_by('id')
+        playermats = self.playermat_set.all().order_by("id")
         playermats_list = list(playermats)
-        max_horses = self.playermat_set.all().aggregate(
-            models.Max('horses'))['horses__max']
+        max_horses = self.playermat_set.all().aggregate(models.Max("horses"))[
+            "horses__max"
+        ]
         max_horse_players = self.playermat_set.filter(horses=max_horses)
 
         # first turn, no player order set yet, no horses
@@ -115,8 +116,7 @@ class Game(models.Model):
 
         # reorder playermats so that player_one_idx is first, but still
         # 'incremental' ids
-        reordered_mats = playermats[player_one_idx:] + \
-            playermats[:player_one_idx]
+        reordered_mats = playermats[player_one_idx:] + playermats[:player_one_idx]
 
         initial_order = 1
         for playermat in reordered_mats:
@@ -133,5 +133,7 @@ class Game(models.Model):
         if not self.gather_dice:
             self.gather_dice = {}
         for resource_type, die_faces_list in die_dict.items():
-            self.gather_dice[resource_type] = self.gather_dice.get(resource_type, []) + die_faces_list
+            self.gather_dice[resource_type] = (
+                self.gather_dice.get(resource_type, []) + die_faces_list
+            )
         self.save()

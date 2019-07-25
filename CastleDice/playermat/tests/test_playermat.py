@@ -7,20 +7,19 @@ from ..models import PlayerMat
 
 
 class TestPlayerMat(TestCase):
-
     def setUp(self):
-        self.user = User(email="test@this.com",
-                         username="test_user",
-                         password="cherries")
+        self.user = User(
+            email="test@this.com", username="test_user", password="cherries"
+        )
         self.user.save()
-        self.user2 = User(email="test2@this.com",
-                          username="test_user2",
-                          password="cherrimoya")
+        self.user2 = User(
+            email="test2@this.com", username="test_user2", password="cherrimoya"
+        )
         self.user2.save()
 
-        self.user3 = User(email="test3@this.com",
-                          username="test_user3",
-                          password="queen-anne")
+        self.user3 = User(
+            email="test3@this.com", username="test_user3", password="queen-anne"
+        )
         self.user3.save()
 
     def create_one_playermat_game(self):
@@ -62,5 +61,7 @@ class TestPlayerMat(TestCase):
         playermat.game.current_turn = 1
         playermat.game.save()
 
-        self.assertEqual(playermat.get_player_choice_extra_dice(),
-                         TURN[playermat.game.current_turn]['no_choices'])
+        self.assertEqual(
+            playermat.get_player_choice_extra_dice(),
+            TURN[playermat.game.current_turn]["no_choices"],
+        )

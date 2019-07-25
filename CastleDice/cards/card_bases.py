@@ -54,7 +54,7 @@ class BaseCard(metaclass=abc.ABCMeta):
         """
 
         # convert name from snake_case to spaces and title case
-        return self._constant.name.replace('_', ' ').title()
+        return self._constant.name.replace("_", " ").title()
 
     # TODO
     # @property
@@ -176,13 +176,16 @@ class CardLookupBase(object):
     card_map = {}  # to be filled in by subclass
     card_lookup_error = None  # to be customized in each subclass
 
-    def __new__(cls,
-                card_type: Union[MarketCardType, VillagerCardType, CastleCardType, str],
-                *args,
-                **kwargs) -> BaseCard:
+    def __new__(
+        cls,
+        card_type: Union[MarketCardType, VillagerCardType, CastleCardType, str],
+        *args,
+        **kwargs
+    ) -> BaseCard:
         if not cls.card_map or not cls.card_lookup_error:
             raise NotImplementedError(
-                "Both card_map and card_lookup_error must be set on child class")
+                "Both card_map and card_lookup_error must be set on child class"
+            )
 
         if card_type in cls.card_map:
             return cls.card_map[card_type](*args, **kwargs)

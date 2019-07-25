@@ -4,18 +4,18 @@ from enum import unique
 from .named_constants import Constants
 
 __all__ = [
-    'AnimalType',
-    'CastleCardType',
-    'DeckName',
-    'DieFace',
-    'JoanDieFace',
-    'MarketCardType',
-    'PhaseType',
-    'ResourceType',
-    'SpecialPhaseType',
-    'TurnType',
-    'VillagerCardType',
-    'VillagerType',
+    "AnimalType",
+    "CastleCardType",
+    "DeckName",
+    "DieFace",
+    "JoanDieFace",
+    "MarketCardType",
+    "PhaseType",
+    "ResourceType",
+    "SpecialPhaseType",
+    "TurnType",
+    "VillagerCardType",
+    "VillagerType",
 ]
 
 
@@ -144,6 +144,7 @@ class VillagerCardType(Constants):
     These attributes do not stem from _Globals, as their explicit strings are needed for
     ordering, display and lookup
     """
+
     FARMER = "V01"
     GUARD = "V02"
     KINGS_MESSENGER = "V03"
@@ -158,6 +159,7 @@ class PhaseType(Constants):
     These attributes do not stem from _Globals, as their explicit numbers are needed for
     ordering and display
     """
+
     ORDER = 1
     DRAW = 2
     CHOOSE = 3
@@ -181,6 +183,7 @@ class TurnType(Constants):
     These attributes do not stem from _Globals, as their explicit numbers are needed for
     ordering and display
     """
+
     FIRST = 1
     SECOND = 2
     THIRD = 3

@@ -2,24 +2,23 @@ from typing import Union
 
 from CastleDice.common.constants import CastleCardType
 from CastleDice.common.constants import MarketCardType
-from CastleDice.common .constants import VillagerCardType
+from CastleDice.common.constants import VillagerCardType
 from .castle_cards import CastleCard
 from .exceptions import InvalidDeckCardTypeError
 from .market_cards import MarketCard
 from .villager_cards import VillagerCard
 
-__all__ = [
-    'DeckCard',
-]
+__all__ = ["DeckCard"]
 
 
 class DeckCard(object):
     """Given any card type, fetch its matching Card Class"""
 
-    def __new__(cls,
-                card_type: Union[CastleCardType, MarketCardType, VillagerCardType],
-                *args,
-                **kwargs
+    def __new__(
+        cls,
+        card_type: Union[CastleCardType, MarketCardType, VillagerCardType],
+        *args,
+        **kwargs
     ) -> Union[CastleCard, MarketCard, VillagerCard]:
         """
         :param card_type:

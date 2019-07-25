@@ -19,7 +19,6 @@ PHASE_VIEW_MAPPER = {
 
 
 class Switcher(object):
-
     def trigger_wait_for_current_player(self):
         pass
 

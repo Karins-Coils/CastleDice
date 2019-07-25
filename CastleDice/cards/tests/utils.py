@@ -5,13 +5,11 @@ from CastleDice.common.constants import PhaseType
 from CastleDice.common.tests.utils import create_skip_if_not_implemented_decorator
 from CastleDice.common.tests.utils import create_skip_test_if_base_class_decorator
 
-__all__ = [
-    'CardTestBase',
-]
+__all__ = ["CardTestBase"]
 
 
-skip_test_if_base_class = create_skip_test_if_base_class_decorator('card_class')
-skip_if_not_implemented = create_skip_if_not_implemented_decorator('card')
+skip_test_if_base_class = create_skip_test_if_base_class_decorator("card_class")
+skip_if_not_implemented = create_skip_if_not_implemented_decorator("card")
 
 
 class CardTestBase(unittest.TestCase):
@@ -75,42 +73,42 @@ class CardTestBase(unittest.TestCase):
         self.assertEqual(self.card.serialize(), self.card.card_id)
 
     @skip_test_if_base_class
-    @skip_if_not_implemented('is_playable')
+    @skip_if_not_implemented("is_playable")
     def test_is_playable(self):
         self.fail("Must implement this feature and its test")
 
     @skip_test_if_base_class
-    @skip_if_not_implemented('play')
+    @skip_if_not_implemented("play")
     def test_play(self):
         self.fail("Must implement this feature and its test")
 
     @skip_test_if_base_class
-    @skip_if_not_implemented('score')
+    @skip_if_not_implemented("score")
     def test_score(self):
         if self.victory_points > 0:
             self.fail("Must implement this feature and its test")
 
     @skip_test_if_base_class
-    @skip_if_not_implemented('discard')
+    @skip_if_not_implemented("discard")
     def test_discard(self):
         self.fail("Must implement this feature and its test")
 
     @skip_test_if_base_class
-    @skip_if_not_implemented('use_ongoing')
+    @skip_if_not_implemented("use_ongoing")
     def test_use_ongoing(self):
         self.fail("Must implement this feature and its test")
 
     @skip_test_if_base_class
-    @skip_if_not_implemented('has_ongoing_choice')
+    @skip_if_not_implemented("has_ongoing_choice")
     def test_has_ongoing_choice(self):
         self.fail("Must implement this feature and its test")
 
     @skip_test_if_base_class
-    @skip_if_not_implemented('can_use_ongoing')
+    @skip_if_not_implemented("can_use_ongoing")
     def test_can_use_ongoing(self):
         self.fail("Must implement this feature and its test")
 
     @skip_test_if_base_class
-    @skip_if_not_implemented('reset_ongoing')
+    @skip_if_not_implemented("reset_ongoing")
     def test_reset_ongoing(self):
         self.fail("Must implement this feature and its test")

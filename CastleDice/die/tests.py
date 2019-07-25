@@ -12,13 +12,12 @@ from CastleDice.die.dieClass import Die
 
 
 class TestDieClass(unittest.TestCase):
-
     def test_is_barbarian(self):
         self.assertTrue(Die.is_barbarian((BARBARIAN, 1)))
-        self.assertTrue(Die.is_barbarian((u''+BARBARIAN, 1)))
+        self.assertTrue(Die.is_barbarian((u"" + BARBARIAN, 1)))
         self.assertTrue(Die.is_barbarian([BARBARIAN, 1]))
-        self.assertTrue(Die.is_barbarian([u''+BARBARIAN, 1]))
+        self.assertTrue(Die.is_barbarian([u"" + BARBARIAN, 1]))
         self.assertFalse(Die.is_barbarian((LAND, 2)))
-        self.assertFalse(Die.is_barbarian((u''+LAND, 2)))
+        self.assertFalse(Die.is_barbarian((u"" + LAND, 2)))
         self.assertFalse(Die.is_barbarian([LAND, 2]))
-        self.assertFalse(Die.is_barbarian([u''+LAND, 2]))
+        self.assertFalse(Die.is_barbarian([u"" + LAND, 2]))

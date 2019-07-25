@@ -19,11 +19,7 @@ from .exceptions import InvalidVillagerCardTypeError
 from .market_cards import MarketCard
 from .villager_cards import VillagerCard
 
-__all__ = [
-    'CastleDeck',
-    'MarketDeck',
-    'VillagerDeck',
-]
+__all__ = ["CastleDeck", "MarketDeck", "VillagerDeck"]
 
 
 _card_type = Union[CastleCard, MarketCard, VillagerCard]
@@ -42,9 +38,10 @@ class _Deck(object):
     _discard_pile: Optional[_card_list_type] = []
 
     def __init__(
-            self,
-            draw_pile: Optional[_card_list_type] = None,
-            discard_pile: Optional[_card_list_type] = None):
+        self,
+        draw_pile: Optional[_card_list_type] = None,
+        discard_pile: Optional[_card_list_type] = None,
+    ):
         # copy the list into the class
         self._draw_pile = draw_pile[:] if draw_pile else []
         self._discard_pile = discard_pile[:] if discard_pile else []
@@ -62,9 +59,9 @@ class _Deck(object):
         """
         for card in pile:
             if card.card_id not in self._card_type:
-                raise self._card_type_error("Unexpected card type %s for %s" % (
-                    card, self.__class__
-                ))
+                raise self._card_type_error(
+                    "Unexpected card type %s for %s" % (card, self.__class__)
+                )
 
     @property
     def type(self) -> DeckName:
@@ -95,16 +92,10 @@ class _Deck(object):
         self._discard_pile = []
 
     def serialize_draw_pile(self) -> List[str]:
-        return [
-            card.serialize()
-            for card in self._draw_pile
-        ]
+        return [card.serialize() for card in self._draw_pile]
 
     def serialize_discard_pile(self) -> List[str]:
-        return [
-            card.serialize()
-            for card in self._discard_pile
-        ]
+        return [card.serialize() for card in self._discard_pile]
 
 
 class CastleDeck(_Deck):

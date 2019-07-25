@@ -3,12 +3,7 @@ from typing import Tuple
 from typing import Type
 from typing import Union
 
-__all__ = [
-    'create_named_type',
-    'NamedFloat',
-    'NamedInt',
-    'NamedStr',
-]
+__all__ = ["create_named_type", "NamedFloat", "NamedInt", "NamedStr"]
 
 
 @functools.total_ordering
@@ -17,8 +12,11 @@ class NamedType(object):
     Convenience class that stores the name and value of a previously unnamed type.
     Should ONLY be used imported as type hinting, or created using create_named_type
     """
-    __doc__ = "Named type.  Retains most of parent type's properties, with extras for storing a " \
-              "name and ability to compare across different NamedType instances."
+
+    __doc__ = (
+        "Named type.  Retains most of parent type's properties, with extras for storing a "
+        "name and ability to compare across different NamedType instances."
+    )
 
     def __new__(cls, name, val):
         res = type(val).__new__(cls, val)
@@ -39,11 +37,10 @@ class NamedType(object):
     def __repr__(self):
         if self._namespace is None:
             return self._name
-        if self._namespace.__module__ in ('__main__', '__builtin__'):
+        if self._namespace.__module__ in ("__main__", "__builtin__"):
             namespace = self._namespace.__name__
         else:
-            namespace = "%s.%s" % (self._namespace.__module__,
-                                   self._namespace.__name__)
+            namespace = "%s.%s" % (self._namespace.__module__, self._namespace.__name__)
         return "%s.%s" % (namespace, self._name)
 
     def __hash__(self) -> int:
@@ -51,30 +48,34 @@ class NamedType(object):
 
     @staticmethod
     def __named_type_comparator(
-            arg: Union['NamedType', float, int, str]
-    ) -> Tuple[int, 'NamedType']:
+        arg: Union["NamedType", float, int, str]
+    ) -> Tuple[int, "NamedType"]:
         """In order to better compare two NamedTypes, convert to a tuple of their type id
         and their value
         Example:
             NamedInt(5) --> (13328, 5)  # 13328 might be the id of NamedInt in memory
         """
-        return id(type(arg.value)), getattr(arg, 'value', arg)
+        return id(type(arg.value)), getattr(arg, "value", arg)
 
     def __eq__(self, other) -> bool:
         try:
             # first try native type comparison, like int v float
-            return self.value == getattr(other, 'value', other)
+            return self.value == getattr(other, "value", other)
         except TypeError:
             # if not natively comparable, use custom comparator
-            return self.__named_type_comparator(self) == self.__named_type_comparator(other)
+            return self.__named_type_comparator(self) == self.__named_type_comparator(
+                other
+            )
 
     def __lt__(self, other) -> bool:
         try:
             # first try native type comparison, like int v float
-            return self.value < getattr(other, 'value', other)
+            return self.value < getattr(other, "value", other)
         except TypeError:
             # if not natively comparable, use custom comparator
-            return self.__named_type_comparator(self) < self.__named_type_comparator(other)
+            return self.__named_type_comparator(self) < self.__named_type_comparator(
+                other
+            )
 
 
 def _create_named_type(value_type: Type) -> Union[type, Type[NamedType]]:
@@ -84,7 +85,7 @@ def _create_named_type(value_type: Type) -> Union[type, Type[NamedType]]:
         'a' --> NamedStr('a')
     """
 
-    new_name = 'Named' + value_type.__name__.capitalize()
+    new_name = "Named" + value_type.__name__.capitalize()
     # create a new type, using the original type as a base, and adding in the methods of _NamedType
     return type(new_name, (value_type, NamedType), dict(NamedType.__dict__))
 
@@ -94,11 +95,7 @@ NamedInt = _create_named_type(int)
 NamedStr = _create_named_type(str)
 NamedFloat = _create_named_type(float)
 
-_named_types = {
-    int: NamedInt,
-    str: NamedStr,
-    float: NamedFloat,
-}
+_named_types = {int: NamedInt, str: NamedStr, float: NamedFloat}
 
 
 def create_named_type(typ: Type) -> Type[NamedType]:

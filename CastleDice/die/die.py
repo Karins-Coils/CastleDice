@@ -10,16 +10,16 @@ from ..common.constants import ResourceType
 from ..common.setup import JOAN
 
 __all__ = [
-    'Die',
-    'DieAlreadyRolledError',
-    'JoanDie',
-    'GoldDie',
-    'InvalidDieSideError',
-    'IronDie',
-    'LandDie',
-    'StoneDie',
-    'WoodDie',
-    'roll_dice',
+    "Die",
+    "DieAlreadyRolledError",
+    "JoanDie",
+    "GoldDie",
+    "InvalidDieSideError",
+    "IronDie",
+    "LandDie",
+    "StoneDie",
+    "WoodDie",
+    "roll_dice",
 ]
 
 
@@ -57,11 +57,14 @@ class _DieSide(object):
 
 class _Die(object):
     """Non-importable base class.  Should NEVER be used without inheriting and setting _sides"""
+
     _type = None
     _sides = ()
     _rolled_side = None
 
-    def __init__(self, die_face: Optional[DieFace] = None, amount: Optional[int] = None):
+    def __init__(
+        self, die_face: Optional[DieFace] = None, amount: Optional[int] = None
+    ):
         """
         :param die_face:
         :type: DieFace
@@ -229,10 +232,12 @@ class Die(object):
         DieFace.IRON: IronDie,
     }
 
-    def __new__(self,
-                die_type: ResourceType,
-                die_face: Optional[DieFace] = None,
-                amount: Optional[int] = None):
+    def __new__(
+        self,
+        die_type: ResourceType,
+        die_face: Optional[DieFace] = None,
+        amount: Optional[int] = None,
+    ):
         if die_type in self.die_map:
             return self.die_map[die_type](die_face, amount)
 

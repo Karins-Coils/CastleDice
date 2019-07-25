@@ -2,14 +2,20 @@ from annoying.fields import JSONField
 from django.contrib.auth.models import User
 from django.db import models
 
-from ..common.globals import GUARD, WORKER, BARBARIAN, \
-    ANIMAL_PREFERENCE, RESOURCE_PREFERENCE, TURN
+from ..common.globals import (
+    GUARD,
+    WORKER,
+    BARBARIAN,
+    ANIMAL_PREFERENCE,
+    RESOURCE_PREFERENCE,
+    TURN,
+)
 from ..die.dieClass import Die
 
 
 class PlayerMat(models.Model):
     player = models.ForeignKey(User, on_delete=models.CASCADE)
-    game = models.ForeignKey('game.Game', on_delete=models.CASCADE)
+    game = models.ForeignKey("game.Game", on_delete=models.CASCADE)
     victory_points = models.PositiveSmallIntegerField(default=0)
     player_hand = JSONField(blank=True, null=True)
     player_merchant_hand = JSONField(blank=True, null=True)
@@ -42,7 +48,7 @@ class PlayerMat(models.Model):
     def get_player_choice_extra_dice(self):
         # based on turn no, get number of 'extra' dice player will choose
         # to be added: logic to confirm if player has Royal Chambers etc
-        return TURN[self.game.current_turn]['no_choices']
+        return TURN[self.game.current_turn]["no_choices"]
 
     def add_resource(self, die_tuple):
         """
@@ -95,7 +101,7 @@ class PlayerMat(models.Model):
         :return: whether this player has the most of that animal
         :rtype: bool
         """
-        kwargs = {animal+"__gte": self.__dict__[animal]}
+        kwargs = {animal + "__gte": self.__dict__[animal]}
         if self.game.playermat_set.filter(**kwargs).exclude(id=self.id):
             return False
         return True
@@ -117,7 +123,8 @@ class PlayerMat(models.Model):
             for die_face in die_face_list:
                 if Die.is_barbarian(die_face):
                     barbarians = self.playermatresourcepeople_set.get_or_create(
-                        type=BARBARIAN)[0]
+                        type=BARBARIAN
+                    )[0]
                     barbarians.add_resource(resource_type)
 
         self.choice_dice = []
@@ -126,15 +133,12 @@ class PlayerMat(models.Model):
 
 
 class JoanPlayerMat(PlayerMat):
-    resource_choices = (
-        (die, die) for die in list(RESOURCE_PREFERENCE) + [None]
-    )
+    resource_choices = ((die, die) for die in list(RESOURCE_PREFERENCE) + [None])
 
     # turn based values - will be reset each turn
-    primary_resource = models.CharField(max_length=12,
-                                        blank=True,
-                                        null=True,
-                                        choices=resource_choices)
+    primary_resource = models.CharField(
+        max_length=12, blank=True, null=True, choices=resource_choices
+    )
 
     def reset_turn_based(self):
         self.primary_resource = None
@@ -143,11 +147,7 @@ class JoanPlayerMat(PlayerMat):
 
 
 class PlayerMatResourcePeople(models.Model):
-    TYPE_CHOICES = (
-        (GUARD, GUARD),
-        (WORKER, WORKER),
-        (BARBARIAN, BARBARIAN)
-    )
+    TYPE_CHOICES = ((GUARD, GUARD), (WORKER, WORKER), (BARBARIAN, BARBARIAN))
 
     player_mat = models.ForeignKey(PlayerMat, on_delete=models.CASCADE)
     type = models.CharField(max_length=12, choices=TYPE_CHOICES)
@@ -163,7 +163,7 @@ class PlayerMatResourcePeople(models.Model):
 
     def clear_all(self):
         # should only be done on barbarian rows
-        for resource in list(RESOURCE_PREFERENCE) + ['total']:
+        for resource in list(RESOURCE_PREFERENCE) + ["total"]:
             self.__dict__[resource] = 0
         self.save()
 
@@ -182,10 +182,9 @@ class PlayerBuilt(models.Model):
     """
     The card that a player has built this game.
     """
-    ANIMAL_CHOICES = [
-        (name, name) for name in ANIMAL_PREFERENCE
-    ]
-    ANIMAL_CHOICES.append(('', ''))
+
+    ANIMAL_CHOICES = [(name, name) for name in ANIMAL_PREFERENCE]
+    ANIMAL_CHOICES.append(("", ""))
 
     player_mat = models.ForeignKey(PlayerMat, on_delete=models.CASCADE)
     card = models.CharField(max_length=52)

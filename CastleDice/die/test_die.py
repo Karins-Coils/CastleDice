@@ -55,8 +55,9 @@ class DieTest(unittest.TestCase):
         die = WoodDie()
         result = die.roll()
         serialized = die.serialize()
-        self.assertEqual(serialized,
-                         (ResourceType.WOOD, result.resource, result.amount))
+        self.assertEqual(
+            serialized, (ResourceType.WOOD, result.resource, result.amount)
+        )
         # deserialize
         new_die = Die(*serialized)
         self.assertEqual(die._type, new_die._type)
@@ -148,7 +149,7 @@ class RollDiceTest(unittest.TestCase):
 
     def test_rolls_dice_once(self):
         dice = [Die(ResourceType.WOOD), Die(ResourceType.STONE)]
-        rolled_dice =roll_dice(dice)
+        rolled_dice = roll_dice(dice)
 
         # next roll will error
         with self.assertRaises(DieAlreadyRolledError):
