@@ -20,3 +20,9 @@ class InvalidDeckCardTypeError(Exception):
     """
     Raised when trying to instantiate a card, and can not identify which deck it belongs
     """
+
+
+class InvalidDeckTypeError(Exception):
+    """
+    When a DeckName does match expected values
+    """
