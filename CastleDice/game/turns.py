@@ -20,27 +20,27 @@ class TurnBase(object):
     will_go_to_market: bool
 
     @classmethod
-    def create_player_choice_dice_for_turn(cls) -> Tuple[ResourceType]:
+    def create_player_choice_dice_for_turn(cls) -> List[ResourceType]:
         """
         Return list of individual resources that will be the player's default choice die
         """
         resources: List[ResourceType] = []
         for resource_type, count in cls.given_dice.items():
             resources.extend([resource_type] * count)
-        return tuple(resources)
+        return resources
 
     @classmethod
-    def create_dice_bank_for_turn(cls) -> Tuple[ResourceType]:
+    def create_dice_bank_for_turn(cls, player_count: int) -> List[ResourceType]:
         """
         Subtract the choice dice from the global dice bank to return list of die players can
         choose from during Choose phase.
         """
         resources: List[ResourceType] = []
         for resource_type, count in DICE_COUNT.items():
-            bank_count = count - cls.given_dice.get(resource_type, 0)
+            bank_count = count - (cls.given_dice.get(resource_type, 0) * player_count)
             resources.extend([resource_type] * bank_count)
 
-        return tuple(resources)
+        return resources
 
 
 class FirstTurn(TurnBase):
@@ -104,7 +104,7 @@ class SeventhTurn(TurnBase):
 
 
 class Turn(object):
-    turn_map: Dict[ResourceType, Type[TurnBase]] = {
+    turn_map: Dict[int, Type[TurnBase]] = {
         1: FirstTurn,
         2: SecondTurn,
         3: ThirdTurn,
@@ -114,7 +114,7 @@ class Turn(object):
         7: SeventhTurn,
     }
 
-    def __new__(cls, turn_number) -> TurnBase:
+    def __new__(cls, turn_number: int) -> TurnBase:
         if turn_number in cls.turn_map:
             return cls.turn_map[turn_number]()
         raise InvalidTurnNumberError(f"Unknown Turn number {turn_number}")
