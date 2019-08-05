@@ -6,8 +6,7 @@ from django.db import models
 
 from .solo_ai import JoanAI
 
-from ..common.dice import DICE_COUNT
-from ..common.globals import TURN
+from .turns import Turn
 
 
 class Game(models.Model):
@@ -18,26 +17,20 @@ class Game(models.Model):
     current_turn = models.PositiveSmallIntegerField(default=1)
     current_phase = models.PositiveSmallIntegerField(default=1)
     dice_bank = JSONField(blank=True, null=True, default=[])
-    world_pool_dice = JSONField(blank=True, null=True, default={})
+    world_pool_dice = JSONField(blank=True, null=True, default=[])
     true_porkchop_used = models.BooleanField(default=False)
 
     def setup_choice_dice_for_turn(self):
         player_count = self.playermat_set.count()
-        given_dice = TURN[self.current_turn]["given_dice"]
+        turn = Turn(self.current_turn)
+        given_dice = turn.create_player_choice_dice_for_turn()
 
         # setup base choice die for all players
         for playermat in self.playermat_set.all():
             playermat.choice_dice = given_dice
             playermat.save()
 
-        # create choice pool from remaining dice
-        # get count for this resource, multiply by players
-        # subtract the already claimed dice from the remaining pool
-        total_dice = {
-            resource: value - (given_dice.get(resource, 0) * player_count)
-            for resource, value in DICE_COUNT.items()
-        }
-        self.dice_bank = total_dice
+        self.dice_bank = turn.create_dice_bank_for_turn(self.playermat_set.count())
         self.save()
 
     def advance_turn(self):

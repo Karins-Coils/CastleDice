@@ -1,14 +1,11 @@
+from typing import Dict
+from typing import List
 from unittest import mock
 
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from CastleDice.common.globals import GOLD
-from CastleDice.common.globals import IRON
-from CastleDice.common.globals import LAND
-from CastleDice.common.globals import STONE
-from CastleDice.common.globals import TURN
-from CastleDice.common.globals import WOOD
+from CastleDice.common.constants import ResourceType
 from CastleDice.game.models import Game
 from CastleDice.game.solo_ai import JoanAI
 from CastleDice.playermat.models import PlayerMat
@@ -65,6 +62,14 @@ class TestGameModel(TestCase):
         playermat3.save()
 
         return game
+
+    def create_expected_die_list(
+        self, resource_count_dict: Dict[ResourceType, int]
+    ) -> List[ResourceType]:
+        die_list = []
+        for resource, count in resource_count_dict.items():
+            die_list.extend([resource] * count)
+        return die_list
 
     def test_player_order_turn_one_multi(self):
         game = self.create_three_player_game()
@@ -195,52 +200,73 @@ class TestGameModel(TestCase):
 
     def test_setup_choice_dice_for_turn_one_player(self):
         # one playermat, minus Turn 1 choice dice
-        choice_pool_count = {
-            WOOD: 12,  # minus the 2 given wood
-            STONE: 12,  # minus the 2 given stone
-            GOLD: 12,  # minus the 1 given gold
-            LAND: 11,
-            IRON: 11,
+        dice_bank_counts = {
+            ResourceType.WOOD: 12,  # minus the 2 given wood
+            ResourceType.STONE: 12,  # minus the 2 given stone
+            ResourceType.GOLD: 12,  # minus the 1 given gold
+            ResourceType.LAND: 11,
+            ResourceType.IRON: 11,
         }
+        dice_bank_list = self.create_expected_die_list(dice_bank_counts)
         game = self.create_one_player_game()
         game.current_turn = 1
         game.setup_choice_dice_for_turn()
 
         # confirm only playermat in the set has base choice dice
         playermat = game.playermat_set.get()
-        self.assertEqual(playermat.choice_dice, TURN[game.current_turn]["given_dice"])
-        self.assertEqual(game.dice_bank, choice_pool_count)
+        self.assertEqual(
+            playermat.choice_dice,
+            [
+                ResourceType.WOOD,
+                ResourceType.WOOD,
+                ResourceType.STONE,
+                ResourceType.STONE,
+                ResourceType.GOLD,
+            ],
+        )
+        self.assertEqual(game.dice_bank, dice_bank_list)
 
     def test_setup_choice_dice_for_turn_two_player(self):
         # minus Turn 2 choice dice * two playermat
-        choice_pool_count = {
-            WOOD: 12,  # minus the 1 given wood * 2
-            STONE: 12,  # minus the 1 given stone * 2
-            GOLD: 9,  # minus the 2 given gold * 2
-            LAND: 11,
-            IRON: 11,
+        dice_bank_counts = {
+            ResourceType.WOOD: 12,  # minus the 1 given wood * 2
+            ResourceType.STONE: 12,  # minus the 1 given stone * 2
+            ResourceType.GOLD: 9,  # minus the 2 given gold * 2
+            ResourceType.LAND: 11,
+            ResourceType.IRON: 11,
         }
+        dice_bank_list = self.create_expected_die_list(dice_bank_counts)
+
         game = self.create_two_player_game()
         game.current_turn = 2
         game.setup_choice_dice_for_turn()
 
         # confirm all playermats in the set have base choice dice
         for playermat in game.playermat_set.all():
-            self.assertEqual(
-                playermat.choice_dice, TURN[game.current_turn]["given_dice"]
+            self.assertCountEqual(
+                playermat.choice_dice,
+                [
+                    ResourceType.WOOD,
+                    ResourceType.STONE,
+                    ResourceType.GOLD,
+                    ResourceType.GOLD,
+                ],
             )
 
-        self.assertEqual(game.dice_bank, choice_pool_count)
+        self.assertCountEqual(game.dice_bank, dice_bank_list)
 
     def test_setup_choice_dice_for_turn_three_player(self):
         # minus Turn 3 choice dice * three playermat
-        choice_pool_count = {
-            WOOD: 5,  # minus the 3 given wood * 3
-            STONE: 11,  # minus the 1 given stone * 3
-            GOLD: 10,  # minus the 1 given gold * 3
-            LAND: 11,
-            IRON: 11,
+        dice_bank_counts = {
+            ResourceType.WOOD: 5,  # minus the 3 given wood * 3
+            ResourceType.STONE: 11,  # minus the 1 given stone * 3
+            ResourceType.GOLD: 10,  # minus the 1 given gold * 3
+            ResourceType.LAND: 11,
+            ResourceType.IRON: 11,
         }
+
+        dice_bank_list = self.create_expected_die_list(dice_bank_counts)
+
         game = self.create_three_player_game()
         game.current_turn = 3
         game.setup_choice_dice_for_turn()
@@ -248,7 +274,14 @@ class TestGameModel(TestCase):
         # confirm all playermats in the set have base choice dice
         for playermat in game.playermat_set.all():
             self.assertEqual(
-                playermat.choice_dice, TURN[game.current_turn]["given_dice"]
+                playermat.choice_dice,
+                [
+                    ResourceType.WOOD,
+                    ResourceType.WOOD,
+                    ResourceType.WOOD,
+                    ResourceType.STONE,
+                    ResourceType.GOLD,
+                ],
             )
 
-        self.assertEqual(game.dice_bank, choice_pool_count)
+        self.assertEqual(game.dice_bank, dice_bank_list)
