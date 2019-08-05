@@ -209,7 +209,7 @@ class TestGameModel(TestCase):
         # confirm only playermat in the set has base choice dice
         playermat = game.playermat_set.get()
         self.assertEqual(playermat.choice_dice, TURN[game.current_turn]["given_dice"])
-        self.assertEqual(game.choice_dice, choice_pool_count)
+        self.assertEqual(game.dice_bank, choice_pool_count)
 
     def test_setup_choice_dice_for_turn_two_player(self):
         # minus Turn 2 choice dice * two playermat
@@ -230,7 +230,7 @@ class TestGameModel(TestCase):
                 playermat.choice_dice, TURN[game.current_turn]["given_dice"]
             )
 
-        self.assertEqual(game.choice_dice, choice_pool_count)
+        self.assertEqual(game.dice_bank, choice_pool_count)
 
     def test_setup_choice_dice_for_turn_three_player(self):
         # minus Turn 3 choice dice * three playermat
@@ -251,4 +251,4 @@ class TestGameModel(TestCase):
                 playermat.choice_dice, TURN[game.current_turn]["given_dice"]
             )
 
-        self.assertEqual(game.choice_dice, choice_pool_count)
+        self.assertEqual(game.dice_bank, choice_pool_count)
