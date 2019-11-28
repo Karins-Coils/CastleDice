@@ -78,10 +78,11 @@ python -c "from django.utils.crypto import get_random_string; print get_random_s
 
 ## Database Setup
 
-If you installed the Postgres.app, you should have access to the following commands.  Use them to create the database and the user.  Type 'admin' into the password prompt when asked. This matches what we've listed in `CastleDice/config/settings/local.py`
+If you installed the Postgres.app, you should have access to the following commands.  Use them to create the database and the user.  Type 'admin' into the password prompt when asked. This matches what we've listed in `CastleDice/config/settings/local.py` and `CastleDice/config/settings/test.py`
 
 ```
 createdb CastleDice
+createdb CastleDiceTest
 createuser -s -W admin
 ```
 
@@ -112,5 +113,5 @@ You can now access the website at `localhost:8000`
 Be sure to add tests to any code you add, and update tests if you make changes
 
 ```
-python manage.py test --settings config.settings.local
+python manage.py test --settings config.settings.test
 ```
