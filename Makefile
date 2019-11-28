@@ -22,9 +22,9 @@ migrate: migrate_local migrate_test
 
 .PHONY: migrate_local
 migrate_local:
-	$(manage_cmd) --settings $(django_local_settings_location)
+	$(manage_cmd) migrate --settings $(django_local_settings_location)
 
 .PHONY: migrate_test
 migrate_test:
-	$(manage_cmd) --settings $(django_test_settings_location)
+	$(manage_cmd) migrate --settings $(django_test_settings_location)
 
