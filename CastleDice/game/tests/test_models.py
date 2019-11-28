@@ -13,6 +13,83 @@ from ..solo_ai import JoanAI
 
 
 class TestGameModel(BaseGameTest):
+    def test_create_game(self):
+        game = Game()
+        game.save()
+        self.assertEqual(game, Game.objects.get(id=game.id))
+
+    def test_advance_turn(self):
+        game = self.create_two_player_game()
+        # initialize the game state to the first turn
+        game.advance_turn()
+
+        self.assertEqual(game.current_turn.turn_no, 1)
+        self.assertEqual(game.current_phase, 1)
+        self.assertIsNone(game.choice_dice_bank)
+        self.assertIsNone(game.gather_dice_bank)
+        self.assertIsNotNone(game.current_player)
+
+        # pretend to have some values
+        game.choice_dice_bank = []
+        game.gather_dice_bank = []
+        game.current_phase = 5
+        game.save()
+
+        first_turn_player = game.current_player
+
+        # advance to the second turn
+        game.advance_turn()
+
+        self.assertEqual(game.current_turn.turn_no, 2)
+        self.assertEqual(game.current_phase, 1)
+        self.assertIsNone(game.choice_dice_bank)
+        self.assertIsNone(game.gather_dice_bank)
+        self.assertNotEqual(game.current_player, first_turn_player)
+
+    def test_advance_phase(self):
+        game = self.create_two_player_game()
+        # initialize the game state to the first turn
+        game.advance_turn()
+
+        self.assertEqual(game.current_phase, 1)
+        self.assertIsNotNone(game.current_player)
+
+        first_round_player = game.current_player
+
+        # move the round to the next player, to simulate the game moving along
+        game.advance_current_player()
+        self.assertNotEqual(game.current_player, first_round_player)
+
+        # advance to the next game phase
+        game.advance_phase()
+        self.assertEqual(game.current_phase, 2)
+        # player should be the same as the original again
+        self.assertEqual(game.current_player, first_round_player)
+
+    def test_advance_current_player(self):
+        game = self.create_three_player_game()
+        # initialize the game state to the first turn
+        game.advance_turn()
+
+        first_player = game.playermat_set.get(player_order=1).player
+        second_player = game.playermat_set.get(player_order=2).player
+        third_player = game.playermat_set.get(player_order=3).player
+
+        # current state, should be set to first player
+        self.assertEqual(game.current_player, first_player)
+
+        # advance the player
+        game.advance_current_player()
+        self.assertEqual(game.current_player, second_player)
+
+        # advance the player again
+        game.advance_current_player()
+        self.assertEqual(game.current_player, third_player)
+
+        # final advance should bring it back to the start (important for gather phase, etc)
+        game.advance_current_player()
+        self.assertEqual(game.current_player, first_player)
+
     def test_player_order_turn_one_multi(self):
         game = self.create_three_player_game()
         game.current_turn = GameTurn.initialize_turn(game)

@@ -109,12 +109,12 @@ class RollDiceView(TemplateView):
         dice_rolled = playermat.roll_choice_dice()
         context["rolled_dice"] = dice_rolled
 
-        game_obj.add_dice_to_world(
-            {
-                k: [d for d in die_list if not Die.is_barbarian(d)]
-                for k, die_list in dice_rolled.items()
-            }
-        )
+        # game_obj.add_dice_to_world(
+        #     {
+        #         k: [d for d in die_list if not Die.is_barbarian(d)]
+        #         for k, die_list in dice_rolled.items()
+        #     }
+        # )
         game_obj.save()
         playermat.save()
 

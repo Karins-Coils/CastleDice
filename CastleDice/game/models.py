@@ -29,9 +29,10 @@ class Game(models.Model):
     )  # list of already rolled dice available
 
     def setup_choice_dice_for_turn(self):
-        if not self.current_turn:
-            self.current_turn = GameTurn.initialize_turn(self)
-            self.save()
+        """
+        Based on the current turn, setup the choice dice bank, and put the given dice
+        into each player's pool
+        """
         turn = Turn(self.current_turn.turn_no)
         given_dice = turn.create_player_choice_dice_for_turn()
 
@@ -44,25 +45,46 @@ class Game(models.Model):
         self.save()
 
     def advance_turn(self):
-        # custom logic to advance turn & reset base values
-        # confirm barbarians phase completed
-        self.game.current_turn = GameTurn.initialize_turn(
-            self, self.current_turn.turn_no + 1
-        )
-        self.game.current_phase = 1
-        self.game.current_player = None
-        self.game.choice_dice_bank = None
-        self.game.gather_dice_bank = None  # should already be cleared
-        self.true_porkchop_used = False
+        """
+        Setup or reset the turn based values tracked in the Game.
+        Also advance the turn number, and determine the new player order.
+        """
+        # TODO: custom logic to advance turn & reset base values
+        # TODO: confirm barbarians phase completed
+
+        # advance the turn, creating a new GameTurn
+        if self.current_turn:
+            self.current_turn = GameTurn.initialize_turn(
+                self, self.current_turn.turn_no + 1
+            )
+        else:
+            self.current_turn = GameTurn.initialize_turn(self, 1)
+
+        # set player order on players
+        self.determine_player_order()
+
+        # get current player based on new player order
+        self.current_player = self.playermat_set.get(player_order=1).player
+
+        # clear dice banks
+        self.choice_dice_bank = None
+        self.gather_dice_bank = None
+
+        # reset the phase
+        self.current_phase = 1
 
         self.save()
 
     def advance_phase(self):
-        # custom logic to check if all players have had their turn
+        """
+        Update the current phase number to be the next phase.  Also advance the current player
+        """
+        # TODO: custom logic to check if all players have had their turn
         # or other conditions met (gathered all dice, etc)
-        self.current_phase += 1
-        self.current_player = self.playermat_set.get(player_order=1).player
 
+        self.current_phase += 1
+        # reset first player of the phase back to first player
+        self.current_player = self.playermat_set.get(player_order=1).player
         self.save()
 
     def advance_current_player(self):
@@ -70,7 +92,6 @@ class Game(models.Model):
         Based on game.current_player & each playermat.player_order,
         set game.current_player to the next player in order
         Used during a turn, after player_order has already been set.
-        :return:
         """
         # get the current player's order
         current_player_order = self.playermat_set.get(
@@ -134,14 +155,14 @@ class Game(models.Model):
     def get_current_player_playermat(self):
         return self.playermat_set.get(player=self.current_player)
 
-    def add_dice_to_world(self, die_dict):
-        if not self.world_pool_dice:
-            self.world_pool_dice = {}
-        for resource_type, die_faces_list in die_dict.items():
-            self.world_pool_dice[resource_type] = (
-                self.world_pool_dice.get(resource_type, []) + die_faces_list
-            )
-        self.save()
+    # def add_dice_to_world(self, die_dict):
+    #     if not self.world_pool_dice:
+    #         self.world_pool_dice = {}
+    #     for resource_type, die_faces_list in die_dict.items():
+    #         self.world_pool_dice[resource_type] = (
+    #             self.world_pool_dice.get(resource_type, []) + die_faces_list
+    #         )
+    #     self.save()
 
 
 class GameTurn(models.Model):
