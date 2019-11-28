@@ -1,4 +1,5 @@
 import random
+from dataclasses import dataclass
 from typing import Optional
 from typing import Sequence
 from typing import Tuple
@@ -31,28 +32,18 @@ class InvalidDieSideError(Exception):
     """When attempting to use a bad _DieSide and Die combination"""
 
 
+@dataclass(frozen=True)
 class _DieSide(object):
-    _resource = None
-    _amount = None
-
-    def __init__(self, resource: DieFace, amount: int):
-        self._resource = resource
-        self._amount = amount
-
-    @property
-    def resource(self) -> DieFace:
-        return self._resource
-
-    @property
-    def amount(self) -> int:
-        return self._amount
+    __slots__ = ["amount", "resource"]
+    resource: DieFace
+    amount: int
 
     @property
     def value(self) -> Tuple[DieFace, int]:
-        return self._resource, self._amount
+        return self.resource, self.amount
 
     def is_barbarian(self) -> bool:
-        return self._resource == DieFace.BARBARIAN
+        return self.resource == DieFace.BARBARIAN
 
 
 class _Die(object):
@@ -221,6 +212,7 @@ class JoanDie(_Die):
     )
 
 
+@dataclass(frozen=True)
 class Die(object):
     """Convenience class for getting a Die by type, if type unknown at lookup"""
 
