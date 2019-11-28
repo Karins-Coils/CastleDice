@@ -1,7 +1,6 @@
+from dataclasses import dataclass
 from typing import Dict
 from typing import List
-from typing import Tuple
-from typing import Type
 
 from CastleDice.common.constants import ResourceType
 from CastleDice.common.setup import DICE_COUNT
@@ -103,8 +102,9 @@ class SeventhTurn(TurnBase):
     will_go_to_market = True
 
 
+@dataclass(frozen=True)
 class Turn(object):
-    turn_map: Dict[int, Type[TurnBase]] = {
+    turn_map = {
         1: FirstTurn,
         2: SecondTurn,
         3: ThirdTurn,
