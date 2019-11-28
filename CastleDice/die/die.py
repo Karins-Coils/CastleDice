@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Optional
 from typing import Sequence
 from typing import Tuple
+from typing import Type
 from typing import Union
 
 from ..common.constants import DieFace
@@ -229,7 +230,7 @@ class Die(object):
         die_type: ResourceType,
         die_face: Optional[DieFace] = None,
         amount: Optional[int] = None,
-    ):
+    ) -> _Die:
         if die_type in self.die_map:
             return self.die_map[die_type](die_face, amount)
 
