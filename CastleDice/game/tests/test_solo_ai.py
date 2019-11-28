@@ -1,6 +1,7 @@
 import unittest
 
 from django.contrib.auth.models import User
+from django.test import TestCase
 
 from CastleDice.common.dice import DICE_COUNT
 from CastleDice.common.globals import BARN
@@ -20,7 +21,7 @@ from CastleDice.game.solo_ai import JoanAI
 # Create your tests here.
 
 
-class TestJoanAI(unittest.TestCase):
+class TestJoanAI(TestCase):
     def setUp(self):
         # have at least one user in the database to use against tests below
         u = User.objects.get_or_create(username="test", email="test@test.com")
