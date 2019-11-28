@@ -9,23 +9,33 @@ from .solo_ai import JoanAI
 from .turns import Turn
 
 
+# in progress rewrite
 class Game(models.Model):
     is_solo_game = models.BooleanField(default=False)
+    # prevent backwards relation with related_name='+'
     current_player = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="+", blank=True, null=True
+        User, on_delete=models.SET_NULL, related_name="+", blank=True, null=True
     )
-    current_turn = models.PositiveSmallIntegerField(default=1)
+    # prevent backwards relation with related_name='+', as the Turn has a game already linked
+    current_turn = models.ForeignKey(
+        "GameTurn", on_delete=models.SET_NULL, null=True, related_name="+", default=None
+    )
     current_phase = models.PositiveSmallIntegerField(default=1)
-    dice_bank = JSONField(blank=True, null=True, default=[])
-    world_pool_dice = JSONField(blank=True, null=True, default=[])
-    true_porkchop_used = models.BooleanField(default=False)
+    choice_dice_bank = JSONField(
+        blank=True, null=True, default=[]
+    )  # list of die types available
+    gather_dice_bank = JSONField(
+        blank=True, null=True, default=[]
+    )  # list of already rolled dice available
 
     def setup_choice_dice_for_turn(self):
-        player_count = self.playermat_set.count()
-        turn = Turn(self.current_turn)
+        if not self.current_turn:
+            self.current_turn = GameTurn.initialize_turn(self)
+            self.save()
+        turn = Turn(self.current_turn.turn_no)
         given_dice = turn.create_player_choice_dice_for_turn()
 
-        # setup base choice die for all players
+        # setup base choice die for all players with initial given set
         for playermat in self.playermat_set.all():
             playermat.choice_dice = given_dice
             playermat.save()
@@ -36,11 +46,13 @@ class Game(models.Model):
     def advance_turn(self):
         # custom logic to advance turn & reset base values
         # confirm barbarians phase completed
-        self.game.current_turn += 1
+        self.game.current_turn = GameTurn.initialize_turn(
+            self, self.current_turn.turn_no + 1
+        )
         self.game.current_phase = 1
         self.game.current_player = None
-        self.game.choice_dice = None
-        self.game.gather_dice = None  # should already be cleared
+        self.game.choice_dice_bank = None
+        self.game.gather_dice_bank = None  # should already be cleared
         self.true_porkchop_used = False
 
         self.save()
@@ -89,7 +101,7 @@ class Game(models.Model):
         # first turn, no player order set yet, no horses
         # this is ok for INITIAL drat but should be updated to dice rolling to
         # match game rules expectation
-        if self.current_turn == 1:
+        if self.current_turn.turn_no == 1:
             if self.is_solo_game:
                 ai_playermat = playermats.get(player=JoanAI.get_user_joan())
                 ai_idx = playermats_list.index(ai_playermat)
@@ -130,3 +142,31 @@ class Game(models.Model):
                 self.world_pool_dice.get(resource_type, []) + die_faces_list
             )
         self.save()
+
+
+class GameTurn(models.Model):
+    """The turn details for a specific turn"""
+
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name="turns")
+    turn_no = models.PositiveSmallIntegerField(default=1)
+    # prevent backwards relation with related_name='+'
+    first_player = models.ForeignKey(
+        User, on_delete=models.SET_NULL, related_name="+", blank=True, null=True
+    )
+    # prevent backwards relation with related_name='+'
+    pork_chop_used_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, related_name="+", blank=True, null=True
+    )
+
+    @classmethod
+    def initialize_turn(cls, game: Game, turn_no: int = 1) -> "GameTurn":
+        """Create a row in the game_turns table connected to the supplied game for the first turn
+
+        :param game:
+        :type game: Game
+        :param turn_no:
+        :type: int:
+        :return:
+        :rtype: GameTurn
+        """
+        return cls.objects.create(game=game, turn_no=turn_no)

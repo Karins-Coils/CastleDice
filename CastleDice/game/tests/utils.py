@@ -1,13 +1,16 @@
+from typing import Dict
+from typing import List
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from CastleDice.common.globals import TURN
+from CastleDice.common.constants import ResourceType
 from CastleDice.game.models import Game
-from CastleDice.game.models import GameTurn
-from ..models import PlayerMat
+from CastleDice.game.solo_ai import JoanAI
+from CastleDice.playermat.models import PlayerMat
 
 
-class TestPlayerMat(TestCase):
+class BaseGameTest(TestCase):
     def setUp(self):
         self.user = User(
             email="test@this.com", username="test_user", password="cherries"
@@ -23,15 +26,18 @@ class TestPlayerMat(TestCase):
         )
         self.user3.save()
 
-    def create_one_playermat_game(self):
+        # create Joan
+        JoanAI.get_user_joan()
+
+    def create_one_player_game(self):
         game = Game()
         game.save()
         playermat = PlayerMat(game=game, player=self.user)
         playermat.save()
 
-        return playermat
+        return game
 
-    def create_two_playermat_game(self):
+    def create_two_player_game(self):
         game = Game()
         game.save()
         playermat = PlayerMat(game=game, player=self.user)
@@ -40,9 +46,9 @@ class TestPlayerMat(TestCase):
         playermat2 = PlayerMat(game=game, player=self.user2)
         playermat2.save()
 
-        return playermat
+        return game
 
-    def create_three_playermat_game(self):
+    def create_three_player_game(self):
         game = Game()
         game.save()
 
@@ -55,14 +61,12 @@ class TestPlayerMat(TestCase):
         playermat3 = PlayerMat(game=game, player=self.user3)
         playermat3.save()
 
-        return playermat
+        return game
 
-    def test_get_player_choice_extra_dice(self):
-        playermat = self.create_one_playermat_game()
-        playermat.game.current_turn = GameTurn.initialize_turn(playermat.game)
-        playermat.game.save()
-
-        self.assertEqual(
-            playermat.get_player_choice_extra_dice(),
-            TURN[playermat.game.current_turn]["no_choices"],
-        )
+    def create_expected_die_list(
+        self, resource_count_dict: Dict[ResourceType, int]
+    ) -> List[ResourceType]:
+        die_list = []
+        for resource, count in resource_count_dict.items():
+            die_list.extend([resource] * count)
+        return die_list
