@@ -2,13 +2,16 @@ from annoying.fields import JSONField
 from django.contrib.auth.models import User
 from django.db import models
 
+from CastleDice.common.constants import GameConstants
+from CastleDice.common.constants import ResourceType
+from CastleDice.common.constants import VillagerType
+from CastleDice.game.turns import Turn
 from ..common.globals import (
     GUARD,
     WORKER,
     BARBARIAN,
     ANIMAL_PREFERENCE,
     RESOURCE_PREFERENCE,
-    TURN,
 )
 from ..die.dieClass import Die
 
@@ -45,28 +48,45 @@ class PlayerMat(models.Model):
     merchants = models.PositiveSmallIntegerField(default=0)
     farmers = models.PositiveSmallIntegerField(default=0)
 
+    # will be reset after each turn
+    barbarians = models.PositiveSmallIntegerField(default=0)
+
     def get_player_choice_extra_dice(self):
         # based on turn no, get number of 'extra' dice player will choose
-        # to be added: logic to confirm if player has Royal Chambers etc
-        return TURN[self.game.current_turn]["no_choices"]
+        # TODO: logic to confirm if player has Royal Chambers etc
+        return Turn(self.game.current_turn.turn_no).number_of_choices
 
-    def add_resource(self, die_tuple):
+    def add_resource(self, resource: ResourceType, add_amount: int = 1):
         """
-        Match the resource to the column and add to value
-        :param tuple die_tuple: (resource, count) ex: (WOOD, 2)
-        :return:
+        Match the resource to the column and add amount to value
+
+        :param resource:
+        :type: ResourceType
+        :param add_amount:
+        :type: int
         """
-        self.__dict__[die_tuple[0]] += die_tuple[1]
+        attr_name = resource.name.lower()
+        current_amount = self.__getattribute__(attr_name)
+        # adding more than the allowed max
+        new_amount = min(current_amount + add_amount, GameConstants.MAX_RESOURCES)
+
+        self.__setattr__(attr_name, new_amount)
         self.save()
 
-    def remove_resource(self, resource, count=1):
+    def remove_resource(self, resource, remove_amount=1):
         """
         Match resource to column and remove count, default 1
         :param resource:
-        :param count:
-        :return:
+        :type resource: ResourceType
+        :param remove_amount:
+        :type remove_amount: int
         """
-        self.__dict__[resource] -= count
+        attr_name = resource.name.lower()
+        current_amount = self.__getattribute__(attr_name)
+        # cannot have a negative amount of a resource
+        new_amount = max(current_amount - remove_amount, 0)
+
+        self.__setattr__(attr_name, new_amount)
         self.save()
 
     def reset_turn_based(self):

@@ -8,6 +8,7 @@ __all__ = [
     "CastleCardType",
     "DeckName",
     "DieFace",
+    "GameConstants",
     "JoanDieFace",
     "MarketCardType",
     "PhaseType",
@@ -55,6 +56,11 @@ class _Globals(IntEnum):
 
 
 # -- importable classes, used for many things -- #
+
+# Set values, easy to reference
+class GameConstants(Constants):
+    MAX_RESOURCES = 10  # only 10 of each resources allowed
+
 
 # Sorted by Resource Preference Gathering - especially Joan
 class ResourceType(Constants):
