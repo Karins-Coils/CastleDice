@@ -19,4 +19,4 @@ requests-oauthlib==1.2.0
 static==1.1.1
 static3==0.7.0
 Unipath==1.1
-urllib3==1.25.3
+urllib3==1.25.8
