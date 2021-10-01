@@ -1,18 +1,56 @@
-from .base import *
+"""
+With these settings, tests run faster.
+"""
+
+from .base import *  # noqa
+from .base import env
+
+# GENERAL
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
+SECRET_KEY = env(
+    "DJANGO_SECRET_KEY",
+    default="9cOtqhz582Qi7ByoCc7hGBi3dlquy20gBWmG6HjDZqhKvZczdw3cDdC1nLufCJn2",
+)
+# https://docs.djangoproject.com/en/dev/ref/settings/#test-runner
+TEST_RUNNER = "django.test.runner.DiscoverRunner"
+
+# PASSWORDS
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#password-hashers
+PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+
+# TEMPLATES
+# ------------------------------------------------------------------------------
+TEMPLATES[-1]["OPTIONS"]["loaders"] = [  # type: ignore[index] # noqa F405
+    (
+        "django.template.loaders.cached.Loader",
+        [
+            "django.template.loaders.filesystem.Loader",
+            "django.template.loaders.app_directories.Loader",
+        ],
+    )
+]
+
+# EMAIL
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
+EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+
+# Your stuff...
+# ------------------------------------------------------------------------------
 
 DEBUG = True
 
-# don't want emails actually firing off during local dev!
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-# default local DB setup using postgres
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "CastleDiceTest",
-        "USER": "admin",
-        "PASSWORD": "admin",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
-    }
-}
+# TODO - is this still valid?
+# # default local DB setup using postgres
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "CastleDiceTest",
+#         "USER": "admin",
+#         "PASSWORD": "admin",
+#         "HOST": "127.0.0.1",
+#         "PORT": "5432",
+#     }
+# }
