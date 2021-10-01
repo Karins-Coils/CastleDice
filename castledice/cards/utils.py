@@ -1,8 +1,8 @@
 from typing import Union
 
-from CastleDice.common.constants import CastleCardType
-from CastleDice.common.constants import MarketCardType
-from CastleDice.common.constants import VillagerCardType
+from castledice.common.constants import CastleCardType
+from castledice.common.constants import MarketCardType
+from castledice.common.constants import VillagerCardType
 from .castle_cards import CastleCard
 from .exceptions import InvalidDeckCardTypeError
 from .market_cards import MarketCard

@@ -1,8 +1,8 @@
 import unittest
 
-from CastleDice.common.constants import DeckName
-from CastleDice.common.constants import PhaseType
-from CastleDice.common.constants import VillagerCardType
+from castledice.common.constants import DeckName
+from castledice.common.constants import PhaseType
+from castledice.common.constants import VillagerCardType
 from .utils import CardTestBase
 from ..exceptions import InvalidVillagerCardTypeError
 from ..villager_cards import Farmer

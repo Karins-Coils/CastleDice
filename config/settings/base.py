@@ -85,9 +85,9 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "castledice.users.apps.UsersConfig",
     # Your stuff: custom apps go here
-    "CastleDice.die",
-    "CastleDice.game",
-    "CastleDice.playermat",
+    "castledice.die",
+    "castledice.game",
+    "castledice.playermat",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

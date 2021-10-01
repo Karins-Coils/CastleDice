@@ -4,10 +4,10 @@ from typing import List
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from CastleDice.common.constants import ResourceType
-from CastleDice.game.models import Game
-from CastleDice.game.solo_ai import JoanAI
-from CastleDice.playermat.models import PlayerMat
+from castledice.common.constants import ResourceType
+from castledice.game.models import Game
+from castledice.game.solo_ai import JoanAI
+from castledice.playermat.models import PlayerMat
 
 
 class BaseGameTest(TestCase):

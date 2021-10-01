@@ -1,5 +1,5 @@
-from CastleDice.common.constants import ResourceType
-from CastleDice.common.constants import VillagerCardType
+from castledice.common.constants import ResourceType
+from castledice.common.constants import VillagerCardType
 from .card_bases import BaseCard
 from .card_bases import BuildPhaseMixin
 from .card_bases import CardLookupBase

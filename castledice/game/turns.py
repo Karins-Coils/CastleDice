@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from typing import Dict
 from typing import List
 
-from CastleDice.common.constants import ResourceType
-from CastleDice.common.setup import DICE_COUNT
+from castledice.common.constants import ResourceType
+from castledice.common.setup import DICE_COUNT
 
 __all__ = ["InvalidTurnNumberError", "Turn"]
 

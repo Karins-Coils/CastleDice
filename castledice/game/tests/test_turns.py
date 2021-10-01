@@ -1,6 +1,6 @@
 import unittest
 
-from CastleDice.common.constants import ResourceType
+from castledice.common.constants import ResourceType
 from ..turns import FirstTurn
 from ..turns import InvalidTurnNumberError
 from ..turns import Turn

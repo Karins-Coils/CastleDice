@@ -3,19 +3,19 @@ import unittest
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from CastleDice.common.dice import DICE_COUNT
-from CastleDice.common.globals import BARN
-from CastleDice.common.globals import CHICKEN
-from CastleDice.common.globals import COW
-from CastleDice.common.globals import GOLD
-from CastleDice.common.globals import HORSE
-from CastleDice.common.globals import IRON
-from CastleDice.common.globals import LAND
-from CastleDice.common.globals import PIG
-from CastleDice.common.globals import STONE
-from CastleDice.common.globals import TURN
-from CastleDice.common.globals import WOOD
-from CastleDice.game.solo_ai import JoanAI
+from castledice.common.dice import DICE_COUNT
+from castledice.common.globals import BARN
+from castledice.common.globals import CHICKEN
+from castledice.common.globals import COW
+from castledice.common.globals import GOLD
+from castledice.common.globals import HORSE
+from castledice.common.globals import IRON
+from castledice.common.globals import LAND
+from castledice.common.globals import PIG
+from castledice.common.globals import STONE
+from castledice.common.globals import TURN
+from castledice.common.globals import WOOD
+from castledice.game.solo_ai import JoanAI
 
 
 # Create your tests here.

@@ -2,10 +2,10 @@ from annoying.fields import JSONField
 from django.contrib.auth.models import User
 from django.db import models
 
-from CastleDice.common.constants import GameConstants
-from CastleDice.common.constants import ResourceType
-from CastleDice.common.constants import VillagerType
-from CastleDice.game.turns import Turn
+from castledice.common.constants import GameConstants
+from castledice.common.constants import ResourceType
+from castledice.common.constants import VillagerType
+from castledice.game.turns import Turn
 from ..common.globals import (
     GUARD,
     WORKER,
@@ -117,7 +117,7 @@ class PlayerMat(models.Model):
         """
         Given an animal, query the related players.  If any have value
         greater than or equal to current player, returns False.  Else True.
-        :param str animal: CastleDice constant
+        :param str animal: castledice constant
         :return: whether this player has the most of that animal
         :rtype: bool
         """

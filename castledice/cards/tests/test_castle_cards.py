@@ -1,9 +1,9 @@
 import unittest
 
-from CastleDice.common.constants import CastleCardType
-from CastleDice.common.constants import DeckName
-from CastleDice.common.constants import PhaseType
-from CastleDice.common.constants import SpecialPhaseType
+from castledice.common.constants import CastleCardType
+from castledice.common.constants import DeckName
+from castledice.common.constants import PhaseType
+from castledice.common.constants import SpecialPhaseType
 from .utils import CardTestBase
 from ..castle_cards import Advisor
 from ..castle_cards import Alchemist

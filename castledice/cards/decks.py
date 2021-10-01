@@ -8,10 +8,10 @@ from typing import Type
 from typing import Union
 from random import shuffle
 
-from CastleDice.common.constants import CastleCardType
-from CastleDice.common.constants import DeckName
-from CastleDice.common.constants import MarketCardType
-from CastleDice.common.constants import VillagerCardType
+from castledice.common.constants import CastleCardType
+from castledice.common.constants import DeckName
+from castledice.common.constants import MarketCardType
+from castledice.common.constants import VillagerCardType
 from .castle_cards import CastleCard
 from .exceptions import InvalidCastleCardTypeError
 from .exceptions import InvalidMarketCardTypeError

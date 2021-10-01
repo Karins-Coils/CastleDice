@@ -5,7 +5,7 @@ from unittest import mock
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from CastleDice.common.constants import ResourceType
+from castledice.common.constants import ResourceType
 from .utils import BaseGameTest
 from ..models import Game
 from ..models import GameTurn
