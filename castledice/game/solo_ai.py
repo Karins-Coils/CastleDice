@@ -1,12 +1,12 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 
 from ..common.globals import (
-    BARN,
-    JOAN,
-    TURN,
-    RESOURCE_PREFERENCE,
     ANIMAL_PREFERENCE,
+    BARN,
     GATHER_PREFERENCE,
+    JOAN,
+    RESOURCE_PREFERENCE,
+    TURN,
 )
 from ..die.dieClass import Die
 from ..playermat.models import JoanPlayerMat
@@ -21,6 +21,8 @@ which die to roll into the world pool.  And gathers with a very specific logic:
 - - Else pick the rarest & highest resource
 
 """
+
+User = settings.AUTH_USER_MODEL
 
 
 class JoanAI(object):

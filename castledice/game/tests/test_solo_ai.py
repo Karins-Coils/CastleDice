@@ -1,30 +1,30 @@
-import unittest
-
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.test import TestCase
 
 from castledice.common.dice import DICE_COUNT
-from castledice.common.globals import BARN
-from castledice.common.globals import CHICKEN
-from castledice.common.globals import COW
-from castledice.common.globals import GOLD
-from castledice.common.globals import HORSE
-from castledice.common.globals import IRON
-from castledice.common.globals import LAND
-from castledice.common.globals import PIG
-from castledice.common.globals import STONE
-from castledice.common.globals import TURN
-from castledice.common.globals import WOOD
+from castledice.common.globals import (
+    BARN,
+    CHICKEN,
+    COW,
+    GOLD,
+    HORSE,
+    IRON,
+    LAND,
+    PIG,
+    STONE,
+    TURN,
+    WOOD,
+)
 from castledice.game.solo_ai import JoanAI
 
-
 # Create your tests here.
+User = settings.AUTH_USER_MODEL
 
 
 class TestJoanAI(TestCase):
     def setUp(self):
         # have at least one user in the database to use against tests below
-        u = User.objects.get_or_create(username="test", email="test@test.com")
+        # u = User.objects.get_or_create(username="test", email="test@test.com")
 
         self.pool1 = {
             # no Gold

@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic.base import RedirectView, TemplateView
@@ -9,6 +9,8 @@ from .forms import ChooseGameForm
 from .models import Game
 from .solo_ai import JoanAI
 from .switcher import Switcher
+
+User = settings.AUTH_USER_MODEL
 
 
 class HomeView(TemplateView):

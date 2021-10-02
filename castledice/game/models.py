@@ -1,11 +1,10 @@
 import random
 
 from annoying.fields import JSONField
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 
 from .solo_ai import JoanAI
-
 from .turns import Turn
 
 
@@ -14,7 +13,11 @@ class Game(models.Model):
     is_solo_game = models.BooleanField(default=False)
     # prevent backwards relation with related_name='+'
     current_player = models.ForeignKey(
-        User, on_delete=models.SET_NULL, related_name="+", blank=True, null=True
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        blank=True,
+        null=True,
     )
     # prevent backwards relation with related_name='+', as the Turn has a game already linked
     current_turn = models.ForeignKey(
@@ -172,11 +175,19 @@ class GameTurn(models.Model):
     turn_no = models.PositiveSmallIntegerField(default=1)
     # prevent backwards relation with related_name='+'
     first_player = models.ForeignKey(
-        User, on_delete=models.SET_NULL, related_name="+", blank=True, null=True
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        blank=True,
+        null=True,
     )
     # prevent backwards relation with related_name='+'
     pork_chop_used_by = models.ForeignKey(
-        User, on_delete=models.SET_NULL, related_name="+", blank=True, null=True
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        blank=True,
+        null=True,
     )
 
     @classmethod

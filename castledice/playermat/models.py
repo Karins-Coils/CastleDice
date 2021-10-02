@@ -1,23 +1,22 @@
 from annoying.fields import JSONField
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 
-from castledice.common.constants import GameConstants
-from castledice.common.constants import ResourceType
-from castledice.common.constants import VillagerType
+from castledice.common.constants import GameConstants, ResourceType
 from castledice.game.turns import Turn
+
 from ..common.globals import (
-    GUARD,
-    WORKER,
-    BARBARIAN,
     ANIMAL_PREFERENCE,
+    BARBARIAN,
+    GUARD,
     RESOURCE_PREFERENCE,
+    WORKER,
 )
 from ..die.dieClass import Die
 
 
 class PlayerMat(models.Model):
-    player = models.ForeignKey(User, on_delete=models.CASCADE)
+    player = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     game = models.ForeignKey("game.Game", on_delete=models.CASCADE)
     victory_points = models.PositiveSmallIntegerField(default=0)
     player_hand = JSONField(blank=True, null=True)

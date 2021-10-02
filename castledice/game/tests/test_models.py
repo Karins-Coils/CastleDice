@@ -1,15 +1,10 @@
-from typing import Dict
-from typing import List
 from unittest import mock
 
-from django.contrib.auth.models import User
-from django.test import TestCase
-
 from castledice.common.constants import ResourceType
-from .utils import BaseGameTest
-from ..models import Game
-from ..models import GameTurn
+
+from ..models import Game, GameTurn
 from ..solo_ai import JoanAI
+from .utils import BaseGameTest
 
 
 class TestGameModel(BaseGameTest):
