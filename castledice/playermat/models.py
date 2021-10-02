@@ -3,16 +3,15 @@ from django.conf import settings
 from django.db import models
 
 from castledice.common.constants import GameConstants, ResourceType
-from castledice.game.turns import Turn
-
-from ..common.globals import (
+from castledice.common.globals import (
     ANIMAL_PREFERENCE,
     BARBARIAN,
     GUARD,
     RESOURCE_PREFERENCE,
     WORKER,
 )
-from ..die.dieClass import Die
+from castledice.die.dieClass import Die
+from castledice.game.turns import Turn
 
 
 class PlayerMat(models.Model):

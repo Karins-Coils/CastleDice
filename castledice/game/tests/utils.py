@@ -1,14 +1,12 @@
 from typing import Dict, List
 
-from django.conf import settings
 from django.test import TestCase
 
 from castledice.common.constants import ResourceType
 from castledice.game.models import Game
 from castledice.game.solo_ai import JoanAI
 from castledice.playermat.models import PlayerMat
-
-User = settings.AUTH_USER_MODEL
+from castledice.users.models import User
 
 
 class BaseGameTest(TestCase):

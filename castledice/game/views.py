@@ -1,16 +1,15 @@
-from django.conf import settings
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.edit import FormView
 
-from ..playermat.models import JoanPlayerMat, PlayerMat
+from castledice.playermat.models import JoanPlayerMat, PlayerMat
+from castledice.users.models import User
+
 from .forms import ChooseGameForm
 from .models import Game
 from .solo_ai import JoanAI
 from .switcher import Switcher
-
-User = settings.AUTH_USER_MODEL
 
 
 class HomeView(TemplateView):

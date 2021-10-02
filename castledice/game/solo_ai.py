@@ -1,6 +1,4 @@
-from django.conf import settings
-
-from ..common.globals import (
+from castledice.common.globals import (
     ANIMAL_PREFERENCE,
     BARN,
     GATHER_PREFERENCE,
@@ -8,8 +6,9 @@ from ..common.globals import (
     RESOURCE_PREFERENCE,
     TURN,
 )
-from ..die.dieClass import Die
-from ..playermat.models import JoanPlayerMat
+from castledice.die.dieClass import Die
+from castledice.playermat.models import JoanPlayerMat
+from castledice.users.models import User
 
 """
 Joan is a simplistic AI built for solo play.  She uses a dice to determine
@@ -21,8 +20,6 @@ which die to roll into the world pool.  And gathers with a very specific logic:
 - - Else pick the rarest & highest resource
 
 """
-
-User = settings.AUTH_USER_MODEL
 
 
 class JoanAI(object):

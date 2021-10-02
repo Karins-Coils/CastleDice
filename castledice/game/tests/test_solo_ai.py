@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.test import TestCase
 
 from castledice.common.dice import DICE_COUNT
@@ -16,9 +15,9 @@ from castledice.common.globals import (
     WOOD,
 )
 from castledice.game.solo_ai import JoanAI
+from castledice.users.models import User
 
 # Create your tests here.
-User = settings.AUTH_USER_MODEL
 
 
 class TestJoanAI(TestCase):
