@@ -1,22 +1,35 @@
+pytz==2021.1  # https://github.com/stub42/pytz
+python-slugify==5.0.2  # https://github.com/un33k/python-slugify
+Pillow==8.3.2  # https://github.com/python-pillow/Pillow
+argon2-cffi==21.1.0  # https://github.com/hynek/argon2_cffi
+redis==3.5.3  # https://github.com/andymccurdy/redis-py
+hiredis==2.0.0  # https://github.com/redis/hiredis-py
+
+
+# Django
+# ------------------------------------------------------------------------------
+django==3.1.13  # pyup: < 3.2  # https://www.djangoproject.com/
 dj-database-url==0.5.0
 dj-static==0.0.6
-Django==2.2.24
-django-allauth==0.39.1
-django-annoying==0.10.4
+django-allauth==0.45.0  # https://github.com/pennersr/django-allauth
+django-annoying==0.10.6
+django-crispy-forms==1.13.0  # https://github.com/django-crispy-forms/django-crispy-forms
+django-environ==0.7.0  # https://github.com/joke2k/django-environ
+django-model-utils==4.1.1  # https://github.com/jazzband/django-model-utils
+django-redis==5.0.0  # https://github.com/jazzband/django-redis
 django-toolbelt==0.0.1
+
+# Other Python things --> should be reviewed for compatibility
 funcsigs==1.0.2
-gunicorn==19.9.0
-jsonfield==2.0.2
+jsonfield==3.1.0
 oauthlib==3.0.2
 pbr==5.4.0
-psycopg2==2.8.3
 pystache==0.5.4
 python-openid==2.2.5
 python3-openid==3.1.0
-pytz==2019.1
-requests==2.22.0
+requests==2.26.0
 requests-oauthlib==1.2.0
 static==1.1.1
 static3==0.7.0
 Unipath==1.1
-urllib3==1.26.5
+urllib3==1.26.7
