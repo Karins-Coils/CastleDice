@@ -1,14 +1,14 @@
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.generic.base import TemplateView, RedirectView
+from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.edit import FormView
 
+from ..playermat.models import JoanPlayerMat, PlayerMat
 from .forms import ChooseGameForm
 from .models import Game
 from .solo_ai import JoanAI
 from .switcher import Switcher
-from ..playermat.models import PlayerMat, JoanPlayerMat
 
 
 class HomeView(TemplateView):
@@ -65,7 +65,7 @@ class ChooseGameView(FormView):
 
     def get_success_url(self):
         # get current turn from db or '1'
-        if self.game_type is "new":
+        if self.game_type == "new":
             return reverse("new_game", kwargs={"game_id": self.game_obj.id})
         else:
             return reverse("continue_game", kwargs={"game_id": self.game_obj.id})
@@ -80,7 +80,7 @@ class NewGameView(TemplateView):
         game = Game.objects.get(id=kwargs["game_id"])
 
         # if GET, setup choice dice for the first time, if empty
-        if request.method is "GET":
+        if request.method == "GET":
             game.setup_choice_dice_for_turn()
 
         request.game = game
@@ -103,7 +103,7 @@ class ContinueGameView(TemplateView):
         game = Game.objects.get(id=kwargs["game_id"])
 
         # if GET, setup choice dice for the first time, if empty
-        if request.method is "GET":
+        if request.method == "GET":
             game.setup_choice_dice_for_turn()
 
         request.game = game
