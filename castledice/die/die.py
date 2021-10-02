@@ -1,14 +1,8 @@
 import random
 from dataclasses import dataclass
-from typing import Optional
-from typing import Sequence
-from typing import Tuple
-from typing import Type
-from typing import Union
+from typing import Optional, Sequence, Tuple, Union
 
-from ..common.constants import DieFace
-from ..common.constants import JoanDieFace
-from ..common.constants import ResourceType
+from ..common.constants import DieFace, JoanDieFace, ResourceType
 from ..common.setup import JOAN
 
 __all__ = [
@@ -134,7 +128,7 @@ class _Die(object):
 
     @property
     def value(self) -> Optional[_DieSide]:
-        """ If already, rolled, returns rolled value"""
+        """If already, rolled, returns rolled value"""
         return self._rolled_side
 
     def serialize(self) -> Tuple[ResourceType, DieFace, int]:

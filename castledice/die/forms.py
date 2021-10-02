@@ -1,17 +1,17 @@
+from itertools import chain
+
 from django import forms
 from django.forms import widgets
+from django.forms.utils import flatatt
+from django.utils.encoding import force_text
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
 from ..common.dice import DICE_COUNT
 from ..game.models import Game
 
 # I want to remove the above resources as LISTED things.
 # should not need to know, ever
-
-from itertools import chain
-from django.utils.encoding import force_text
-from django.utils.html import format_html
-from django.utils.safestring import mark_safe
-from django.forms.utils import flatatt
 
 
 class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
@@ -23,7 +23,6 @@ class CheckboxMultipleImgWidget(widgets.CheckboxSelectMultiple):
         output = []
         # Normalize to strings
         str_values = set([force_text(v) for v in value])
-        first = True
         for i, (option_value, option_label) in enumerate(chain(self.choices, choices)):
             # If an ID attribute was given, add a numeric index as a suffix,
             # so that the checkboxes don't all have the same ID attribute.

@@ -1,11 +1,11 @@
 import random
 
-from ..common.dice import DICE_FACES, BARBARIAN
+from ..common.dice import BARBARIAN, DICE_FACES
 
 
 class Die:
     resource = ""
-    ## resource tracks what kind of die is being rolled: Wood, Stone, Gold, etc
+    # resource tracks what kind of die is being rolled: Wood, Stone, Gold, etc
     sides = []
     debug = False
 

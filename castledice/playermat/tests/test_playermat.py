@@ -1,7 +1,7 @@
-from castledice.common.constants import GameConstants
-from castledice.common.constants import ResourceType
+from castledice.common.constants import GameConstants, ResourceType
 from castledice.game.tests import utils
 from castledice.game.turns import FirstTurn
+
 from ..models import PlayerMat
 
 

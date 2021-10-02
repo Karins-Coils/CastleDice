@@ -1,8 +1,7 @@
 from typing import Union
 
-from castledice.common.constants import CastleCardType
-from castledice.common.constants import MarketCardType
-from castledice.common.constants import VillagerCardType
+from castledice.common.constants import CastleCardType, MarketCardType, VillagerCardType
+
 from .castle_cards import CastleCard
 from .exceptions import InvalidDeckCardTypeError
 from .market_cards import MarketCard
@@ -18,7 +17,7 @@ class DeckCard(object):
         cls,
         card_type: Union[CastleCardType, MarketCardType, VillagerCardType],
         *args,
-        **kwargs
+        **kwargs,
     ) -> Union[CastleCard, MarketCard, VillagerCard]:
         """
         :param card_type:

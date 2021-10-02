@@ -30,8 +30,8 @@ class Die:
 	def __str__(self):
 		sides = ""
 		for i in range(len(self.sides)):
-			sides += str(self.sides[i]) 
-			if i < len(self.sides)-1: 
+			sides += str(self.sides[i])
+			if i < len(self.sides)-1:
 				sides += ", "
 		return self.resource +": [ "+ sides+" ]"
 
@@ -50,7 +50,7 @@ class Die:
 		else:
 			self.sides = [1,2,3,4,5,6]
 
-		self.resource = self.resource.capitalize()	
+		self.resource = self.resource.capitalize()
 
 	def roll_die(self):
 		roll = random.randint(0,5)

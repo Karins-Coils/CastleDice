@@ -5,16 +5,16 @@ from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 
+from castledice.die.views import ChooseDiceView, GatherDiceView, RollDiceView
 from castledice.game.views import (
-    HomeView,
     ChooseGameView,
     ContinueGameView,
+    HomeView,
     NewGameView,
+    PassPhaseView,
     PlayOrderView,
     WaitingView,
-    PassPhaseView,
 )
-from castledice.die.views import ChooseDiceView, RollDiceView, GatherDiceView
 
 # , ChooseDiceForm, RollDiceView
 
@@ -31,7 +31,6 @@ urlpatterns = [
     path("users/", include("castledice.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-
     # Examples:
     # url(r'^$', 'castledice.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),

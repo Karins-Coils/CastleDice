@@ -1,28 +1,33 @@
 import unittest
 
-from castledice.common.constants import CastleCardType
-from castledice.common.constants import DeckName
-from castledice.common.constants import PhaseType
-from castledice.common.constants import SpecialPhaseType
-from .utils import CardTestBase
-from ..castle_cards import Advisor
-from ..castle_cards import Alchemist
-from ..castle_cards import CastleCard
-from ..castle_cards import Daughter
-from ..castle_cards import DeepMoat
-from ..castle_cards import GateHouse
-from ..castle_cards import GreatHall
-from ..castle_cards import LoyalBrother
-from ..castle_cards import RoyalChambers
-from ..castle_cards import Squire
-from ..castle_cards import StrongTower
-from ..castle_cards import TallKeep
-from ..castle_cards import WallAnimal
-from ..castle_cards import WallFarmer
-from ..castle_cards import WallGuard
-from ..castle_cards import WallMerchant
-from ..castle_cards import WallWorker
+from castledice.common.constants import (
+    CastleCardType,
+    DeckName,
+    PhaseType,
+    SpecialPhaseType,
+)
+
+from ..castle_cards import (
+    Advisor,
+    Alchemist,
+    CastleCard,
+    Daughter,
+    DeepMoat,
+    GateHouse,
+    GreatHall,
+    LoyalBrother,
+    RoyalChambers,
+    Squire,
+    StrongTower,
+    TallKeep,
+    WallAnimal,
+    WallFarmer,
+    WallGuard,
+    WallMerchant,
+    WallWorker,
+)
 from ..exceptions import InvalidCastleCardTypeError
+from .utils import CardTestBase
 
 
 class CastleCardTestBase(CardTestBase):

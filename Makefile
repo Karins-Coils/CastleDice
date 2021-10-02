@@ -27,4 +27,3 @@ migrate_local:
 .PHONY: migrate_test
 migrate_test:
 	$(manage_cmd) migrate --settings $(django_test_settings_location)
-

@@ -1,20 +1,25 @@
 from castledice.cards.exceptions import InvalidCastleCardTypeError
-from castledice.common.constants import CastleCardType
-from castledice.common.constants import PhaseType
-from castledice.common.constants import ResourceType
-from castledice.common.constants import SpecialPhaseType
-from .card_bases import BaseCard
-from .card_bases import BuildPhaseMixin
-from .card_bases import CardLookupBase
-from .card_bases import CastleDeckMixin
-from .card_bases import ChoosePhaseMixin
-from .card_bases import GatherPhaseMixin
-from .card_bases import NoBuildMixin
-from .card_bases import NoDescriptionMixin
-from .card_bases import NoOngoingMixin
-from .card_bases import NoScoreMixin
-from .card_bases import NormalDiscardMixin
-from .card_bases import ResourceCost
+from castledice.common.constants import (
+    CastleCardType,
+    PhaseType,
+    ResourceType,
+    SpecialPhaseType,
+)
+
+from .card_bases import (
+    BaseCard,
+    BuildPhaseMixin,
+    CardLookupBase,
+    CastleDeckMixin,
+    ChoosePhaseMixin,
+    GatherPhaseMixin,
+    NoBuildMixin,
+    NoDescriptionMixin,
+    NoOngoingMixin,
+    NormalDiscardMixin,
+    NoScoreMixin,
+    ResourceCost,
+)
 
 
 class Advisor(

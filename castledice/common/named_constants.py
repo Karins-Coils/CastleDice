@@ -6,17 +6,9 @@ Also expanded and added functions for my own usages
 
 import inspect
 from enum import IntEnum
-from typing import Iterator
-from typing import List
-from typing import Sequence
-from typing import Tuple
-from typing import TypeVar
-from typing import Union
+from typing import Iterator, List, Sequence, Tuple, TypeVar, Union
 
-from .named_types import NamedFloat
-from .named_types import NamedInt
-from .named_types import NamedStr
-from .named_types import create_named_type
+from .named_types import NamedFloat, NamedInt, NamedStr, create_named_type
 
 __all__ = ["Constants", "StrCase"]
 

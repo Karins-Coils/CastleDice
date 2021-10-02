@@ -1,5 +1,4 @@
-from enum import IntEnum
-from enum import unique
+from enum import IntEnum, unique
 
 from .named_constants import Constants
 

@@ -1,16 +1,18 @@
-from castledice.common.constants import ResourceType
-from castledice.common.constants import VillagerCardType
-from .card_bases import BaseCard
-from .card_bases import BuildPhaseMixin
-from .card_bases import CardLookupBase
-from .card_bases import GatherPhaseMixin
-from .card_bases import NoBuildMixin
-from .card_bases import NoDescriptionMixin
-from .card_bases import NoOngoingMixin
-from .card_bases import NoScoreMixin
-from .card_bases import NormalDiscardMixin
-from .card_bases import ResourceCost
-from .card_bases import VillagerDeckMixin
+from castledice.common.constants import ResourceType, VillagerCardType
+
+from .card_bases import (
+    BaseCard,
+    BuildPhaseMixin,
+    CardLookupBase,
+    GatherPhaseMixin,
+    NoBuildMixin,
+    NoDescriptionMixin,
+    NoOngoingMixin,
+    NormalDiscardMixin,
+    NoScoreMixin,
+    ResourceCost,
+    VillagerDeckMixin,
+)
 from .exceptions import InvalidVillagerCardTypeError
 
 

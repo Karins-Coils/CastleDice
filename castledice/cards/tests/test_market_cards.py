@@ -1,18 +1,23 @@
 import unittest
 
-from castledice.common.constants import DeckName
-from castledice.common.constants import MarketCardType
-from castledice.common.constants import PhaseType
-from castledice.common.constants import SpecialPhaseType
-from .utils import CardTestBase
+from castledice.common.constants import (
+    DeckName,
+    MarketCardType,
+    PhaseType,
+    SpecialPhaseType,
+)
+
 from ..exceptions import InvalidMarketCardTypeError
-from ..market_cards import Bard
-from ..market_cards import HungryBarbarians
-from ..market_cards import Jester
-from ..market_cards import Maiden
-from ..market_cards import MarketCard
-from ..market_cards import Shepherd
-from ..market_cards import Volunteer
+from ..market_cards import (
+    Bard,
+    HungryBarbarians,
+    Jester,
+    Maiden,
+    MarketCard,
+    Shepherd,
+    Volunteer,
+)
+from .utils import CardTestBase
 
 
 class MarketCardTestBase(CardTestBase):

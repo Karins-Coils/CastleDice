@@ -1,9 +1,10 @@
 import unittest
-from typing import Callable
 
 from castledice.common.constants import PhaseType
-from castledice.common.tests.utils import create_skip_if_not_implemented_decorator
-from castledice.common.tests.utils import create_skip_test_if_base_class_decorator
+from castledice.common.tests.utils import (
+    create_skip_if_not_implemented_decorator,
+    create_skip_test_if_base_class_decorator,
+)
 
 __all__ = ["CardTestBase"]
 

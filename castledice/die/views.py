@@ -3,12 +3,10 @@ from django.urls import reverse
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
-from ..common.globals import TURN
-from .forms import ChooseDiceForm, GatherDiceForm
-from .dieClass import Die
 from ..game.models import Game
 from ..game.switcher import Switcher
 from ..playermat.models import PlayerMat
+from .forms import ChooseDiceForm, GatherDiceForm
 
 
 class ChooseDiceView(FormView):
@@ -59,7 +57,6 @@ class ChooseDiceView(FormView):
         # game = self.request.game
         game = Game.objects.get(id=int(self.kwargs["game_id"]))
         user = self.request.user
-        turn_no = game.current_turn
 
         # retrieve player mat if available, else make new one
         playermat = PlayerMat.objects.get(game=game, player=user)
@@ -160,8 +157,6 @@ class GatherDiceView(FormView):
         # retrieve player mat if available, else make new one
         player_mat = PlayerMat.objects.get(game=game_obj, player=user)
 
-        # remove user gathered die from the world_pool
-        data = form.cleaned_data
         # store user gathered die in playermat dice_rolled
 
         game_obj.save()
