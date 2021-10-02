@@ -1,20 +1,18 @@
 import unittest
-from typing import ClassVar
-from typing import Union
-from typing import Type
+from typing import ClassVar, Type, Union
 
 from castledice.cards.castle_cards import CastleCard
-from castledice.cards.decks import MarketDeck
-from castledice.cards.decks import VillagerDeck
+from castledice.cards.decks import MarketDeck, VillagerDeck
 from castledice.cards.villager_cards import VillagerCard
-from castledice.common.constants import CastleCardType
-from castledice.common.constants import DeckName
-from castledice.common.constants import MarketCardType
-from castledice.common.constants import VillagerCardType
+from castledice.common.constants import (
+    CastleCardType,
+    DeckName,
+    MarketCardType,
+    VillagerCardType,
+)
 from castledice.common.tests.utils import create_skip_test_if_base_class_decorator
-from ..decks import CastleDeck
-from ..decks import _Deck
 
+from ..decks import CastleDeck, _Deck
 
 skip_test_if_base_class = create_skip_test_if_base_class_decorator("deck_class")
 

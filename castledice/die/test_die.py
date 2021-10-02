@@ -1,20 +1,21 @@
 import unittest
 
-from .die import Die
-from .die import DieAlreadyRolledError
-from .die import GoldDie
-from .die import InvalidDieSideError
-from .die import IronDie
-from .die import JoanDie
-from .die import LandDie
-from .die import StoneDie
-from .die import WoodDie
-from .die import _Die
-from .die import _DieSide
-from .die import roll_dice
-from ..common.constants import DieFace
-from ..common.constants import ResourceType
+from ..common.constants import DieFace, ResourceType
 from ..common.setup import JOAN
+from .die import (
+    Die,
+    DieAlreadyRolledError,
+    GoldDie,
+    InvalidDieSideError,
+    IronDie,
+    JoanDie,
+    LandDie,
+    StoneDie,
+    WoodDie,
+    _Die,
+    _DieSide,
+    roll_dice,
+)
 
 
 class DieTest(unittest.TestCase):
@@ -105,7 +106,6 @@ class _DieTest(unittest.TestCase):
 
     def test_roll_prevents_reroll(self):
         joan_die = JoanDie()
-        result = joan_die.roll()
 
         with self.assertRaises(DieAlreadyRolledError):
             joan_die.roll()

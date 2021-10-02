@@ -1,15 +1,16 @@
-from castledice.common.constants import MarketCardType
-from castledice.common.constants import PhaseType
-from castledice.common.constants import SpecialPhaseType
-from .card_bases import BaseCard
-from .card_bases import BuildPhaseMixin
-from .card_bases import CardLookupBase
-from .card_bases import GatherPhaseMixin
-from .card_bases import MarketDeckMixin
-from .card_bases import NoBuildMixin
-from .card_bases import NoOngoingMixin
-from .card_bases import NoScoreMixin
-from .card_bases import NormalDiscardMixin
+from castledice.common.constants import MarketCardType, SpecialPhaseType
+
+from .card_bases import (
+    BaseCard,
+    BuildPhaseMixin,
+    CardLookupBase,
+    GatherPhaseMixin,
+    MarketDeckMixin,
+    NoBuildMixin,
+    NoOngoingMixin,
+    NormalDiscardMixin,
+    NoScoreMixin,
+)
 from .exceptions import InvalidMarketCardTypeError
 
 

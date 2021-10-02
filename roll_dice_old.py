@@ -29,8 +29,8 @@ class Dice:
 	def __str__(self):
 		sides = ""
 		for i in range(len(self.chosenDie)):
-			sides += str(self.chosenDie[i]) 
-			if i < len(self.chosenDie)-1: 
+			sides += str(self.chosenDie[i])
+			if i < len(self.chosenDie)-1:
 				sides += ", "
 		return self.chosenResource +": [ "+ sides+" ]"
 
@@ -74,7 +74,7 @@ def roll_multiple_dice(dieSet):
 	for d in dieSet:
 		print d.chosenResource +": "+ str(d.roll_dice())
 
-def roll_and_total_dice()
+#def roll_and_total_dice()
 
 dieSet = [
 	Dice(Wood),

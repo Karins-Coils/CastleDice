@@ -1,21 +1,19 @@
-from typing import ClassVar
-from typing import Dict
-from typing import List
-from typing import NoReturn
-from typing import Optional
-from typing import Sequence
-from typing import Type
-from typing import Union
 from random import shuffle
+from typing import ClassVar, Dict, List, NoReturn, Optional, Sequence, Type, Union
 
-from castledice.common.constants import CastleCardType
-from castledice.common.constants import DeckName
-from castledice.common.constants import MarketCardType
-from castledice.common.constants import VillagerCardType
+from castledice.common.constants import (
+    CastleCardType,
+    DeckName,
+    MarketCardType,
+    VillagerCardType,
+)
+
 from .castle_cards import CastleCard
-from .exceptions import InvalidCastleCardTypeError
-from .exceptions import InvalidMarketCardTypeError
-from .exceptions import InvalidVillagerCardTypeError
+from .exceptions import (
+    InvalidCastleCardTypeError,
+    InvalidMarketCardTypeError,
+    InvalidVillagerCardTypeError,
+)
 from .market_cards import MarketCard
 from .villager_cards import VillagerCard
 

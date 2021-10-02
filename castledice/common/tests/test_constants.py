@@ -1,14 +1,7 @@
 import unittest
 
-from ..constants import AnimalType
-from ..constants import DeckName
-from ..constants import DieFace
-from ..constants import JoanDieFace
-from ..constants import ResourceType
-from ..constants import VillagerType
-from ..setup import JOAN
+from ..constants import AnimalType, ResourceType
 from ..setup import JOAN_GATHER_PREFERENCE
-from ..setup import PHASE
 
 
 class TestConstants(unittest.TestCase):

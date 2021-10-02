@@ -1,11 +1,13 @@
 import abc
 from typing import Union
 
-from castledice.common.constants import CastleCardType
-from castledice.common.constants import DeckName
-from castledice.common.constants import MarketCardType
-from castledice.common.constants import PhaseType
-from castledice.common.constants import VillagerCardType
+from castledice.common.constants import (
+    CastleCardType,
+    DeckName,
+    MarketCardType,
+    PhaseType,
+    VillagerCardType,
+)
 
 
 class ResourceCost(object):
@@ -180,7 +182,7 @@ class CardLookupBase(object):
         cls,
         card_type: Union[MarketCardType, VillagerCardType, CastleCardType, str],
         *args,
-        **kwargs
+        **kwargs,
     ) -> BaseCard:
         if not cls.card_map or not cls.card_lookup_error:
             raise NotImplementedError(

@@ -11,11 +11,7 @@ from django.urls import reverse
 from castledice.users.forms import UserChangeForm
 from castledice.users.models import User
 from castledice.users.tests.factories import UserFactory
-from castledice.users.views import (
-    UserRedirectView,
-    UserUpdateView,
-    user_detail_view,
-)
+from castledice.users.views import UserRedirectView, UserUpdateView, user_detail_view
 
 pytestmark = pytest.mark.django_db
 

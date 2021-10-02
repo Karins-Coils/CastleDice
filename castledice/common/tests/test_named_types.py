@@ -1,15 +1,15 @@
 import unittest
 from decimal import Decimal
-from typing import Any
-from typing import Iterable
-from typing import Tuple
+from typing import Any, Iterable, Tuple
 
-from ..named_types import NamedFloat
-from ..named_types import NamedInt
-from ..named_types import NamedStr
-from ..named_types import NamedType
-from ..named_types import _named_types
-from ..named_types import create_named_type
+from ..named_types import (
+    NamedFloat,
+    NamedInt,
+    NamedStr,
+    NamedType,
+    _named_types,
+    create_named_type,
+)
 
 
 class BaseTest(unittest.TestCase):

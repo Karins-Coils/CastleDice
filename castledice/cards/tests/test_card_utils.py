@@ -1,15 +1,14 @@
 import unittest
 
+from castledice.common.constants import (
+    CastleCardType,
+    DeckName,
+    MarketCardType,
+    VillagerCardType,
+)
 
-from castledice.common.constants import CastleCardType
-from castledice.common.constants import DeckName
-from castledice.common.constants import MarketCardType
-from castledice.common.constants import VillagerCardType
-from ..castle_cards import CastleCard
 from ..exceptions import InvalidDeckCardTypeError
-from ..market_cards import MarketCard
 from ..utils import DeckCard
-from ..villager_cards import VillagerCard
 
 
 class DeckCardTest(unittest.TestCase):

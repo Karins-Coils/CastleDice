@@ -1,7 +1,4 @@
-from .models import Game
-from .solo_ai import JoanAI, JoanActions
-from ..playermat.models import PlayerMat
-
+from .solo_ai import JoanActions, JoanAI
 
 PHASE_VIEW_MAPPER = {
     0: "waiting",  # default when in between phases for a player

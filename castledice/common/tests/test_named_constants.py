@@ -1,9 +1,7 @@
 import unittest
 
-from ..named_constants import Constants
-from ..named_constants import StrCase
-from ..named_types import NamedFloat
-from ..named_types import NamedInt
+from ..named_constants import Constants, StrCase
+from ..named_types import NamedFloat, NamedInt
 
 
 class MyConstants(Constants):
@@ -11,7 +9,7 @@ class MyConstants(Constants):
     e = 2.718281828459045
     answer = 42
     BOILERPLATE = "This code comes with no warranty."
-    EURO_SYMBOL = u"\u20ac"
+    EURO_SYMBOL = "\u20ac"
 
 
 class Colors(Constants):
@@ -203,7 +201,7 @@ class TestDjangoChoices(unittest.TestCase):
             (2.718281828459045, "E"),
             (42, "Answer"),
             ("This code comes with no warranty.", "Boilerplate"),
-            (u"\u20ac", "Euro symbol"),  # this is an odd case we want to test against
+            ("\u20ac", "Euro symbol"),  # this is an odd case we want to test against
         ]
 
         colors_choices = [
@@ -229,7 +227,7 @@ class TestDjangoChoices(unittest.TestCase):
             (2.718281828459045, "E"),
             (42, "ANSWER"),
             ("This code comes with no warranty.", "BOILERPLATE"),
-            (u"\u20ac", "EURO SYMBOL"),  # this is an odd case we want to test against
+            ("\u20ac", "EURO SYMBOL"),  # this is an odd case we want to test against
         ]
 
         colors_choices = [
@@ -259,7 +257,7 @@ class TestDjangoChoices(unittest.TestCase):
             (2.718281828459045, "e"),
             (42, "answer"),
             ("This code comes with no warranty.", "boilerplate"),
-            (u"\u20ac", "euro symbol"),  # this is an odd case we want to test against
+            ("\u20ac", "euro symbol"),  # this is an odd case we want to test against
         ]
 
         colors_choices = [

@@ -1,7 +1,5 @@
 import functools
-from typing import Tuple
-from typing import Type
-from typing import Union
+from typing import Tuple, Type, Union
 
 __all__ = ["create_named_type", "NamedFloat", "NamedInt", "NamedStr"]
 

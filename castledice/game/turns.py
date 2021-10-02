@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict
-from typing import List
+from typing import Dict, List
 
 from castledice.common.constants import ResourceType
 from castledice.common.setup import DICE_COUNT

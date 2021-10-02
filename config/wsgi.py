@@ -37,6 +37,6 @@ application = get_wsgi_application()
 # from helloworld.wsgi import HelloWorldApplication
 # application = HelloWorldApplication(application)
 
-from dj_static import Cling
+from dj_static import Cling  # noqa
 
 application = Cling(application)

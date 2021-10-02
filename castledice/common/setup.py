@@ -1,5 +1,4 @@
-from .constants import AnimalType
-from .constants import ResourceType
+from .constants import AnimalType, ResourceType
 
 __all__ = ["DICE_COUNT", "JOAN", "JOAN_GATHER_PREFERENCE", "PHASE"]
 

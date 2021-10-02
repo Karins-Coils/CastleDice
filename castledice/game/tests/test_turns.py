@@ -1,9 +1,8 @@
 import unittest
 
 from castledice.common.constants import ResourceType
-from ..turns import FirstTurn
-from ..turns import InvalidTurnNumberError
-from ..turns import Turn
+
+from ..turns import FirstTurn, InvalidTurnNumberError, Turn
 
 
 class TestTurn(unittest.TestCase):

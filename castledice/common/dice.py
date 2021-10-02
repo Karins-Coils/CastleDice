@@ -1,16 +1,16 @@
 from ..common.globals import (
-    WOOD,
-    STONE,
-    GOLD,
-    LAND,
-    IRON,
-    COW,
-    CHICKEN,
-    HORSE,
-    PIG,
     BARBARIAN,
     BARN,
+    CHICKEN,
+    COW,
+    GOLD,
+    HORSE,
+    IRON,
     JOAN,
+    LAND,
+    PIG,
+    STONE,
+    WOOD,
 )
 
 # Dice Faces based on resource
