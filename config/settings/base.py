@@ -50,14 +50,6 @@ ROOT_URLCONF = "config.urls"
 # https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = "config.wsgi.application"
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
-SECRET_KEY = get_env_var("DJANGO_SECRET_KEY")
-
-ALLOWED_HOSTS = []
-
-
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
@@ -76,8 +68,8 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-
     # TODO - are these still desired?
+    # yes - used in migrations 😬
     # django-annoying - https://github.com/skorokithakis/django-annoying
     "annoying",
 ]
@@ -194,7 +186,6 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "castledice.utils.context_processors.settings_context",
-
                 # TODO - is this still needed?
                 # `allauth` needs this from django
                 "django.template.context_processors.request",
