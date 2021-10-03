@@ -42,8 +42,12 @@ class TestPlayerMatAddResource(BasePlayerMatTest):
         playermat = self.create_base_playermat()
 
         playermat.add_resource(ResourceType.STONE)
-
         self.assertEqual(playermat.stone, 1)
+        self.assertEqual(playermat.get_resource_count(ResourceType.STONE), 1)
+
+        playermat.add_resource(ResourceType.STONE)
+        self.assertEqual(playermat.stone, 2)
+        self.assertEqual(playermat.get_resource_count(ResourceType.STONE), 2)
 
     def test_add_resource_hits_max(self):
         playermat = self.create_base_playermat()
@@ -63,9 +67,11 @@ class TestPlayerMatRemoveResource(BasePlayerMatTest):
 
         playermat.add_resource(ResourceType.GOLD, 3)
         self.assertEqual(playermat.gold, 3)
+        self.assertEqual(playermat.get_resource_count(ResourceType.GOLD), 3)
 
         playermat.remove_resource(ResourceType.GOLD)
         self.assertEqual(playermat.gold, 2)
+        self.assertEqual(playermat.get_resource_count(ResourceType.GOLD), 2)
 
     def test_remove_iron(self):
         playermat = self.create_base_playermat()

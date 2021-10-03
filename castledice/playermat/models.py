@@ -53,6 +53,14 @@ class PlayerMat(models.Model):
     # will be reset after each turn
     barbarians = models.PositiveSmallIntegerField(default=0)
 
+    def get_resource_count(self, resource: ResourceType) -> int:
+        attr_name = resource.name.lower()
+        return self.__getattribute__(attr_name)
+
+    def _set_resource_count(self, resource: ResourceType, amount: int):
+        attr_name = resource.name.lower()
+        self.__setattr__(attr_name, amount)
+
     def get_player_choice_extra_dice(self):
         # based on turn no, get number of 'extra' dice player will choose
         # TODO: logic to confirm if player has Royal Chambers etc
@@ -67,12 +75,11 @@ class PlayerMat(models.Model):
         :param add_amount:
         :type: int
         """
-        attr_name = resource.name.lower()
-        current_amount = self.__getattribute__(attr_name)
+        current_amount = self.get_resource_count(resource)
         # adding more than the allowed max
         new_amount = min(current_amount + add_amount, GameConstants.MAX_RESOURCES)
 
-        self.__setattr__(attr_name, new_amount)
+        self._set_resource_count(resource, new_amount)
         self.save()
 
     def remove_resource(self, resource, remove_amount=1):
@@ -83,12 +90,11 @@ class PlayerMat(models.Model):
         :param remove_amount:
         :type remove_amount: int
         """
-        attr_name = resource.name.lower()
-        current_amount = self.__getattribute__(attr_name)
+        current_amount = self.get_resource_count(resource)
         # cannot have a negative amount of a resource
         new_amount = max(current_amount - remove_amount, 0)
 
-        self.__setattr__(attr_name, new_amount)
+        self._set_resource_count(resource, new_amount)
         self.save()
 
     def reset_turn_based(self):
