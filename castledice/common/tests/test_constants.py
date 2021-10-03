@@ -13,7 +13,14 @@ class TestConstants(unittest.TestCase):
         self.assertEqual(AnimalType.keys(), ["PIG", "HORSE", "CHICKEN", "COW"])
 
     def test_Resources_ordering(self):
-        pass
+        resource_order = [
+            ResourceType.WOOD,
+            ResourceType.STONE,
+            ResourceType.GOLD,
+            ResourceType.LAND,
+            ResourceType.IRON,
+        ]
+        self.assertEqual(resource_order, list(ResourceType))
 
     def test_Animals_Resources_combined_ordering(self):
         gather_preference = [
