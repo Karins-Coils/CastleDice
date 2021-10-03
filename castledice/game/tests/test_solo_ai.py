@@ -23,7 +23,9 @@ from castledice.users.models import User
 class TestJoanAI(TestCase):
     def setUp(self):
         # have at least one user in the database to use against tests below
-        # u = User.objects.get_or_create(username="test", email="test@test.com")
+        self.user1, _ = User.objects.get_or_create(
+            username="test", email="test@test.com"
+        )
 
         self.pool1 = {
             # no Gold
@@ -95,10 +97,9 @@ class TestJoanAI(TestCase):
 
     def test_get_user_joan(self):
         # Creates new user named Joan
-        u = User.objects.order_by("-id")[0]
         joan_created = JoanAI.get_user_joan()
         self.assertEqual(User.objects.get(id=joan_created.id), joan_created)
-        self.assertEqual(u.id + 1, joan_created.id)
+        self.assertEqual(self.user1.id + 1, joan_created.id)
 
         # Retrieves existing user Joan
         joan_retrieved = JoanAI.get_user_joan()

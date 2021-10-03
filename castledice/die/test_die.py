@@ -106,6 +106,7 @@ class _DieTest(unittest.TestCase):
 
     def test_roll_prevents_reroll(self):
         joan_die = JoanDie()
+        joan_die.roll()
 
         with self.assertRaises(DieAlreadyRolledError):
             joan_die.roll()
