@@ -33,6 +33,8 @@ services:
       - local_postgres_data_backups:/backups:z
     env_file:
       - ./.envs/.local/.postgres
+    ports:
+      - "6543:5432"
 
   docs:
     image: castledice_local_docs
