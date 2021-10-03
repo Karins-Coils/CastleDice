@@ -1,0 +1,13 @@
+#! /bin/bash
+
+echo "Setting CastleDice aliases"
+
+# set the compose file to the local config, avoid passing `-f local.yml` to each compose command
+export COMPOSE_FILE=local.yml
+
+alias dc=docker-compose
+
+alias djm='docker-compose run --rm django python manage.py'
+alias dcr='docker-compose run --rm django'
+
+alias dbshell='docker-compose exec postgres /bin/bash -c "psql -U \$POSTGRES_USER \$POSTGRES_DB"'
