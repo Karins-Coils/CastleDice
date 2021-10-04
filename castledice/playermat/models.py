@@ -194,12 +194,16 @@ class PlayerMat(models.Model):
             self.remove_barbarian(remove_amount)
 
         elif villager == VillagerType.WORKER:
-            self.remove_worker(remove_amount, from_resource)
+            if remove_amount > 1 or from_resource is None:
+                raise InvalidResourceForVillagerError(
+                    "Only worker from a specific resource can be removed"
+                )
+            self.remove_worker(from_resource)
 
         elif villager == VillagerType.GUARD:
-            if remove_amount > 1:
-                raise MissingGuardResourceError(
-                    "Tried to add multiple guards with only one resource"
+            if remove_amount > 1 or from_resource is None:
+                raise InvalidResourceForVillagerError(
+                    "Only guard from a specific resource can be removed"
                 )
             self.remove_guard(from_resource)
 
@@ -231,10 +235,12 @@ class PlayerMat(models.Model):
         self.save()
 
     def remove_worker(self, resource: ResourceType):
-        pass
+        """Simple wrapper"""
+        self.workers_mat.remove_from_resource(resource)
 
     def remove_guard(self, resource: ResourceType):
-        pass
+        """Simple wrapper"""
+        self.guards_mat.remove_from_resource(resource)
 
     def remove_farmer(self, amount: int = 1):
         self._remove_merchant_or_farmer(VillagerType.FARMER, amount)

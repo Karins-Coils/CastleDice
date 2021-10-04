@@ -186,6 +186,8 @@ class TestPlayerMatAddRemoveVillager(BasePlayerMatTest):
                 remove_func()
 
     def test_add_worker(self):
+        # - Short way - #
+        # --- Addition --- #
         assert self.playermat.workers_mat.total == 0
 
         self.playermat.add_worker()
@@ -206,10 +208,54 @@ class TestPlayerMatAddRemoveVillager(BasePlayerMatTest):
         assert self.playermat.workers_mat.iron
         assert self.playermat.workers_mat.total == 4
 
+        # --- Subtraction --- #
+        assert self.playermat.workers_mat.wood
+        self.playermat.remove_worker(resource=ResourceType.WOOD)
+        assert self.playermat.workers_mat.wood is False
+
+        with self.assertRaises(InvalidResourceForVillagerError):
+            self.playermat.remove_worker(resource=ResourceType.LAND)
+
+        self.playermat.remove_worker(resource=ResourceType.GOLD)
+
+        # - Long way - #
+        # --- Addition --- #
+        # should add to lowest spot that is empty
+        assert self.playermat.workers_mat.wood is False
+        self.playermat.add_villager(VillagerType.WORKER)
+        assert self.playermat.workers_mat.wood
+        assert self.playermat.workers_mat.total == 3
+
+        with self.assertRaises(InvalidResourceForVillagerError):
+            assert self.playermat.workers_mat.stone
+            self.playermat.add_villager(
+                VillagerType.WORKER, to_resource=ResourceType.STONE
+            )
+
+        self.playermat.add_villager(VillagerType.WORKER, 2)
+        assert self.playermat.workers_mat.total == 5
+
+        with self.assertRaises(VillagerMaxedOutError):
+            self.playermat.add_villager(VillagerType.WORKER)
+
+        # --- Subtraction --- #
+        with self.assertRaises(InvalidResourceForVillagerError):
+            assert self.playermat.remove_villager(VillagerType.WORKER)
+
+        with self.assertRaises(InvalidResourceForVillagerError):
+            assert self.playermat.remove_villager(VillagerType.WORKER, 3)
+
+        assert self.playermat.workers_mat.land
+        self.playermat.remove_villager(
+            VillagerType.WORKER, from_resource=ResourceType.LAND
+        )
+        assert self.playermat.workers_mat.land is False
+
     def test_add_guard(self):
         assert self.playermat.guards_mat.total == 0
 
-        # short way
+        # - Short way - #
+        # --- Addition --- #
         assert self.playermat.guards_mat.stone is False
         self.playermat.add_guard(ResourceType.STONE)
         assert self.playermat.guards_mat.total == 1
@@ -217,8 +263,15 @@ class TestPlayerMatAddRemoveVillager(BasePlayerMatTest):
 
         with self.assertRaises(InvalidResourceForVillagerError):
             self.playermat.add_guard(ResourceType.STONE)
+        # --- Subtraction --- #
+        with self.assertRaises(InvalidResourceForVillagerError):
+            self.playermat.remove_guard(ResourceType.GOLD)
 
-        # Long way
+        self.playermat.remove_guard(ResourceType.STONE)
+        assert self.playermat.guards_mat.stone is False
+
+        # - Long way - #
+        # --- Addition --- #
         assert self.playermat.guards_mat.gold is False
         self.playermat.add_villager(VillagerType.GUARD, to_resource=ResourceType.GOLD)
         assert self.playermat.guards_mat.gold
@@ -230,6 +283,25 @@ class TestPlayerMatAddRemoveVillager(BasePlayerMatTest):
 
         with self.assertRaises(MissingGuardResourceError):
             self.playermat.add_villager(VillagerType.GUARD)
+
+        # --- Subtraction --- #
+        with self.assertRaises(InvalidResourceForVillagerError):
+            self.playermat.remove_villager(VillagerType.GUARD)
+
+        with self.assertRaises(InvalidResourceForVillagerError):
+            self.playermat.remove_villager(
+                VillagerType.GUARD, from_resource=ResourceType.LAND
+            )
+
+        self.playermat.remove_villager(
+            VillagerType.GUARD, from_resource=ResourceType.GOLD
+        )
+        assert self.playermat.guards_mat.gold is False
+
+        with self.assertRaises(NoMoreOfVillagerError):
+            self.playermat.remove_villager(
+                VillagerType.GUARD, from_resource=ResourceType.GOLD
+            )
 
 
 class TestPlayerMatResourcePeople(BasePlayerMatTest):
