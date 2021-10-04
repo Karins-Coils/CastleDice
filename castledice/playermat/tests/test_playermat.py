@@ -14,6 +14,10 @@ from ..models import PlayerMat, PlayerMatResourcePeople
 
 
 class BasePlayerMatTest(utils.BaseGameTest):
+    def setUp(self):
+        super().setUp()
+        self.playermat = self.create_base_playermat()
+
     def create_base_playermat(self) -> PlayerMat:
         game = self.create_one_player_game()
         game.advance_turn()
@@ -23,80 +27,64 @@ class BasePlayerMatTest(utils.BaseGameTest):
 
 class TestPlayerMatGetPlayerChoiceExtraDice(BasePlayerMatTest):
     def test_get_player_choice_extra_dice(self):
-        playermat = self.create_base_playermat()
-
         self.assertEqual(
-            playermat.get_player_choice_extra_dice(), FirstTurn.number_of_choices
+            self.playermat.get_player_choice_extra_dice(), FirstTurn.number_of_choices
         )
 
 
 class TestPlayerMatAddResource(BasePlayerMatTest):
     def test_add_resource_wood(self):
-        playermat = self.create_base_playermat()
+        self.playermat.add_resource(ResourceType.WOOD, 3)
 
-        playermat.add_resource(ResourceType.WOOD, 3)
-
-        self.assertEqual(playermat.wood, 3)
+        self.assertEqual(self.playermat.wood, 3)
 
     def test_add_resource_stone_default_value(self):
-        playermat = self.create_base_playermat()
+        self.playermat.add_resource(ResourceType.STONE)
+        self.assertEqual(self.playermat.stone, 1)
+        self.assertEqual(self.playermat.get_resource_count(ResourceType.STONE), 1)
 
-        playermat.add_resource(ResourceType.STONE)
-        self.assertEqual(playermat.stone, 1)
-        self.assertEqual(playermat.get_resource_count(ResourceType.STONE), 1)
-
-        playermat.add_resource(ResourceType.STONE)
-        self.assertEqual(playermat.stone, 2)
-        self.assertEqual(playermat.get_resource_count(ResourceType.STONE), 2)
+        self.playermat.add_resource(ResourceType.STONE)
+        self.assertEqual(self.playermat.stone, 2)
+        self.assertEqual(self.playermat.get_resource_count(ResourceType.STONE), 2)
 
     def test_add_resource_hits_max(self):
-        playermat = self.create_base_playermat()
+        self.playermat.add_resource(ResourceType.LAND, 8)
 
-        playermat.add_resource(ResourceType.LAND, 8)
-
-        self.assertEqual(playermat.land, 8)
+        self.assertEqual(self.playermat.land, 8)
 
         # add past the max stops at the max
-        playermat.add_resource(ResourceType.LAND, (GameConstants.MAX_RESOURCES - 8) + 4)
-        self.assertEqual(playermat.land, GameConstants.MAX_RESOURCES)
+        self.playermat.add_resource(
+            ResourceType.LAND, (GameConstants.MAX_RESOURCES - 8) + 4
+        )
+        self.assertEqual(self.playermat.land, GameConstants.MAX_RESOURCES)
 
 
 class TestPlayerMatRemoveResource(BasePlayerMatTest):
     def test_remove_gold_default_value(self):
-        playermat = self.create_base_playermat()
+        self.playermat.add_resource(ResourceType.GOLD, 3)
+        self.assertEqual(self.playermat.gold, 3)
+        self.assertEqual(self.playermat.get_resource_count(ResourceType.GOLD), 3)
 
-        playermat.add_resource(ResourceType.GOLD, 3)
-        self.assertEqual(playermat.gold, 3)
-        self.assertEqual(playermat.get_resource_count(ResourceType.GOLD), 3)
-
-        playermat.remove_resource(ResourceType.GOLD)
-        self.assertEqual(playermat.gold, 2)
-        self.assertEqual(playermat.get_resource_count(ResourceType.GOLD), 2)
+        self.playermat.remove_resource(ResourceType.GOLD)
+        self.assertEqual(self.playermat.gold, 2)
+        self.assertEqual(self.playermat.get_resource_count(ResourceType.GOLD), 2)
 
     def test_remove_iron(self):
-        playermat = self.create_base_playermat()
+        self.playermat.add_resource(ResourceType.IRON, 5)
+        self.assertEqual(self.playermat.iron, 5)
 
-        playermat.add_resource(ResourceType.IRON, 5)
-        self.assertEqual(playermat.iron, 5)
-
-        playermat.remove_resource(ResourceType.IRON, 3)
-        self.assertEqual(playermat.iron, 2)
+        self.playermat.remove_resource(ResourceType.IRON, 3)
+        self.assertEqual(self.playermat.iron, 2)
 
     def test_remove_below_zero(self):
-        playermat = self.create_base_playermat()
+        self.playermat.add_resource(ResourceType.IRON, 2)
+        self.assertEqual(self.playermat.iron, 2)
 
-        playermat.add_resource(ResourceType.IRON, 2)
-        self.assertEqual(playermat.iron, 2)
-
-        playermat.remove_resource(ResourceType.IRON, 4)
-        self.assertEqual(playermat.iron, 0)
+        self.playermat.remove_resource(ResourceType.IRON, 4)
+        self.assertEqual(self.playermat.iron, 0)
 
 
 class TestPlayerMatResourcePeople(BasePlayerMatTest):
-    def setUp(self):
-        super().setUp()
-        self.playermat = self.create_base_playermat()
-
     def test_add_single_guard(self):
         playermat_resource_guard = PlayerMatResourcePeople.objects.create(
             player_mat=self.playermat, type=VillagerType.GUARD
