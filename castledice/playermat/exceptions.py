@@ -18,5 +18,5 @@ class NoMoreOfVillagerError(Exception):
     """No more remaining villagers of that type"""
 
 
-class UnknownVillagerType(Exception):
+class UnknownVillagerTypeError(Exception):
     """No match for villager type"""

@@ -8,6 +8,7 @@ from ..exceptions import (
     InvalidResourceForVillagerError,
     MissingGuardResourceError,
     NoMoreOfVillagerError,
+    UnknownVillagerTypeError,
     VillagerMaxedOutError,
 )
 from ..models import PlayerMat, PlayerMatResourcePeople
@@ -85,7 +86,14 @@ class TestPlayerMatRemoveResource(BasePlayerMatTest):
 
 
 class TestPlayerMatAddRemoveVillager(BasePlayerMatTest):
-    def test_add_barbarian(self):
+    def test_add_remove_unknown(self):
+        with self.assertRaises(UnknownVillagerTypeError):
+            self.playermat.add_villager(ResourceType.WOOD, 2)
+
+        with self.assertRaises(UnknownVillagerTypeError):
+            self.playermat.remove_villager(ResourceType.WOOD)
+
+    def test_add_remove_barbarian(self):
         assert self.playermat.barbarians == 0
 
         self.playermat.add_barbarian()
@@ -94,19 +102,38 @@ class TestPlayerMatAddRemoveVillager(BasePlayerMatTest):
         self.playermat.add_barbarian(3)
         assert self.playermat.barbarians == 4
 
-    def test_add_villager__barbarian(self):
-        assert self.playermat.barbarians == 0
-        self.playermat.add_villager(VillagerType.BARBARIAN, 3)
-
+        self.playermat.remove_barbarian()
         assert self.playermat.barbarians == 3
-        self.playermat.add_barbarian(2)
+
+        self.playermat.remove_barbarian(2)
+        assert self.playermat.barbarians == 1
+
+        # confirm we don't remove past the minimum
+        self.playermat.remove_barbarian(4)
+        assert self.playermat.barbarians == 0
+
+    def test_add_remove_villager__barbarian(self):
+        assert self.playermat.barbarians == 0
+
+        self.playermat.add_villager(VillagerType.BARBARIAN)
+        assert self.playermat.barbarians == 1
+
+        self.playermat.add_villager(VillagerType.BARBARIAN, 4)
         assert self.playermat.barbarians == 5
 
-    def test_add_villager__merchant_farmer(self):
+        self.playermat.remove_villager(VillagerType.BARBARIAN)
+        assert self.playermat.barbarians == 4
+
+        self.playermat.remove_villager(VillagerType.BARBARIAN, 6)
+        assert self.playermat.barbarians == 0
+
+    def test_add_remove_villager__merchant_farmer(self):
         for villager in (VillagerType.MERCHANT, VillagerType.FARMER):
             attr_name = f"{villager.name.lower()}s"
             assert getattr(self.playermat, attr_name) == 0
 
+            # - Long way tests - #
+            # --- Addition --- #
             self.playermat.add_villager(villager)
             assert getattr(self.playermat, attr_name) == 1
 
@@ -121,9 +148,21 @@ class TestPlayerMatAddRemoveVillager(BasePlayerMatTest):
             with self.assertRaises(VillagerMaxedOutError):
                 self.playermat.add_villager(villager)
 
-            # reset and try with simple wrapper
-            setattr(self.playermat, attr_name, 0)
+            # --- Subtraction --- #
+            self.playermat.remove_villager(villager)
+            assert getattr(self.playermat, attr_name) == 2
+
+            self.playermat.remove_villager(villager, 2)
+            assert getattr(self.playermat, attr_name) == 0
+
+            with self.assertRaises(NoMoreOfVillagerError):
+                self.playermat.remove_villager(villager)
+
+            # - Simple wrapper - #
+            # --- Addition --- #
+            # add_func -> self.playermat.add_farmer or self.playermat.add_merchant
             add_func = getattr(self.playermat, f"add_{villager.name.lower()}")
+
             add_func()
             assert getattr(self.playermat, attr_name) == 1
 
@@ -132,6 +171,19 @@ class TestPlayerMatAddRemoveVillager(BasePlayerMatTest):
 
             add_func(2)
             assert getattr(self.playermat, attr_name) == 3
+
+            # --- Subtraction --- #
+            # add_func -> self.playermat.remove_farmer or self.playermat.remove_merchant
+            remove_func = getattr(self.playermat, f"remove_{villager.name.lower()}")
+
+            remove_func()
+            assert getattr(self.playermat, attr_name) == 2
+
+            remove_func(2)
+            assert getattr(self.playermat, attr_name) == 0
+
+            with self.assertRaises(NoMoreOfVillagerError):
+                remove_func()
 
     def test_add_worker(self):
         assert self.playermat.workers_mat.total == 0

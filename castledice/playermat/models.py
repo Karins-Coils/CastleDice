@@ -13,7 +13,7 @@ from .exceptions import (
     InvalidResourceForVillagerError,
     MissingGuardResourceError,
     NoMoreOfVillagerError,
-    UnknownVillagerType,
+    UnknownVillagerTypeError,
     VillagerMaxedOutError,
     WorkersFullError,
 )
@@ -107,7 +107,7 @@ class PlayerMat(models.Model):
         self,
         villager: VillagerType,
         add_amount: int = 1,
-        to_resource: ResourceType = None,
+        to_resource: Optional[ResourceType] = None,
     ):
         """
         Add the given villager type to the playermat.
@@ -136,7 +136,7 @@ class PlayerMat(models.Model):
             self.add_farmer(add_amount)
 
         else:
-            raise UnknownVillagerType(
+            raise UnknownVillagerTypeError(
                 f"Villager type {villager.name} not found when adding to mat"
             )
 
@@ -183,6 +183,64 @@ class PlayerMat(models.Model):
     def add_guard(self, resource: ResourceType):
         """Simple wrapper around the guard_mat call"""
         self.guards_mat.add_to_resource(resource)
+
+    def remove_villager(
+        self,
+        villager: VillagerType,
+        remove_amount: int = 1,
+        from_resource: Optional[ResourceType] = None,
+    ):
+        if villager == VillagerType.BARBARIAN:
+            self.remove_barbarian(remove_amount)
+
+        elif villager == VillagerType.WORKER:
+            self.remove_worker(remove_amount, from_resource)
+
+        elif villager == VillagerType.GUARD:
+            if remove_amount > 1:
+                raise MissingGuardResourceError(
+                    "Tried to add multiple guards with only one resource"
+                )
+            self.remove_guard(from_resource)
+
+        elif villager == VillagerType.MERCHANT:
+            self.remove_merchant(remove_amount)
+
+        elif villager == VillagerType.FARMER:
+            self.remove_farmer(remove_amount)
+
+        else:
+            raise UnknownVillagerTypeError(
+                f"Villager type {villager.name} not found when adding to mat"
+            )
+
+    def remove_barbarian(self, remove_amount: int = 1):
+        # ensure that the lowest value is 0
+        self.barbarians = max(self.barbarians - remove_amount, 0)
+
+    def _remove_merchant_or_farmer(self, villager: VillagerType, remove_amount: int):
+        attr_name = f"{villager.name.lower()}s"
+        current_amount = getattr(self, attr_name)
+
+        if current_amount - remove_amount < 0:
+            raise NoMoreOfVillagerError(
+                f"Tried to remove more {attr_name} than available: remove {remove_amount} from {current_amount}"
+            )
+
+        setattr(self, attr_name, current_amount - remove_amount)
+        self.save()
+
+    def remove_worker(self, resource: ResourceType):
+        pass
+
+    def remove_guard(self, resource: ResourceType):
+        pass
+
+    def remove_farmer(self, amount: int = 1):
+        self._remove_merchant_or_farmer(VillagerType.FARMER, amount)
+
+    def remove_merchant(self, amount: int = 1):
+        self._remove_merchant_or_farmer(VillagerType.MERCHANT, amount)
 
     def reset_turn_based(self):
         self.has_porkchopped = False
