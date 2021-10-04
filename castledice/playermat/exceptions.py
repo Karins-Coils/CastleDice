@@ -16,3 +16,7 @@ class InvalidResourceForVillagerError(Exception):
 
 class NoMoreOfVillagerError(Exception):
     """No more remaining villagers of that type"""
+
+
+class UnknownVillagerType(Exception):
+    """No match for villager type"""

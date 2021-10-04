@@ -84,6 +84,102 @@ class TestPlayerMatRemoveResource(BasePlayerMatTest):
         self.assertEqual(self.playermat.iron, 0)
 
 
+class TestPlayerMatAddRemoveVillager(BasePlayerMatTest):
+    def test_add_barbarian(self):
+        assert self.playermat.barbarians == 0
+
+        self.playermat.add_barbarian()
+        assert self.playermat.barbarians == 1
+
+        self.playermat.add_barbarian(3)
+        assert self.playermat.barbarians == 4
+
+    def test_add_villager__barbarian(self):
+        assert self.playermat.barbarians == 0
+        self.playermat.add_villager(VillagerType.BARBARIAN, 3)
+
+        assert self.playermat.barbarians == 3
+        self.playermat.add_barbarian(2)
+        assert self.playermat.barbarians == 5
+
+    def test_add_villager__merchant_farmer(self):
+        for villager in (VillagerType.MERCHANT, VillagerType.FARMER):
+            attr_name = f"{villager.name.lower()}s"
+            assert getattr(self.playermat, attr_name) == 0
+
+            self.playermat.add_villager(villager)
+            assert getattr(self.playermat, attr_name) == 1
+
+            # anything that would make it more than 3 will error
+            with self.assertRaises(VillagerMaxedOutError):
+                self.playermat.add_villager(villager, 3)
+
+            self.playermat.add_villager(villager, 2)
+            assert getattr(self.playermat, attr_name) == 3
+
+            # anything that would make it more than 3 will error
+            with self.assertRaises(VillagerMaxedOutError):
+                self.playermat.add_villager(villager)
+
+            # reset and try with simple wrapper
+            setattr(self.playermat, attr_name, 0)
+            add_func = getattr(self.playermat, f"add_{villager.name.lower()}")
+            add_func()
+            assert getattr(self.playermat, attr_name) == 1
+
+            with self.assertRaises(VillagerMaxedOutError):
+                add_func(3)
+
+            add_func(2)
+            assert getattr(self.playermat, attr_name) == 3
+
+    def test_add_worker(self):
+        assert self.playermat.workers_mat.total == 0
+
+        self.playermat.add_worker()
+        assert self.playermat.workers_mat.total == 1
+
+        with self.assertRaises(VillagerMaxedOutError):
+            self.playermat.add_worker(5)
+
+        self.playermat.add_worker(2)
+        assert self.playermat.workers_mat.total == 3
+
+        with self.assertRaises(InvalidResourceForVillagerError):
+            assert self.playermat.workers_mat.stone
+            self.playermat.add_worker(resource=ResourceType.STONE)
+
+        assert self.playermat.workers_mat.iron is False
+        self.playermat.add_worker(resource=ResourceType.IRON)
+        assert self.playermat.workers_mat.iron
+        assert self.playermat.workers_mat.total == 4
+
+    def test_add_guard(self):
+        assert self.playermat.guards_mat.total == 0
+
+        # short way
+        assert self.playermat.guards_mat.stone is False
+        self.playermat.add_guard(ResourceType.STONE)
+        assert self.playermat.guards_mat.total == 1
+        assert self.playermat.guards_mat.stone
+
+        with self.assertRaises(InvalidResourceForVillagerError):
+            self.playermat.add_guard(ResourceType.STONE)
+
+        # Long way
+        assert self.playermat.guards_mat.gold is False
+        self.playermat.add_villager(VillagerType.GUARD, to_resource=ResourceType.GOLD)
+        assert self.playermat.guards_mat.gold
+
+        with self.assertRaises(InvalidResourceForVillagerError):
+            self.playermat.add_villager(
+                VillagerType.GUARD, to_resource=ResourceType.GOLD
+            )
+
+        with self.assertRaises(MissingGuardResourceError):
+            self.playermat.add_villager(VillagerType.GUARD)
+
+
 class TestPlayerMatResourcePeople(BasePlayerMatTest):
     def test_add_single_guard(self):
         playermat_resource_guard = PlayerMatResourcePeople.objects.create(
