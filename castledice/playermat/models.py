@@ -2,7 +2,7 @@ from typing import Optional
 
 from annoying.fields import JSONField
 from django.conf import settings
-from django.db import models
+from django.db import models, transaction
 
 from castledice.common.constants import GameConstants, ResourceType, VillagerType
 from castledice.common.globals import ANIMAL_PREFERENCE, BARBARIAN, RESOURCE_PREFERENCE
@@ -15,8 +15,14 @@ from .exceptions import (
     NoMoreOfVillagerError,
     UnknownVillagerTypeError,
     VillagerMaxedOutError,
+    VillagerTypeCannotHaveResourcesError,
+    VillagerTypeMustHaveResourcesError,
     WorkersFullError,
 )
+
+_VILLAGERS_ASSIGNED_RESOURCES = (VillagerType.GUARD, VillagerType.WORKER)
+_VILLAGERS_NOT_ASSIGNED_RESOURCES_MAX = 3
+_VILLAGERS_ASSIGNED_RESOURCES_MAX = 5
 
 
 class PlayerMat(models.Model):
@@ -56,17 +62,32 @@ class PlayerMat(models.Model):
 
     @property
     def workers_mat(self) -> "PlayerMatResourcePeople":
-        workers_mat, _ = self.playermatresourcepeople_set.get_or_create(
-            type=VillagerType.WORKER
-        )
-        return workers_mat
+        return self.get_mat_for_villager(VillagerType.WORKER)
 
     @property
     def guards_mat(self) -> "PlayerMatResourcePeople":
-        guards_mat, _ = self.playermatresourcepeople_set.get_or_create(
-            type=VillagerType.GUARD
-        )
-        return guards_mat
+        return self.get_mat_for_villager(VillagerType.GUARD)
+
+    def get_mat_for_villager(self, villager: VillagerType):
+        if villager not in _VILLAGERS_ASSIGNED_RESOURCES:
+            raise VillagerTypeMustHaveResourcesError(
+                f"This method does not work for {villager.name}"
+            )
+
+        villager_mat, _ = self.playermatresourcepeople_set.get_or_create(type=villager)
+        return villager_mat
+
+    def get_villager_count(self, villager: VillagerType):
+        if villager in _VILLAGERS_ASSIGNED_RESOURCES:
+            raise VillagerTypeCannotHaveResourcesError(
+                f"Villager type {villager.name} is assigned a resource and cannot use this method"
+            )
+        attr_name = f"{villager.name.lower()}s"
+        return getattr(self, attr_name)
+
+    def _set_villager_count(self, villager: VillagerType, count: int):
+        attr_name = f"{villager.name.lower()}s"
+        setattr(self, attr_name, count)
 
     def get_resource_count(self, resource: ResourceType) -> int:
         attr_name = resource.name.lower()
@@ -146,13 +167,12 @@ class PlayerMat(models.Model):
         self.save()
 
     def _add_merchant_or_farmer(self, villager: VillagerType, add_amount: int):
-        attr_name = f"{villager.name.lower()}s"
-        current_amount = getattr(self, attr_name)
+        current_amount = self.get_villager_count(villager)
 
         if current_amount + add_amount > 3:
-            raise VillagerMaxedOutError(f"Can't have more than 3 {attr_name}")
+            raise VillagerMaxedOutError(f"Can't have more than 3 {villager.name}")
 
-        setattr(self, attr_name, current_amount + add_amount)
+        self._set_villager_count(villager, current_amount + add_amount)
         self.save()
 
     def add_merchant(self, amount: int = 1):
@@ -247,6 +267,63 @@ class PlayerMat(models.Model):
 
     def remove_merchant(self, amount: int = 1):
         self._remove_merchant_or_farmer(VillagerType.MERCHANT, amount)
+
+    def convert_villager(
+        self,
+        current_villager: VillagerType,
+        new_villager: VillagerType,
+        current_resource: ResourceType = None,
+        new_resource: ResourceType = None,
+    ):
+        """
+        :param current_villager: the existing villager that will be converted
+        :param new_villager: the new villager we want to have
+        :param current_resource: the resource (if applicable) of the current villager
+        :param new_resource: the resource (if applicable_ of the new villager
+        """
+
+        # confirm current villager exists
+        if current_villager in _VILLAGERS_ASSIGNED_RESOURCES:
+            # confirm resource passed if required
+            if current_resource is None:
+                raise InvalidResourceForVillagerError(
+                    f"The current villager type {current_villager.name} requires a resource to be selected"
+                )
+
+            villager_mat = self.get_mat_for_villager(current_villager)
+            if not villager_mat.has_resource(current_resource):
+                raise NoMoreOfVillagerError(
+                    f"No more {current_villager.name} villagers of type {current_resource.name}"
+                )
+        else:
+            current_villager_count = self.get_villager_count(current_villager)
+            if current_villager_count < 1:
+                raise NoMoreOfVillagerError(
+                    f"No more {current_villager.name} left to convert"
+                )
+
+        # confirm space for new_villager type
+        if new_villager in _VILLAGERS_ASSIGNED_RESOURCES:
+            # confirm resource if required
+            if new_villager in _VILLAGERS_ASSIGNED_RESOURCES and new_resource is None:
+                raise InvalidResourceForVillagerError(
+                    f"The new villager type {new_villager.name} requires a resource to be selected"
+                )
+            # and space on the specified resource
+            villager_mat = self.get_mat_for_villager(new_villager)
+            if villager_mat.has_resource(new_resource):
+                raise InvalidResourceForVillagerError(
+                    f"Can only have one {new_villager.name} villagers of type {new_resource.name}"
+                )
+        else:
+            new_villager_count = self.get_villager_count(new_villager)
+            if new_villager_count == _VILLAGERS_NOT_ASSIGNED_RESOURCES_MAX:
+                raise VillagerMaxedOutError(f"No more {new_villager.name} allowed")
+
+        # preconditions have passed - remove existing + add new in same transaction
+        with transaction.atomic():
+            self.remove_villager(current_villager, from_resource=current_resource)
+            self.add_villager(new_villager, to_resource=new_resource)
 
     def reset_turn_based(self):
         self.has_porkchopped = False
@@ -355,7 +432,6 @@ class PlayerMatResourcePeople(models.Model):
         Remove a villager from this resource.
 
         :param resource:
-        :type resource: ResourceType
         :raises NoMoreOfVillagerError: All villagers have been removed
         :raises InvalidResourceForVillagerError: Resource has already been removed or is unset
         """

@@ -20,3 +20,11 @@ class NoMoreOfVillagerError(Exception):
 
 class UnknownVillagerTypeError(Exception):
     """No match for villager type"""
+
+
+class VillagerTypeCannotHaveResourcesError(Exception):
+    """An action that cannot be performed on a villager that is assigned a resource"""
+
+
+class VillagerTypeMustHaveResourcesError(Exception):
+    """An action that must be performed with a villager type that has assigned resources"""

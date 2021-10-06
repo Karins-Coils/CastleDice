@@ -10,6 +10,8 @@ from ..exceptions import (
     NoMoreOfVillagerError,
     UnknownVillagerTypeError,
     VillagerMaxedOutError,
+    VillagerTypeCannotHaveResourcesError,
+    VillagerTypeMustHaveResourcesError,
 )
 from ..models import PlayerMat, PlayerMatResourcePeople
 
@@ -407,3 +409,157 @@ class TestPlayerMatResourcePeople(BasePlayerMatTest):
         # remove when none are left
         with self.assertRaises(NoMoreOfVillagerError):
             playermat_resource_guard.remove_from_resource(resource)
+
+    def test_convert_villager__requires_resource_to_be_included(self):
+        self.playermat.merchants = 2
+        self.playermat.save()
+        self.playermat.workers_mat.add_to_resource(ResourceType.WOOD)
+        self.playermat.guards_mat.add_to_resource(ResourceType.WOOD)
+
+        invalid_kwargs_for_guard = [
+            # Guard requires a resource
+            dict(
+                current_villager=VillagerType.GUARD, new_villager=VillagerType.MERCHANT
+            ),
+            dict(
+                current_villager=VillagerType.MERCHANT, new_villager=VillagerType.GUARD
+            ),
+            dict(
+                current_villager=VillagerType.WORKER,
+                current_resource=ResourceType.WOOD,
+                new_villager=VillagerType.GUARD,
+            ),
+            dict(
+                current_villager=VillagerType.GUARD,
+                new_villager=VillagerType.WORKER,
+                new_resource=ResourceType.WOOD,
+            ),
+        ]
+        invalid_kwargs_for_worker = [
+            # Worker requires a resource
+            dict(
+                current_villager=VillagerType.WORKER, new_villager=VillagerType.MERCHANT
+            ),
+            dict(
+                current_villager=VillagerType.MERCHANT, new_villager=VillagerType.WORKER
+            ),
+            dict(
+                current_villager=VillagerType.GUARD,
+                current_resource=ResourceType.WOOD,
+                new_villager=VillagerType.WORKER,
+            ),
+            dict(
+                current_villager=VillagerType.WORKER,
+                new_villager=VillagerType.GUARD,
+                new_resource=ResourceType.WOOD,
+            ),
+        ]
+        for village_name, kwargs_list in [
+            ("GUARD", invalid_kwargs_for_guard),
+            ("WORKER", invalid_kwargs_for_worker),
+        ]:
+            for kwargs in kwargs_list:
+                with self.subTest(villager_name=village_name, kwargs=kwargs):
+                    with self.assertRaisesRegex(
+                        InvalidResourceForVillagerError, village_name
+                    ):
+                        self.playermat.convert_villager(**kwargs)
+
+    def test_convert_villager__villager_not_allowed(self):
+        self.playermat.merchants = 3
+        self.playermat.farmers = 0
+        self.playermat.save()
+
+        # current is empty
+        with self.assertRaises(NoMoreOfVillagerError):
+            self.playermat.convert_villager(VillagerType.FARMER, VillagerType.MERCHANT)
+
+        self.playermat.farmers = 2
+        self.playermat.save()
+        # new has no more room
+        with self.assertRaises(VillagerMaxedOutError):
+            self.playermat.convert_villager(VillagerType.FARMER, VillagerType.MERCHANT)
+
+        self.playermat.workers_mat.add_to_resource(ResourceType.WOOD)
+        self.playermat.guards_mat.add_to_resource(ResourceType.IRON)
+        # current has no villager w/ resource there
+        with self.assertRaises(NoMoreOfVillagerError):
+            self.playermat.convert_villager(
+                current_villager=VillagerType.WORKER,
+                current_resource=ResourceType.STONE,
+                new_villager=VillagerType.FARMER,
+            )
+        # new already has villager her
+        with self.assertRaises(InvalidResourceForVillagerError):
+            self.playermat.convert_villager(
+                current_villager=VillagerType.WORKER,
+                current_resource=ResourceType.WOOD,
+                new_villager=VillagerType.GUARD,
+                new_resource=ResourceType.IRON,
+            )
+
+    def test_convert_villager__success(self):
+        self.playermat.merchants = 2
+        self.playermat.farmers = 1
+        self.playermat.save()
+        self.playermat.workers_mat.add_to_resource(ResourceType.WOOD)
+        self.playermat.guards_mat.add_to_resource(ResourceType.IRON)
+
+        # try moving from non-resource to resource
+        assert self.playermat.workers_mat.stone is False
+        self.playermat.convert_villager(
+            current_villager=VillagerType.MERCHANT,
+            new_villager=VillagerType.WORKER,
+            new_resource=ResourceType.STONE,
+        )
+        assert self.playermat.workers_mat.stone
+        assert self.playermat.merchants == 1
+        assert self.playermat.workers_mat.total == 2
+
+        # try moving from resource to non-resource
+        self.playermat.convert_villager(
+            current_villager=VillagerType.GUARD,
+            current_resource=ResourceType.IRON,
+            new_villager=VillagerType.FARMER,
+        )
+        assert self.playermat.farmers == 2
+        assert self.playermat.guards_mat.iron is False
+        assert self.playermat.guards_mat.total == 0
+
+        # try moving from resource to resource on same villager
+        self.playermat.convert_villager(
+            current_villager=VillagerType.WORKER,
+            current_resource=ResourceType.WOOD,
+            new_villager=VillagerType.WORKER,
+            new_resource=ResourceType.GOLD,
+        )
+        assert self.playermat.workers_mat.wood is False
+        assert self.playermat.workers_mat.gold
+        assert self.playermat.workers_mat.total == 2
+
+    def test_get_mat_for_villager(self):
+        for villager in (VillagerType.MERCHANT, VillagerType.FARMER):
+            with self.assertRaises(VillagerTypeMustHaveResourcesError):
+                self.playermat.get_mat_for_villager(villager)
+
+        for villager in (VillagerType.GUARD, VillagerType.WORKER):
+            villager_mat = self.playermat.get_mat_for_villager(villager)
+            assert villager_mat.type == villager
+
+    def test_get_villager_count(self):
+        self.playermat.barbarians = 3
+        self.playermat.merchants = 1
+        self.playermat.farmers = 2
+        self.playermat.save()
+
+        for villager in (VillagerType.GUARD, VillagerType.WORKER):
+            with self.assertRaises(VillagerTypeCannotHaveResourcesError):
+                self.playermat.get_villager_count(villager)
+
+        for villager, expected_count in [
+            (VillagerType.MERCHANT, 1),
+            (VillagerType.FARMER, 2),
+            (VillagerType.BARBARIAN, 3),
+        ]:
+            villager_count = self.playermat.get_villager_count(villager)
+            assert villager_count == expected_count
