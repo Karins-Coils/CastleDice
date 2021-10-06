@@ -1,17 +1,22 @@
+from typing import Optional
+
 from annoying.fields import JSONField
 from django.conf import settings
 from django.db import models
 
-from castledice.common.constants import GameConstants, ResourceType
-from castledice.common.globals import (
-    ANIMAL_PREFERENCE,
-    BARBARIAN,
-    GUARD,
-    RESOURCE_PREFERENCE,
-    WORKER,
-)
+from castledice.common.constants import GameConstants, ResourceType, VillagerType
+from castledice.common.globals import ANIMAL_PREFERENCE, BARBARIAN, RESOURCE_PREFERENCE
 from castledice.die.dieClass import Die
 from castledice.game.turns import Turn
+
+from .exceptions import (
+    InvalidResourceForVillagerError,
+    MissingGuardResourceError,
+    NoMoreOfVillagerError,
+    UnknownVillagerTypeError,
+    VillagerMaxedOutError,
+    WorkersFullError,
+)
 
 
 class PlayerMat(models.Model):
@@ -49,6 +54,28 @@ class PlayerMat(models.Model):
     # will be reset after each turn
     barbarians = models.PositiveSmallIntegerField(default=0)
 
+    @property
+    def workers_mat(self) -> "PlayerMatResourcePeople":
+        workers_mat, _ = self.playermatresourcepeople_set.get_or_create(
+            type=VillagerType.WORKER
+        )
+        return workers_mat
+
+    @property
+    def guards_mat(self) -> "PlayerMatResourcePeople":
+        guards_mat, _ = self.playermatresourcepeople_set.get_or_create(
+            type=VillagerType.GUARD
+        )
+        return guards_mat
+
+    def get_resource_count(self, resource: ResourceType) -> int:
+        attr_name = resource.name.lower()
+        return getattr(self, attr_name)
+
+    def _set_resource_count(self, resource: ResourceType, amount: int):
+        attr_name = resource.name.lower()
+        setattr(self, attr_name, amount)
+
     def get_player_choice_extra_dice(self):
         # based on turn no, get number of 'extra' dice player will choose
         # TODO: logic to confirm if player has Royal Chambers etc
@@ -57,49 +84,177 @@ class PlayerMat(models.Model):
     def add_resource(self, resource: ResourceType, add_amount: int = 1):
         """
         Match the resource to the column and add amount to value
-
-        :param resource:
-        :type: ResourceType
-        :param add_amount:
-        :type: int
         """
-        attr_name = resource.name.lower()
-        current_amount = self.__getattribute__(attr_name)
+        current_amount = self.get_resource_count(resource)
         # adding more than the allowed max
         new_amount = min(current_amount + add_amount, GameConstants.MAX_RESOURCES)
 
-        self.__setattr__(attr_name, new_amount)
+        self._set_resource_count(resource, new_amount)
         self.save()
 
-    def remove_resource(self, resource, remove_amount=1):
+    def remove_resource(self, resource: ResourceType, remove_amount: int = 1):
         """
         Match resource to column and remove count, default 1
-        :param resource:
-        :type resource: ResourceType
-        :param remove_amount:
-        :type remove_amount: int
         """
-        attr_name = resource.name.lower()
-        current_amount = self.__getattribute__(attr_name)
+        current_amount = self.get_resource_count(resource)
         # cannot have a negative amount of a resource
         new_amount = max(current_amount - remove_amount, 0)
 
-        self.__setattr__(attr_name, new_amount)
+        self._set_resource_count(resource, new_amount)
         self.save()
+
+    def add_villager(
+        self,
+        villager: VillagerType,
+        add_amount: int = 1,
+        to_resource: Optional[ResourceType] = None,
+    ):
+        """
+        Add the given villager type to the playermat.
+        """
+
+        # check that the resource type is allowed
+        # check that the is space to add another of x type
+
+        if villager == VillagerType.BARBARIAN:
+            self.add_barbarian(add_amount)
+
+        elif villager == VillagerType.WORKER:
+            self.add_worker(add_amount, to_resource)
+
+        elif villager == VillagerType.GUARD:
+            if add_amount > 1:
+                raise MissingGuardResourceError(
+                    "Tried to add multiple guards with only one resource"
+                )
+            self.add_guard(to_resource)
+
+        elif villager == VillagerType.MERCHANT:
+            self.add_merchant(add_amount)
+
+        elif villager == VillagerType.FARMER:
+            self.add_farmer(add_amount)
+
+        else:
+            raise UnknownVillagerTypeError(
+                f"Villager type {villager.name} not found when adding to mat"
+            )
+
+    def add_barbarian(self, amount: int = 1):
+        # barbarians have no max
+        self.barbarians += amount
+        self.save()
+
+    def _add_merchant_or_farmer(self, villager: VillagerType, add_amount: int):
+        attr_name = f"{villager.name.lower()}s"
+        current_amount = getattr(self, attr_name)
+
+        if current_amount + add_amount > 3:
+            raise VillagerMaxedOutError(f"Can't have more than 3 {attr_name}")
+
+        setattr(self, attr_name, current_amount + add_amount)
+        self.save()
+
+    def add_merchant(self, amount: int = 1):
+        """Simple wrapper to add a merchant"""
+        self._add_merchant_or_farmer(VillagerType.MERCHANT, amount)
+
+    def add_farmer(self, amount: int = 1):
+        """Simple wrapper to add a farmer"""
+        self._add_merchant_or_farmer(VillagerType.FARMER, amount)
+
+    def add_worker(self, amount: int = 1, resource: ResourceType = None):
+        """More complex wrapper around workers_mat call"""
+        if self.workers_mat.total + amount > 5:
+            raise VillagerMaxedOutError("Can't have more than 5 workers")
+
+        if amount == 1 and resource is not None:
+            self.workers_mat.add_to_resource(resource)
+            return
+
+        if resource is not None:
+            raise InvalidResourceForVillagerError(
+                "Too many workers for a specific Resource"
+            )
+
+        for _ in range(amount):
+            self.workers_mat.add_to_resource()
+
+    def add_guard(self, resource: ResourceType):
+        """Simple wrapper around the guard_mat call"""
+        self.guards_mat.add_to_resource(resource)
+
+    def remove_villager(
+        self,
+        villager: VillagerType,
+        remove_amount: int = 1,
+        from_resource: Optional[ResourceType] = None,
+    ):
+        if villager == VillagerType.BARBARIAN:
+            self.remove_barbarian(remove_amount)
+
+        elif villager == VillagerType.WORKER:
+            if remove_amount > 1 or from_resource is None:
+                raise InvalidResourceForVillagerError(
+                    "Only worker from a specific resource can be removed"
+                )
+            self.remove_worker(from_resource)
+
+        elif villager == VillagerType.GUARD:
+            if remove_amount > 1 or from_resource is None:
+                raise InvalidResourceForVillagerError(
+                    "Only guard from a specific resource can be removed"
+                )
+            self.remove_guard(from_resource)
+
+        elif villager == VillagerType.MERCHANT:
+            self.remove_merchant(remove_amount)
+
+        elif villager == VillagerType.FARMER:
+            self.remove_farmer(remove_amount)
+
+        else:
+            raise UnknownVillagerTypeError(
+                f"Villager type {villager.name} not found when adding to mat"
+            )
+
+    def remove_barbarian(self, remove_amount: int = 1):
+        # ensure that the lowest value is 0
+        self.barbarians = max(self.barbarians - remove_amount, 0)
+
+    def _remove_merchant_or_farmer(self, villager: VillagerType, remove_amount: int):
+        attr_name = f"{villager.name.lower()}s"
+        current_amount = getattr(self, attr_name)
+
+        if current_amount - remove_amount < 0:
+            raise NoMoreOfVillagerError(
+                f"Tried to remove more {attr_name} than available: remove {remove_amount} from {current_amount}"
+            )
+
+        setattr(self, attr_name, current_amount - remove_amount)
+        self.save()
+
+    def remove_worker(self, resource: ResourceType):
+        """Simple wrapper"""
+        self.workers_mat.remove_from_resource(resource)
+
+    def remove_guard(self, resource: ResourceType):
+        """Simple wrapper"""
+        self.guards_mat.remove_from_resource(resource)
+
+    def remove_farmer(self, amount: int = 1):
+        self._remove_merchant_or_farmer(VillagerType.FARMER, amount)
+
+    def remove_merchant(self, amount: int = 1):
+        self._remove_merchant_or_farmer(VillagerType.MERCHANT, amount)
 
     def reset_turn_based(self):
         self.has_porkchopped = False
         self.has_first_gathered = False
         self.has_farmered = False
         self.choice_dice = False
+        self.barbarians = 0
         self.save()
-
-        try:
-            barbarians = self.playermatresourcepeople_set.get(type=BARBARIAN)
-            barbarians.clear_all()
-        except self.DoesNotExist:
-            # no barbarians to clear
-            pass
 
     def current_hand_size(self):
         return len(self.player_hand)
@@ -165,35 +320,90 @@ class JoanPlayerMat(PlayerMat):
 
 
 class PlayerMatResourcePeople(models.Model):
-    TYPE_CHOICES = ((GUARD, GUARD), (WORKER, WORKER), (BARBARIAN, BARBARIAN))
+    TYPE_CHOICES = (
+        (VillagerType.GUARD.value, VillagerType.GUARD.name),
+        (VillagerType.WORKER.value, VillagerType.WORKER.name),
+    )
 
     player_mat = models.ForeignKey(PlayerMat, on_delete=models.CASCADE)
-    type = models.CharField(max_length=12, choices=TYPE_CHOICES)
-    total = models.PositiveSmallIntegerField(default=0)
-    wood = models.PositiveSmallIntegerField(default=0)
-    stone = models.PositiveSmallIntegerField(default=0)
-    gold = models.PositiveSmallIntegerField(default=0)
-    land = models.PositiveSmallIntegerField(default=0)
-    iron = models.PositiveSmallIntegerField(default=0)
+    type = models.PositiveSmallIntegerField(choices=TYPE_CHOICES)
+    wood = models.BooleanField(default=False)
+    stone = models.BooleanField(default=False)
+    gold = models.BooleanField(default=False)
+    land = models.BooleanField(default=False)
+    iron = models.BooleanField(default=False)
 
     class Meta:
         unique_together = (("player_mat", "type"),)
 
-    def clear_all(self):
-        # should only be done on barbarian rows
-        for resource in list(RESOURCE_PREFERENCE) + ["total"]:
-            self.__dict__[resource] = 0
+    @property
+    def type_name(self) -> str:
+        return VillagerType(self.type).name
+
+    @property
+    def total(self) -> int:
+        return sum([self.wood, self.stone, self.gold, self.land, self.iron])
+
+    def has_resource(self, resource: ResourceType) -> bool:
+        return getattr(self, resource.name.lower())
+
+    def _set_resource(self, resource: ResourceType, is_set: bool = True):
+        setattr(self, resource.name.lower(), is_set)
+
+    def remove_from_resource(self, resource: ResourceType):
+        """
+        Remove a villager from this resource.
+
+        :param resource:
+        :type resource: ResourceType
+        :raises NoMoreOfVillagerError: All villagers have been removed
+        :raises InvalidResourceForVillagerError: Resource has already been removed or is unset
+        """
+
+        if self.total == 0:
+            raise NoMoreOfVillagerError(f"No more {self.type_name} villager to remove")
+
+        if not self.has_resource(resource):
+            raise InvalidResourceForVillagerError(
+                f"Cannot remove {self.type_name} from {resource.name} when not set"
+            )
+        self._set_resource(resource, False)
         self.save()
 
-    def remove_resource(self, resource, count=1):
-        self.__dict__[resource] -= count
-        self.total -= count
+    def add_to_resource(self, resource: Optional[ResourceType] = None):
+        """
+        Add a villager to this resource.
+
+        :param resource: when missing, and this is a WORKER, goes in resource order
+        :raises VillagerMaxedOutError: no more of this villager can be added
+        :raises MissingGuardResourceError: guard requires a player to choose a resource
+        :raises InvalidResourceForVillagerError: villager already set to this resource
+        """
+        if self.total == 5:
+            raise VillagerMaxedOutError(f"Maxed out on {self.type_name} villager")
+
+        if self.type == VillagerType.GUARD and resource is None:
+            raise MissingGuardResourceError(f"Resource required for {self.type_name}")
+        elif self.type == VillagerType.WORKER and resource is None:
+            try:
+                resource = self._get_next_worker_resource()
+            except WorkersFullError:
+                raise VillagerMaxedOutError("All worker resources are full")
+
+        if self.has_resource(resource):
+            raise InvalidResourceForVillagerError(
+                f"Cannot add {self.type_name} to {resource.name} when already added"
+            )
+
+        self._set_resource(resource, True)
         self.save()
 
-    def add_resource(self, resource, count=1):
-        self.__dict__[resource] += count
-        self.total += count
-        self.save()
+    def _get_next_worker_resource(self) -> ResourceType:
+        for resource in list(ResourceType):
+            if not self.has_resource(resource):
+                return resource
+
+        raise WorkersFullError("All worker resources are full")
 
 
 class PlayerBuilt(models.Model):

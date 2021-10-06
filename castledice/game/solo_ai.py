@@ -164,9 +164,11 @@ class JoanAI(object):
         :return: Joan user object
         :rtype: User
         """
-        u = User.objects.get_or_create(username="JOAN_AI", email="joan@karinscoils.com")
-        # 'u' is a tuple, User object is index 0
-        return u[0]
+        # return is a tuple: Tuple[User, bool], where bool is whether the obj was created
+        u, _ = User.objects.get_or_create(
+            username="JOAN_AI", email="joan@karinscoils.com"
+        )
+        return u
 
 
 class JoanActions(object):

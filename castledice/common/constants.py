@@ -84,6 +84,9 @@ class VillagerType(Constants):
     FARMER = _Globals.FARMER.value
     MERCHANT = _Globals.MERCHANT.value
 
+    # added for easy access when adding a "villager" to the playermat
+    BARBARIAN = _Globals.BARBARIAN.value
+
 
 class DieFace(Constants):
     WOOD = _Globals.WOOD.value

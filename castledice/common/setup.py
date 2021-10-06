@@ -1,10 +1,11 @@
 from .constants import AnimalType, ResourceType
+from .globals import JOAN
 
 __all__ = ["DICE_COUNT", "JOAN", "JOAN_GATHER_PREFERENCE", "PHASE"]
 
 # -- SOLO Play constants -- #
 # not really a groupable type.  Joan is just... Joan...
-JOAN = "joan"
+# JOAN = "joan"
 
 # Joan's Preferences, with first element being her first choice
 JOAN_GATHER_PREFERENCE = ResourceType.values() + AnimalType.values()
