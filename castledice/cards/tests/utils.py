@@ -1,4 +1,5 @@
 import unittest
+from typing import List, Optional, Union
 
 from castledice.common.constants import PhaseType
 from castledice.common.tests.utils import (
@@ -6,11 +7,27 @@ from castledice.common.tests.utils import (
     create_skip_test_if_base_class_decorator,
 )
 
+from ..castle_cards import CastleCard
+from ..market_cards import MarketCard
+from ..villager_cards import VillagerCard
+
 __all__ = ["CardTestBase"]
 
 
 skip_test_if_base_class = create_skip_test_if_base_class_decorator("card_class")
 skip_if_not_implemented = create_skip_if_not_implemented_decorator("card")
+
+
+def serialize_pile(
+    pile: Optional[Union[List[Union[CastleCard, MarketCard, VillagerCard]], List[str]]],
+) -> List[str]:
+    serialized = []
+    for card in pile:
+        if isinstance(card, str):
+            serialized.append(card)
+            continue
+        serialized.append(getattr(card, "card_id"))
+    return serialized
 
 
 class CardTestBase(unittest.TestCase):

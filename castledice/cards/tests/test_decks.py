@@ -1,5 +1,5 @@
 import unittest
-from typing import ClassVar, List, Optional, Type, Union
+from typing import ClassVar, Type, Union
 
 from castledice.common.constants import (
     CastleCardType,
@@ -13,6 +13,7 @@ from ..castle_cards import CastleCard
 from ..decks import CastleDeck, MarketDeck, VillagerDeck, _Deck
 from ..market_cards import MarketCard
 from ..villager_cards import VillagerCard
+from .utils import serialize_pile
 
 skip_test_if_base_class = create_skip_test_if_base_class_decorator("deck_class")
 
@@ -22,20 +23,6 @@ class DeckBaseTest(unittest.TestCase):
     deck_type: ClassVar[DeckName] = None
     card_type: ClassVar[Union[CastleCardType, MarketCardType, VillagerCardType]] = None
     card_class: ClassVar[Union[CastleCard, MarketCard, VillagerCard]]
-
-    def serialize_pile(
-        self,
-        pile: Optional[
-            Union[List[Union[CastleCard, MarketCard, VillagerCard]], List[str]]
-        ],
-    ) -> List[str]:
-        serialized = []
-        for card in pile:
-            if isinstance(card, str):
-                serialized.append(card)
-                continue
-            serialized.append(getattr(card, "card_id"))
-        return serialized
 
     @skip_test_if_base_class
     def test_attributes(self):
@@ -100,12 +87,10 @@ class CastleDeckTest(DeckBaseTest):
             (draw_pile2, discard_pile2),
         ]:
             deck = CastleDeck(draw_pile, discard_pile)
+            self.assertEqual(serialize_pile(deck._draw_pile), serialize_pile(draw_pile))
             self.assertEqual(
-                self.serialize_pile(deck._draw_pile), self.serialize_pile(draw_pile)
-            )
-            self.assertEqual(
-                self.serialize_pile(deck._discard_pile),
-                self.serialize_pile(discard_pile),
+                serialize_pile(deck._discard_pile),
+                serialize_pile(discard_pile),
             )
 
             # modify the local lists, confirming that the class instance lists aren't affected
