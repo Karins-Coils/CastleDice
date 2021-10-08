@@ -1,24 +1,24 @@
-class InvalidCastleCardTypeError(Exception):
+class InvalidDeckCardTypeError(Exception):
+    """
+    Raised when trying to instantiate a card, and can not identify which deck it belongs
+    """
+
+
+class InvalidCastleCardTypeError(InvalidDeckCardTypeError):
     """
     Raised when trying to instantiate a castle card but the type is not valid
     """
 
 
-class InvalidMarketCardTypeError(Exception):
+class InvalidMarketCardTypeError(InvalidDeckCardTypeError):
     """
     Raised when trying to instantiate a market card but the type is not valid
     """
 
 
-class InvalidVillagerCardTypeError(Exception):
+class InvalidVillagerCardTypeError(InvalidDeckCardTypeError):
     """
     Raised when trying to instantiate a villager card but the type is not valid
-    """
-
-
-class InvalidDeckCardTypeError(Exception):
-    """
-    Raised when trying to instantiate a card, and can not identify which deck it belongs
     """
 
 

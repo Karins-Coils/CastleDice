@@ -77,6 +77,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "castledice.users.apps.UsersConfig",
     # Your stuff: custom apps go here
+    "castledice.cards",
     "castledice.die",
     "castledice.game",
     "castledice.playermat",
