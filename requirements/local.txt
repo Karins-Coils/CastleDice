@@ -36,4 +36,4 @@ pytest-django==4.4.0  # https://github.com/pytest-dev/pytest-django
 
 
 #### ----->  TODO: is this still valid/useful?
-sqlparse==0.3.0
+sqlparse==0.4.4
